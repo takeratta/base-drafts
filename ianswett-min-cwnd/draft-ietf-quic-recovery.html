@@ -1458,10 +1458,10 @@ prior to a dramatic decrease in congestion window; see
           <h4 id="name-the-minimum-congestion-wind">
 <a href="#section-3.1.8" class="section-number selfRef">3.1.8. </a><a href="#name-the-minimum-congestion-wind" class="section-name selfRef">The Minimum Congestion Window is 2 Packets</a>
           </h4>
-<p id="section-3.1.8-1">QUIC recommends a minimum congestion window of 2 packets instead of TCP's 1.
-2 packets avoid waiting for a delayed acknowledgement and allow the PTO to
-send 2 packets instead of 1, which can be particularly important during the
-handshake.<a href="#section-3.1.8-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.8-1">QUIC recommends that the minimum congestion window be 2 packets instead
+of the 1 packet minimum in TCP. A minimum of 2 packets avoids waiting for a
+delayed acknowledgement, which can substantially decrease throughput,
+particularly if the max_ack_delay is larger than the round trip time.<a href="#section-3.1.8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
