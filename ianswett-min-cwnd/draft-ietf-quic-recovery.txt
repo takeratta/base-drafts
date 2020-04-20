@@ -400,7 +400,9 @@ Internet-Draft             QUIC Loss Detection                April 2020
    instead of the 1 packet minimum in TCP.  A minimum of 2 packets
    avoids waiting for a delayed acknowledgement, which can substantially
    decrease throughput, particularly if the max_ack_delay is larger than
-   the round trip time.
+   the round trip time.  A 2 packet minimum congestion window also
+   avoids waiting for a probe timeout(see Section 5.2) every time a
+   single packet is lost.
 
 4.  Estimating the Round-Trip Time
 
@@ -440,8 +442,6 @@ Internet-Draft             QUIC Loss Detection                April 2020
    frame SHOULD NOT be used to update RTT estimates if it does not newly
    acknowledge the largest acknowledged packet.
 
-   An RTT sample MUST NOT be generated on receiving an ACK frame that
-   does not newly acknowledge at least one ack-eliciting packet.  A peer
 
 
 
@@ -450,6 +450,8 @@ Iyengar & Swett          Expires 22 October 2020                [Page 8]
 Internet-Draft             QUIC Loss Detection                April 2020
 
 
+   An RTT sample MUST NOT be generated on receiving an ACK frame that
+   does not newly acknowledge at least one ack-eliciting packet.  A peer
    usually does not send an ACK frame when only non-ack-eliciting
    packets are received.  Therefore an ACK frame that contains
    acknowledgements for only non-ack-eliciting packets could include an
@@ -496,8 +498,6 @@ Internet-Draft             QUIC Loss Detection                April 2020
    for an ack-eliciting packet to no greater than the value it
    advertised in the max_ack_delay transport parameter.  Consequently,
    when a peer reports an Ack Delay that is greater than its
-   max_ack_delay, the delay is attributed to reasons out of the peer's
-   control, such as scheduler latency at the peer or loss of previous
 
 
 
@@ -506,6 +506,8 @@ Iyengar & Swett          Expires 22 October 2020                [Page 9]
 Internet-Draft             QUIC Loss Detection                April 2020
 
 
+   max_ack_delay, the delay is attributed to reasons out of the peer's
+   control, such as scheduler latency at the peer or loss of previous
    ACK frames.  Any delays beyond the peer's max_ack_delay are therefore
    considered effectively part of path delay and incorporated into the
    smoothed_rtt estimate.
@@ -552,8 +554,6 @@ Internet-Draft             QUIC Loss Detection                April 2020
    QUIC senders use acknowledgements to detect lost packets, and a probe
    time out (see Section 5.2) to ensure acknowledgements are received.
    This section provides a description of these algorithms.
-
-
 
 
 
