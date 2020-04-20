@@ -8297,8 +8297,8 @@ properties. Any attack on the TLS handshake could affect QUIC.<a href="#section-
 <p id="section-21.12.1-2">Any attack on the TLS handshake that might compromise the secrecy or uniqueness
 of session keys affects other security guarantees provided by QUIC that depends
 on these keys. For instance, migration (<a href="#migration" class="xref">Section 9</a>) depends on the efficacy
-of confidentiality protections, both from the negotiation of keys using the TLS
-handshake and from QUIC packet protection, to avoid linkability across network
+of confidentiality protections, both for the negotiation of keys using the TLS
+handshake and for QUIC packet protection, to avoid linkability across network
 paths.<a href="#section-21.12.1-2" class="pilcrow">¶</a></p>
 <p id="section-21.12.1-3">An attack on the integrity of the TLS handshake might allow an attacker to
 affect the selection of application protocol or QUIC version.<a href="#section-21.12.1-3" class="pilcrow">¶</a></p>
