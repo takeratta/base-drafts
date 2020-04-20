@@ -2940,15 +2940,20 @@ expectation that it will eventually receive an Initial packet.<a href="#section-
         <h3 id="name-handling-version-negotiatio">
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-handling-version-negotiatio" class="section-name selfRef">Handling Version Negotiation Packets</a>
         </h3>
-<p id="section-6.2-1">When a client receives a Version Negotiation packet, it MUST abandon the
-current connection attempt.  Version Negotiation packets are designed to allow
-future versions of QUIC to negotiate the version in use between endpoints.
-Future versions of QUIC might change how implementations that support multiple
-versions of QUIC react to Version Negotiation packets when attempting to
-establish a connection using this version.  How to perform version negotiation
-is left as future work defined by future versions of QUIC.  In particular,
-that future work will need to ensure robustness against version downgrade
-attacks; see <a href="#version-downgrade" class="xref">Section 21.10</a>.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-1">Version Negotiation packets are designed to allow future versions of QUIC to
+negotiate the version in use between endpoints.  Future versions of QUIC might
+change how implementations that support multiple versions of QUIC react to
+Version Negotiation packets when attempting to establish a connection using this
+version.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">A client that supports only this version of QUIC MUST abandon the current
+connection attempt if it receives a Version Negotiation packet, with the
+following two exceptions. A client MUST discard any Version Negotiation packet
+if it has received and successfully processed any other packet, including an
+earlier Version Negotiation packet. A client MUST discard a Version Negotiation
+packet that lists the QUIC version selected by the client.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.2-3">How to perform version negotiation is left as future work defined by future
+versions of QUIC.  In particular, that future work will ensure robustness
+against version downgrade attacks; see <a href="#version-downgrade" class="xref">Section 21.10</a>.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
 <div id="version-negotiation-between-draft-versions">
 <section id="section-6.2.1">
           <h4 id="name-version-negotiation-between">
