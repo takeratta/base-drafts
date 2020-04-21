@@ -77,12 +77,12 @@ Table of Contents
      4.2.  Short Header  . . . . . . . . . . . . . . . . . . . . . .   4
      4.3.  Connection ID . . . . . . . . . . . . . . . . . . . . . .   5
      4.4.  Version . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   5.  Version Negotiation . . . . . . . . . . . . . . . . . . . . .   6
+   5.  Version Negotiation . . . . . . . . . . . . . . . . . . . . .   5
    6.  Security and Privacy Considerations . . . . . . . . . . . . .   7
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   8
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
    Appendix A.  Incorrect Assumptions  . . . . . . . . . . . . . . .   8
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
 
@@ -170,23 +170,16 @@ Thomson                  Expires 23 October 2020                [Page 3]
 Internet-Draft               QUIC Invariants                  April 2020
 
 
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|X X X X X X X|
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                         Version (32)                          |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   | DCID Len (8)  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |               Destination Connection ID (0..2040)           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   | SCID Len (8)  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                 Source Connection ID (0..2040)              ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   Long Header Packet {
+     Header Form (1) = 1,
+     Version-Specific Bits (7),
+     Version (32),
+     DCID Len (8),
+     Destination Connection ID (0..160),
+     SCID Len (8),
+     Source Connection ID (0..160),
+     Version-Specific Data (..),
+   }
 
                          Figure 1: QUIC Long Header
 
@@ -213,10 +206,17 @@ Internet-Draft               QUIC Invariants                  April 2020
    Short headers take the form described in Figure 2.  Bits that have
    version-specific semantics are marked with an X.
 
+   Short Header Packet {
+     Header Form (1) = 0,
+     Version-Specific Bits (7),
+     Destination Connection ID (..),
+     Version-Specific Data (..),
+   }
 
+                        Figure 2: QUIC Short Header
 
-
-
+   A QUIC packet with a short header has the high bit of the first byte
+   set to 0.
 
 
 
@@ -225,21 +225,6 @@ Thomson                  Expires 23 October 2020                [Page 4]
 
 Internet-Draft               QUIC Invariants                  April 2020
 
-
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |0|X X X X X X X|
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                 Destination Connection ID (*)               ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-                        Figure 2: QUIC Short Header
-
-   A QUIC packet with a short header has the high bit of the first byte
-   set to 0.
 
    A QUIC packet with a short header includes a Destination Connection
    ID immediately following the first byte.  The short header does not
@@ -274,14 +259,6 @@ Internet-Draft               QUIC Invariants                  April 2020
 
    The properties described in this document apply to all versions of
    QUIC.  A protocol that does not conform to the properties described
-
-
-
-Thomson                  Expires 23 October 2020                [Page 5]
-
-Internet-Draft               QUIC Invariants                  April 2020
-
-
    in this document is not QUIC.  Future documents might describe
    additional properties which apply to a specific QUIC version, or to a
    range of QUIC versions.
@@ -298,29 +275,23 @@ Internet-Draft               QUIC Invariants                  April 2020
    defined in Section 4.1.  A Version Negotiation packet is identifiable
    as such by the Version field, which is set to 0x00000000.
 
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+
-   |1|X X X X X X X|
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                       Version (32) = 0                        |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   | DCID Len (8)  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |               Destination Connection ID (0..2040)           ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   | SCID Len (8)  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                 Source Connection ID (0..2040)              ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                    Supported Version 1 (32)                   |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   [Supported Version 2 (32)]                  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                                  ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                   [Supported Version N (32)]                  |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+Thomson                  Expires 23 October 2020                [Page 5]
+
+Internet-Draft               QUIC Invariants                  April 2020
+
+
+   Version Negotiation Packet {
+     Header Form (1) = 1,
+     Unused (7),
+     Version (32) = 0,
+     DCID Len (8),
+     Destination Connection ID (0..160),
+     SCID Len (8),
+     Source Connection ID (0..160),
+     Supported Version (32) ...,
+   }
 
                     Figure 3: Version Negotiation Packet
 
@@ -330,13 +301,6 @@ Internet-Draft               QUIC Invariants                  April 2020
    field.  A Version Negotiation packet contains no other fields.  An
    endpoint MUST ignore a packet that contains no Supported Version
    fields, or a truncated Supported Version.
-
-
-
-Thomson                  Expires 23 October 2020                [Page 6]
-
-Internet-Draft               QUIC Invariants                  April 2020
-
 
    Version Negotiation packets do not use integrity or confidentiality
    protection.  A specific QUIC version might authenticate the packet as
@@ -359,6 +323,20 @@ Internet-Draft               QUIC Invariants                  April 2020
    See [QUIC-TRANSPORT] for a more thorough description of how an
    endpoint that supports QUIC version 1 generates and consumes a
    Version Negotiation packet.
+
+
+
+
+
+
+
+
+
+
+Thomson                  Expires 23 October 2020                [Page 6]
+
+Internet-Draft               QUIC Invariants                  April 2020
+
 
 6.  Security and Privacy Considerations
 
@@ -387,13 +365,6 @@ Internet-Draft               QUIC Invariants                  April 2020
 
 8.  References
 
-
-
-Thomson                  Expires 23 October 2020                [Page 7]
-
-Internet-Draft               QUIC Invariants                  April 2020
-
-
 8.1.  Normative References
 
    [QUIC-TRANSPORT]
@@ -413,6 +384,15 @@ Internet-Draft               QUIC Invariants                  April 2020
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
 8.2.  Informative References
+
+
+
+
+
+Thomson                  Expires 23 October 2020                [Page 7]
+
+Internet-Draft               QUIC Invariants                  April 2020
+
 
    [QUIC-TLS] Thomson, M., Ed. and S. Turner, Ed., "Using Transport
               Layer Security (TLS) to Secure QUIC", Work in Progress,
@@ -443,13 +423,6 @@ Appendix A.  Incorrect Assumptions
    *  QUIC long headers are only exchanged during connection
       establishment
 
-
-
-Thomson                  Expires 23 October 2020                [Page 8]
-
-Internet-Draft               QUIC Invariants                  April 2020
-
-
    *  Every flow on a given 5-tuple will include a connection
       establishment phase
 
@@ -469,6 +442,13 @@ Internet-Draft               QUIC Invariants                  April 2020
 
    *  QUIC has a minimum size for the first handshake packet sent by a
       client
+
+
+
+Thomson                  Expires 23 October 2020                [Page 8]
+
+Internet-Draft               QUIC Invariants                  April 2020
+
 
    *  QUIC stipulates that a client speaks first
 
@@ -494,6 +474,26 @@ Author's Address
    Mozilla
 
    Email: mt@lowentropy.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1048,23 +1048,16 @@ version-specific semantics are marked with an X.<a href="#section-4.1-1" class="
 <figure id="figure-1">
           <div class="artwork art-text alignLeft" id="section-4.1-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+
-|1|X X X X X X X|
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Version (32)                          |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| DCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|               Destination Connection ID (0..2040)           ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| SCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Source Connection ID (0..2040)              ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Long Header Packet {
+  Header Form (1) = 1,
+  Version-Specific Bits (7),
+  Version (32),
+  DCID Len (8),
+  Destination Connection ID (0..160),
+  SCID Len (8),
+  Source Connection ID (0..160),
+  Version-Specific Data (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
@@ -1096,15 +1089,12 @@ version-specific semantics are marked with an X.<a href="#section-4.2-1" class="
 <figure id="figure-2">
           <div class="artwork art-text alignLeft" id="section-4.2-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+
-|0|X X X X X X X|
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Destination Connection ID (*)               ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Short Header Packet {
+  Header Form (1) = 0,
+  Version-Specific Bits (7),
+  Destination Connection ID (..),
+  Version-Specific Data (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
@@ -1170,29 +1160,16 @@ Version field, which is set to 0x00000000.<a href="#section-5-2" class="pilcrow"
 <figure id="figure-3">
         <div class="artwork art-text alignLeft" id="section-5-3.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+
-|1|X X X X X X X|
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Version (32) = 0                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| DCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|               Destination Connection ID (0..2040)           ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| SCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Source Connection ID (0..2040)              ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                    Supported Version 1 (32)                   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   [Supported Version 2 (32)]                  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                               ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   [Supported Version N (32)]                  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Version Negotiation Packet {
+  Header Form (1) = 1,
+  Unused (7),
+  Version (32) = 0,
+  DCID Len (8),
+  Destination Connection ID (0..160),
+  SCID Len (8),
+  Source Connection ID (0..160),
+  Supported Version (32) ...,
+}
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:

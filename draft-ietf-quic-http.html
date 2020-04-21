@@ -2347,11 +2347,9 @@ follows this integer is determined by the stream type.<a href="#section-6.2-1" c
 <figure id="figure-1">
           <div class="artwork art-text alignLeft art-drawing" id="section-6.2-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Stream Type (i)                      ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Unidirectional Stream Header {
+  Stream Type (i),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
@@ -2438,13 +2436,10 @@ MUST be treated as a connection error of type H3_STREAM_CREATION_ERROR.<a href="
 <figure id="figure-2">
             <div class="artwork art-text alignLeft art-drawing" id="section-6.2.2-4.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                           0x01 (i)                          ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                          Push ID (i)                        ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Push Stream Header {
+  Stream Type (i) = 0x01,
+  Push ID (i),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
@@ -2592,15 +2587,11 @@ is provided in the relevant section.<a href="#section-7-3" class="pilcrow">¶</a
 <figure id="figure-3">
           <div class="artwork art-text alignLeft art-drawing" id="section-7.1-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                           Type (i)                          ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                          Length (i)                         ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Frame Payload (*)                     ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+HTTP/3 Frame Format {
+  Type (i),
+  Length (i),
+  Frame Payload (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
@@ -2649,19 +2640,19 @@ associated with an HTTP request or response payload.<a href="#section-7.2.1-1" c
 <p id="section-7.2.1-2">DATA frames MUST be associated with an HTTP request or response.  If a DATA
 frame is received on a control stream, the recipient MUST respond with a
 connection error (<a href="#errors" class="xref">Section 8</a>) of type H3_FRAME_UNEXPECTED.<a href="#section-7.2.1-2" class="pilcrow">¶</a></p>
-<span id="name-data-frame-payload"></span><div id="fig-data">
+<span id="name-data-frame"></span><div id="fig-data">
 <figure id="figure-4">
             <div class="artwork art-text alignLeft art-drawing" id="section-7.2.1-3.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Payload (*)                         ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+DATA Frame {
+  Type (i) = 0x0,
+  Length (i),
+  Data (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
-<a href="#name-data-frame-payload" class="selfRef">DATA Frame Payload</a>
+<a href="#name-data-frame" class="selfRef">DATA Frame</a>
             </figcaption></figure>
 </div>
 </section>
@@ -2673,19 +2664,19 @@ connection error (<a href="#errors" class="xref">Section 8</a>) of type H3_FRAME
           </h4>
 <p id="section-7.2.2-1">The HEADERS frame (type=0x1) is used to carry an HTTP field section, encoded
 using QPACK. See <span>[<a href="#QPACK" class="xref">QPACK</a>]</span> for more details.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
-<span id="name-headers-frame-payload"></span><div id="fig-headers">
+<span id="name-headers-frame"></span><div id="fig-headers">
 <figure id="figure-5">
             <div class="artwork art-text alignLeft art-drawing" id="section-7.2.2-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   Encoded Field Section (*)                 ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+HEADERS Frame {
+  Type (i) = 0x1,
+  Length (i),
+  Encoded Field Section (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
-<a href="#name-headers-frame-payload" class="selfRef">HEADERS Frame Payload</a>
+<a href="#name-headers-frame" class="selfRef">HEADERS Frame</a>
             </figcaption></figure>
 </div>
 <p id="section-7.2.2-3">HEADERS frames can only be sent on request / push streams.  If a HEADERS frame
@@ -2719,19 +2710,19 @@ has already received a corresponding push stream.<a href="#section-7.2.3-4" clas
 <p id="section-7.2.3-5">A CANCEL_PUSH frame is sent on the control stream.  Receiving a CANCEL_PUSH
 frame on a stream other than the control stream MUST be treated as a connection
 error of type H3_FRAME_UNEXPECTED.<a href="#section-7.2.3-5" class="pilcrow">¶</a></p>
-<span id="name-cancel_push-frame-payload"></span><div id="fig-cancel-push">
+<span id="name-cancel_push-frame"></span><div id="fig-cancel-push">
 <figure id="figure-6">
             <div class="artwork art-text alignLeft art-drawing" id="section-7.2.3-6.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                          Push ID (i)                        ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+CANCEL_PUSH Frame {
+  Type (i) = 0x3,
+  Length (i),
+  Push ID (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
-<a href="#name-cancel_push-frame-payload" class="selfRef">CANCEL_PUSH Frame Payload</a>
+<a href="#name-cancel_push-frame" class="selfRef">CANCEL_PUSH Frame</a>
             </figcaption></figure>
 </div>
 <p id="section-7.2.3-7">The CANCEL_PUSH frame carries a Push ID encoded as a variable-length integer.
@@ -2779,21 +2770,24 @@ connection error of type H3_SETTINGS_ERROR.<a href="#section-7.2.4-6" class="pil
 <p id="section-7.2.4-7">The payload of a SETTINGS frame consists of zero or more parameters.  Each
 parameter consists of a setting identifier and a value, both encoded as QUIC
 variable-length integers.<a href="#section-7.2.4-7" class="pilcrow">¶</a></p>
-<span id="name-settings-parameter-format"></span><div id="fig-ext-settings">
+<span id="name-settings-frame"></span><div id="fig-ext-settings">
 <figure id="figure-7">
             <div class="artwork art-text alignLeft art-drawing" id="section-7.2.4-8.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Identifier (i)                       ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                           Value (i)                         ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Setting {
+  Identifier (i),
+  Value (i),
+}
+
+SETTINGS Frame {
+  Type (i) = 0x4,
+  Length (i),
+  Setting (..) ...,
+}
 </pre>
 </div>
 <figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
-<a href="#name-settings-parameter-format" class="selfRef">SETTINGS Parameter Format</a>
+<a href="#name-settings-frame" class="selfRef">SETTINGS Frame</a>
             </figcaption></figure>
 </div>
 <p id="section-7.2.4-9">An implementation MUST ignore the contents for any SETTINGS identifier it does
@@ -2880,21 +2874,20 @@ error of type H3_SETTINGS_ERROR.<a href="#section-7.2.4.2-8" class="pilcrow">¶<
           </h4>
 <p id="section-7.2.5-1">The PUSH_PROMISE frame (type=0x5) is used to carry a promised request header
 field section from server to client on a request stream, as in HTTP/2.<a href="#section-7.2.5-1" class="pilcrow">¶</a></p>
-<span id="name-push_promise-frame-payload"></span><div id="fig-push-promise">
+<span id="name-push_promise-frame"></span><div id="fig-push-promise">
 <figure id="figure-8">
             <div class="artwork art-text alignLeft art-drawing" id="section-7.2.5-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                          Push ID (i)                        ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   Encoded Field Section (*)                 ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+PUSH_PROMISE Frame {
+  Type (i) = 0x5,
+  Length (i),
+  Push ID (i),
+  Encoded Field Section (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
-<a href="#name-push_promise-frame-payload" class="selfRef">PUSH_PROMISE Frame Payload</a>
+<a href="#name-push_promise-frame" class="selfRef">PUSH_PROMISE Frame</a>
             </figcaption></figure>
 </div>
 <p id="section-7.2.5-3">The payload consists of:<a href="#section-7.2.5-3" class="pilcrow">¶</a></p>
@@ -2947,19 +2940,19 @@ connection by either endpoint.  GOAWAY allows an endpoint to stop accepting new
 requests or pushes while still finishing processing of previously received
 requests and pushes.  This enables administrative actions, like server
 maintenance.  GOAWAY by itself does not close a connection.<a href="#section-7.2.6-1" class="pilcrow">¶</a></p>
-<span id="name-goaway-frame-payload"></span><div id="fig-goaway">
+<span id="name-goaway-frame"></span><div id="fig-goaway">
 <figure id="figure-9">
             <div class="artwork art-text alignLeft art-drawing" id="section-7.2.6-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                  Stream ID/Push ID (i)                      ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+GOAWAY Frame {
+  Type (i) = 0x7,
+  Length (i),
+  Stream ID/Push ID (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
-<a href="#name-goaway-frame-payload" class="selfRef">GOAWAY Frame Payload</a>
+<a href="#name-goaway-frame" class="selfRef">GOAWAY Frame</a>
             </figcaption></figure>
 </div>
 <p id="section-7.2.6-3">The GOAWAY frame is always sent on the control stream.  In the server to client
@@ -2998,11 +2991,11 @@ sending MAX_PUSH_ID frames as the server fulfills or cancels server pushes.<a hr
 <figure id="figure-10">
             <div class="artwork art-text alignLeft art-drawing" id="section-7.2.7-5.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                          Push ID (i)                        ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+MAX_PUSH_ID Frame {
+  Type (i) = 0x1,
+  Length (i),
+  Push ID (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
