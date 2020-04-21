@@ -572,7 +572,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Streams are identified within a connection by a numeric value,
    referred to as the stream ID.  A stream ID is a 62-bit integer (0 to
    2^62-1) that is unique for all streams on a connection.  Stream IDs
-   are encoded as variable-length integers (see Section 16).  A QUIC
+   are encoded as variable-length integers; see Section 16.  A QUIC
    endpoint MUST NOT reuse a stream ID within a connection.
 
    The least significant bit (0x1) of the stream ID identifies the
@@ -975,7 +975,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    peer to send more data.
 
    When a STREAM frame with a FIN bit is received, the final size of the
-   stream is known (see Section 4.4).  The receiving part of the stream
+   stream is known; see Section 4.4.  The receiving part of the stream
    then enters the "Size Known" state.  In this state, the endpoint no
    longer needs to send MAX_STREAM_DATA frames, it only receives any
    retransmissions of stream data.
@@ -1381,7 +1381,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    An endpoint limits the cumulative number of incoming streams a peer
    can open.  Only streams with a stream ID less than (max_stream * 4 +
-   initial_stream_id_for_type) can be opened (see Table 5).  Initial
+   initial_stream_id_for_type) can be opened; see Table 5.  Initial
    limits are set in the transport parameters (see Section 18.2) and
    subsequently limits are advertised using MAX_STREAMS frames
    (Section 19.11).  Separate limits apply to unidirectional and
@@ -1389,10 +1389,10 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    If a max_streams transport parameter or MAX_STREAMS frame is received
    with a value greater than 2^60, this would allow a maximum stream ID
-   that cannot be expressed as a variable-length integer (see
-   Section 16).  If either is received, the connection MUST be closed
-   immediately with a connection error of type STREAM_LIMIT_ERROR (see
-   Section 10.3).
+   that cannot be expressed as a variable-length integer; see
+   Section 16.  If either is received, the connection MUST be closed
+   immediately with a connection error of type STREAM_LIMIT_ERROR; see
+   Section 10.3.
 
 
 
@@ -1837,8 +1837,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 6.1.  Sending Version Negotiation Packets
 
    If the version selected by the client is not acceptable to the
-   server, the server responds with a Version Negotiation packet (see
-   Section 17.2.1).  This includes a list of versions that the server
+   server, the server responds with a Version Negotiation packet; see
+   Section 17.2.1.  This includes a list of versions that the server
    will accept.  An endpoint MUST NOT send a Version Negotiation packet
    in response to receiving a Version Negotiation packet.
 
@@ -2701,7 +2701,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    in a PATH_RESPONSE frame.
 
    An endpoint MUST NOT send more than one PATH_RESPONSE frame in
-   response to one PATH_CHALLENGE frame (see Section 13.3).  The peer is
+   response to one PATH_CHALLENGE frame; see Section 13.3.  The peer is
    expected to send more PATH_CHALLENGE frames as necessary to evoke
    additional PATH_RESPONSE frames.
 
@@ -3263,8 +3263,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    and destination addresses, source and destination UDP ports, and the
    destination CID.  The flow label generation MUST be designed to
    minimize the chances of linkability with a previously used flow
-   label, as this would enable correlating activity on multiple paths
-   (see Section 9.5).
+   label, as this would enable correlating activity on multiple paths;
+   see Section 9.5.
 
    A possible implementation is to compute the flow label as a
    cryptographic hash function of the source and destination addresses,
@@ -3283,7 +3283,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    *  stateless reset (Section 10.4)
 
    An endpoint MAY discard connection state if it does not have a
-   validated path on which it can send packets (see Section 8.2).
+   validated path on which it can send packets; see Section 8.2.
 
 10.1.  Closing and Draining Connection States
 
@@ -3294,9 +3294,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    [QUIC-RECOVERY].
 
    An endpoint enters a closing period after initiating an immediate
-   close (Section 10.3).  While closing, an endpoint MUST NOT send
-   packets unless they contain a CONNECTION_CLOSE frame (see
-   Section 10.3 for details).  An endpoint retains only enough
+   close; Section 10.3.  While closing, an endpoint MUST NOT send
+   packets unless they contain a CONNECTION_CLOSE frame; see
+   Section 10.3 for details.  An endpoint retains only enough
    information to generate a packet containing a CONNECTION_CLOSE frame
 
 
@@ -3349,11 +3349,11 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    from the closing state to draining, but it otherwise has no impact.
 
    While in the closing period, an endpoint could receive packets from a
-   new source address, indicating a connection migration (Section 9).
-   An endpoint in the closing state MUST strictly limit the number of
-   packets it sends to this new address until the address is validated
-   (see Section 8.2).  A server in the closing state MAY instead choose
-   to discard packets received from a new source address.
+   new source address, indicating a connection migration; Section 9.  An
+   endpoint in the closing state MUST strictly limit the number of
+   packets it sends to this new address until the address is validated;
+   see Section 8.2.  A server in the closing state MAY instead choose to
+   discard packets received from a new source address.
 
 
 
@@ -3440,7 +3440,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       Retransmitting the final packet requires less state.
 
    New packets from unverified addresses could be used to create an
-   amplification attack (see Section 8).  To avoid this, endpoints MUST
+   amplification attack; see Section 8.  To avoid this, endpoints MUST
    either limit transmission of CONNECTION_CLOSE frames to validated
    addresses or drop packets without response if the response would be
    more than three times larger than the received packet.
@@ -3830,8 +3830,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    An endpoint that detects an error SHOULD signal the existence of that
    error to its peer.  Both transport-level and application-level errors
    can affect an entire connection (see Section 11.1), while only
-   application-level errors can be isolated to a single stream (see
-   Section 11.2).
+   application-level errors can be isolated to a single stream; see
+   Section 11.2.
 
    The most appropriate error code (Section 20) SHOULD be included in
    the frame that signals the error.  Where this specification
@@ -3959,7 +3959,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    The packet number field contains a packet number, which has
    additional confidentiality protection that is applied after packet
-   protection is applied (see [QUIC-TLS] for details).  The underlying
+   protection is applied; see [QUIC-TLS] for details.  The underlying
    packet number increases with each packet sent in a given packet
    number space; see Section 12.3 for details.
 
@@ -3990,9 +3990,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Using the Length field, a sender can coalesce multiple QUIC packets
    into one UDP datagram.  This can reduce the number of UDP datagrams
    needed to complete the cryptographic handshake and start sending
-   data.  This can also be used to construct PMTU probes (see
-   Section 14.3.1).  Receivers MUST be able to process coalesced
-   packets.
+   data.  This can also be used to construct PMTU probes; see
+   Section 14.3.1.  Receivers MUST be able to process coalesced packets.
 
    Coalescing packets in order of increasing encryption levels (Initial,
    0-RTT, Handshake, 1-RTT; see Section 4.1.4 of [QUIC-TLS]) makes it
@@ -4029,6 +4028,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
+
 Iyengar & Thomson        Expires 23 October 2020               [Page 72]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
@@ -4044,8 +4044,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Packet numbers are limited to this range because they need to be
    representable in whole in the Largest Acknowledged field of an ACK
    frame (Section 19.3).  When present in a long or short header
-   however, packet numbers are reduced and encoded in 1 to 4 bytes (see
-   Section 17.1).
+   however, packet numbers are reduced and encoded in 1 to 4 bytes; see
+   Section 17.1.
 
    Version Negotiation (Section 17.2.1) and Retry (Section 17.2.5)
    packets do not include a packet number.
@@ -4193,7 +4193,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
                            Table 3: Frame Types
 
    The "Packets" column in Table 3 does not form part of the IANA
-   registry (see Section 22.3).  This column lists the types of packets
+   registry; see Section 22.3.  This column lists the types of packets
 
 
 
@@ -4241,8 +4241,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 13.  Packetization and Reliability
 
-   A sender bundles one or more frames in a QUIC packet (see
-   Section 12.4).
+   A sender bundles one or more frames in a QUIC packet; see
+   Section 12.4.
 
    A sender can minimize per-packet bandwidth and computational costs by
    bundling as many frames as possible within a QUIC packet.  A sender
@@ -4487,7 +4487,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    An endpoint measures the delays intentionally introduced between the
    time the packet with the largest packet number is received and the
    time an acknowledgment is sent.  The endpoint encodes this delay in
-   the Ack Delay field of an ACK frame (see Section 19.3).  This allows
+   the Ack Delay field of an ACK frame; see Section 19.3.  This allows
    the receiver of the ACK to adjust for any intentional delays, which
    is important for getting a better estimate of the path RTT when
    acknowledgments are delayed.  A packet might be held in the OS kernel
@@ -4498,7 +4498,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 13.2.6.  ACK Frames and Packet Protection
 
    ACK frames MUST only be carried in a packet that has the same packet
-   number space as the packet being ACKed (see Section 12.1).  For
+   number space as the packet being ACKed; see Section 12.1.  For
    instance, packets that are protected with 1-RTT keys MUST be
    acknowledged in packets that are also protected with 1-RTT keys.
 
@@ -4678,9 +4678,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    On receiving a QUIC packet with an ECT or CE codepoint, an ECN-
    enabled endpoint that can access the ECN codepoints from the
    enclosing IP packet increases the corresponding ECT(0), ECT(1), or CE
-   count, and includes these counts in subsequent ACK frames (see
-   Section 13.2 and Section 19.3).  Note that this requires being able
-   to read the ECN codepoints from the enclosing IP packet, which is not
+   count, and includes these counts in subsequent ACK frames; see
+   Section 13.2 and Section 19.3.  Note that this requires being able to
+   read the ECN codepoints from the enclosing IP packet, which is not
    possible on all platforms.
 
    A packet detected by a receiver as a duplicate does not affect the
@@ -4828,8 +4828,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    A client MUST expand the payload of all UDP datagrams carrying
    Initial packets to at least 1200 bytes, by adding PADDING frames to
-   the Initial packet or by coalescing the Initial packet (see
-   Section 12.2).  Sending a UDP datagram of this size ensures that the
+   the Initial packet or by coalescing the Initial packet; see
+   Section 12.2.  Sending a UDP datagram of this size ensures that the
    network path from the client to the server supports a reasonable
    Maximum Transmission Unit (MTU).  Padding datagrams also helps reduce
    the amplitude of amplification attacks caused by server responses
@@ -5460,8 +5460,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    The first packet sent by a client always includes a CRYPTO frame that
    contains the start or all of the first cryptographic handshake
-   message.  The first CRYPTO frame sent always begins at an offset of 0
-   (see Section 7).
+   message.  The first CRYPTO frame sent always begins at an offset of
+   0; see Section 7.
 
    Note that if the server sends a HelloRetryRequest, the client will
    send another series of Initial packets.  These Initial packets will
@@ -5622,7 +5622,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    A Retry packet uses a long packet header with a type value of 0x3.
    It carries an address validation token created by the server.  It is
-   used by a server that wishes to perform a retry (see Section 8.1).
+   used by a server that wishes to perform a retry; see Section 8.1.
 
    Retry Packet {
      Header Form (1) = 1,
@@ -5703,7 +5703,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Section 8.1.4).
 
    The next Initial packet from the client uses the connection ID and
-   token values from the Retry packet (see Section 7.2).  Aside from
+   token values from the Retry packet; see Section 7.2.  Aside from
    this, the Initial packet sent by the client is subject to the same
    restrictions as the first Initial packet.  A client MUST use the same
 
@@ -5798,7 +5798,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       which allows a recipient of a packet to identify the packet
       protection keys that are used to protect the packet.  See
       [QUIC-TLS] for details.  This bit is protected using header
-      protection (see Section 5.4 of [QUIC-TLS]).
+      protection; see Section 5.4 of [QUIC-TLS].
 
    Packet Number Length:  The least significant two bits (those with a
       mask of 0x03) of byte 0 contain the length of the packet number,
@@ -5961,7 +5961,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       Connection ID field from the first Initial packet sent by the
       client.  This transport parameter is only sent by a server.  This
       is the same value sent in the "Original Destination Connection ID"
-      field of a Retry packet (see Section 17.2.5).  A server MUST
+      field of a Retry packet; see Section 17.2.5.  A server MUST
       include the original_connection_id transport parameter if it sent
       a Retry packet.
 
@@ -6192,7 +6192,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    A connection will time out if no packets are sent or received for a
    period longer than the time negotiated using the max_idle_timeout
-   transport parameter (see Section 10).  However, state in middleboxes
+   transport parameter; see Section 10.  However, state in middleboxes
    might time out earlier than that.  Though REQ-5 in [RFC4787]
    recommends a 2 minute timeout interval, experience shows that sending
    packets every 15 to 30 seconds is necessary to prevent the majority
@@ -6261,8 +6261,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       field, was received by this peer.  The value of the ACK Delay
       field is scaled by multiplying the encoded value by 2 to the power
       of the value of the "ack_delay_exponent" transport parameter set
-      by the sender of the ACK frame (see Section 18.2).  Scaling in
-      this fashion allows for a larger range of values with a shorter
+      by the sender of the ACK frame; see Section 18.2.  Scaling in this
+      fashion allows for a larger range of values with a shorter
       encoding at the cost of lower resolution.  Because the receiver
       doesn't use the ACK Delay for Initial and Handshake packets, a
       sender SHOULD send a value of 0.
@@ -6280,7 +6280,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    First ACK Range:  A variable-length integer indicating the number of
       contiguous packets preceding the Largest Acknowledged that are
       being acknowledged.  The First ACK Range is encoded as an ACK
-      Range (see Section 19.3.1) starting from the Largest Acknowledged.
+      Range; see Section 19.3.1 starting from the Largest Acknowledged.
       That is, the smallest packet acknowledged in the range is
       determined by subtracting the First ACK Range value from the
       Largest Acknowledged.
@@ -6452,7 +6452,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    STOP_SENDING requests that a peer cease transmission on a stream.
 
    A STOP_SENDING frame can be sent for streams in the Recv or Size
-   Known states (see Section 3.1).  Receiving a STOP_SENDING frame for a
+   Known states; see Section 3.1.  Receiving a STOP_SENDING frame for a
    locally-initiated stream that has not yet been created MUST be
    treated as a connection error of type STREAM_STATE_ERROR.  An
    endpoint that receives a STOP_SENDING frame for a receive-only stream
@@ -6475,7 +6475,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Application Protocol Error Code:  A variable-length integer
       containing the application-specified reason the sender is ignoring
-      the stream (see Section 20.1).
+      the stream; see Section 20.1.
 
 19.6.  CRYPTO Frame
 
@@ -6686,8 +6686,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    terminal states - MUST NOT exceed the value advertised by a receiver.
    An endpoint MUST terminate a connection with a FLOW_CONTROL_ERROR
    error if it receives more data than the maximum data value that it
-   has sent, unless this is a result of a change in the initial limits
-   (see Section 7.3.1).
+   has sent, unless this is a result of a change in the initial limits;
+   see Section 7.3.1.
 
 19.10.  MAX_STREAM_DATA Frame
 
@@ -6741,7 +6741,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    connection with a FLOW_CONTROL_ERROR error if it receives more data
    than the largest maximum stream data that it has sent for the
    affected stream, unless this is a result of a change in the initial
-   limits (see Section 7.3.1).
+   limits; see Section 7.3.1.
 
 19.11.  MAX_STREAMS Frames
 
@@ -6800,7 +6800,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    A sender SHOULD send a DATA_BLOCKED frame (type=0x14) when it wishes
    to send data, but is unable to due to connection-level flow control
    (see Section 4).  DATA_BLOCKED frames can be used as input to tuning
-   of flow control algorithms (see Section 4.2).
+   of flow control algorithms; see Section 4.2.
 
    The DATA_BLOCKED frame is shown in Figure 31.
 
@@ -6854,7 +6854,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    A sender SHOULD send a STREAMS_BLOCKED frame (type=0x16 or 0x17) when
    it wishes to open a stream, but is unable to due to the maximum
-   stream limit set by its peer (see Section 19.11).  A STREAMS_BLOCKED
+   stream limit set by its peer; see Section 19.11.  A STREAMS_BLOCKED
    frame of type 0x16 is used to indicate reaching the bidirectional
    stream limit, and a STREAMS_BLOCKED frame of type 0x17 indicates
    reaching the unidirectional stream limit.
@@ -6894,7 +6894,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    An endpoint sends a NEW_CONNECTION_ID frame (type=0x18) to provide
    its peer with alternative connection IDs that can be used to break
-   linkability when migrating connections (see Section 9.5).
+   linkability when migrating connections; see Section 9.5.
 
    The NEW_CONNECTION_ID frame is shown in Figure 34.
 
@@ -6925,8 +6925,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Connection ID:  A connection ID of the specified length.
 
    Stateless Reset Token:  A 128-bit value that will be used for a
-      stateless reset when the associated connection ID is used (see
-      Section 10.4).
+      stateless reset when the associated connection ID is used; see
+      Section 10.4.
 
    An endpoint MUST NOT send this frame if it currently requires that
    its peer send packets with a zero-length Destination Connection ID.
@@ -6957,8 +6957,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    a connection error of type PROTOCOL_VIOLATION.
 
    The Retire Prior To field counts connection IDs established during
-   connection setup and the preferred_address transport parameter (see
-   Section 5.1.2).  The Retire Prior To field MUST be less than or equal
+   connection setup and the preferred_address transport parameter; see
+   Section 5.1.2.  The Retire Prior To field MUST be less than or equal
    to the Sequence Number field.  Receiving a value greater than the
    Sequence Number MUST be treated as a connection error of type
    FRAME_ENCODING_ERROR.
@@ -6980,9 +6980,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    indicate that it will no longer use a connection ID that was issued
    by its peer.  This may include the connection ID provided during the
    handshake.  Sending a RETIRE_CONNECTION_ID frame also serves as a
-   request to the peer to send additional connection IDs for future use
-   (see Section 5.1).  New connection IDs can be delivered to a peer
-   using the NEW_CONNECTION_ID frame (Section 19.15).
+   request to the peer to send additional connection IDs for future use;
+   see Section 5.1.  New connection IDs can be delivered to a peer using
+   the NEW_CONNECTION_ID frame (Section 19.15).
 
    Retiring a connection ID invalidates the stateless reset token
    associated with that connection ID.
@@ -7204,14 +7204,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       any new connections.
 
    FLOW_CONTROL_ERROR (0x3):  An endpoint received more data than it
-      permitted in its advertised data limits (see Section 4).
+      permitted in its advertised data limits; see Section 4.
 
    STREAM_LIMIT_ERROR (0x4):  An endpoint received a frame for a stream
       identifier that exceeded its advertised stream limit for the
       corresponding stream type.
 
    STREAM_STATE_ERROR (0x5):  An endpoint received a frame for a stream
-      that was not in a state that permitted that frame (see Section 3).
+      that was not in a state that permitted that frame; see Section 3.
 
    FINAL_SIZE_ERROR (0x6):  An endpoint received a STREAM frame
       containing data that exceeded the previously established final
@@ -7366,7 +7366,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    window's worth of data towards the victim.
 
    Servers SHOULD provide mitigations for this attack by limiting the
-   usage and lifetime of address validation tokens (see Section 8.1.3).
+   usage and lifetime of address validation tokens; see Section 8.1.3.
 
 21.3.  Optimistic ACK Attack
 
@@ -7375,7 +7375,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    network supports.  An endpoint MAY skip packet numbers when sending
    packets to detect this behavior.  An endpoint can then immediately
    close the connection with a connection error of type
-   PROTOCOL_VIOLATION (see Section 10.3).
+   PROTOCOL_VIOLATION; see Section 10.3.
 
 
 
@@ -7455,7 +7455,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    intervals, loss or reordering may cause STREAM frames that open
    streams to be received out of sequence.  On receiving a higher-
    numbered stream ID, a receiver is required to open all intervening
-   streams of the same type (see Section 3.2).  Thus, on a new
+   streams of the same type; see Section 3.2.  Thus, on a new
    connection, opening stream 4000000 opens 1 million and 1 client-
    initiated bidirectional streams.
 
