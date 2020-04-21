@@ -6264,60 +6264,81 @@ fields:<a href="#section-17.2.5-3" class="pilcrow">¶</a></p>
   See the Retry Packet Integrity section of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-17.2.5-4.4" class="pilcrow">¶</a>
 </dd>
 </dl>
-<p id="section-17.2.5-5">The server populates the Destination Connection ID with the connection ID that
-the client included in the Source Connection ID of the Initial packet.<a href="#section-17.2.5-5" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-6">The server includes a connection ID of its choice in the Source Connection ID
+<div id="sending-a-retry-packet">
+<section id="section-17.2.5.1">
+            <h5 id="name-sending-a-retry-packet">
+<a href="#section-17.2.5.1" class="section-number selfRef">17.2.5.1. </a><a href="#name-sending-a-retry-packet" class="section-name selfRef">Sending a Retry Packet</a>
+            </h5>
+<p id="section-17.2.5.1-1">The server populates the Destination Connection ID with the connection ID that
+the client included in the Source Connection ID of the Initial packet.<a href="#section-17.2.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.1-2">The server includes a connection ID of its choice in the Source Connection ID
 field.  This value MUST not be equal to the Destination Connection ID field of
 the packet sent by the client.  A client MUST discard a Retry packet that
 contains a Source Connection ID field that is identical to the Destination
 Connection ID field of its Initial packet.  The client MUST use the value from
 the Source Connection ID field of the Retry packet in the Destination Connection
-ID field of subsequent packets that it sends.<a href="#section-17.2.5-6" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-7">A server MAY send Retry packets in response to Initial and 0-RTT packets.  A
+ID field of subsequent packets that it sends.<a href="#section-17.2.5.1-2" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.1-3">A server MAY send Retry packets in response to Initial and 0-RTT packets.  A
 server can either discard or buffer 0-RTT packets that it receives.  A server
 can send multiple Retry packets as it receives Initial or 0-RTT packets.  A
 server MUST NOT send more than one Retry packet in response to a single UDP
-datagram.<a href="#section-17.2.5-7" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-8">A client MUST accept and process at most one Retry packet for each connection
+datagram.<a href="#section-17.2.5.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="handling-a-retry-packet">
+<section id="section-17.2.5.2">
+            <h5 id="name-handling-a-retry-packet">
+<a href="#section-17.2.5.2" class="section-number selfRef">17.2.5.2. </a><a href="#name-handling-a-retry-packet" class="section-name selfRef">Handling a Retry Packet</a>
+            </h5>
+<p id="section-17.2.5.2-1">A client MUST accept and process at most one Retry packet for each connection
 attempt.  After the client has received and processed an Initial or Retry packet
-from the server, it MUST discard any subsequent Retry packets that it receives.<a href="#section-17.2.5-8" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-9">Clients MUST discard Retry packets that have a Retry Integrity Tag that cannot
+from the server, it MUST discard any subsequent Retry packets that it receives.<a href="#section-17.2.5.2-1" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.2-2">Clients MUST discard Retry packets that have a Retry Integrity Tag that cannot
 be validated, see the Retry Packet Integrity section of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>. This
 diminishes an off-path attacker's ability to inject a Retry packet and protects
 against accidental corruption of Retry packets.  A client MUST discard a Retry
-packet with a zero-length Retry Token field.<a href="#section-17.2.5-9" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-10">The client responds to a Retry packet with an Initial packet that includes the
-provided Retry Token to continue connection establishment.<a href="#section-17.2.5-10" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-11">A client sets the Destination Connection ID field of this Initial packet to the
+packet with a zero-length Retry Token field.<a href="#section-17.2.5.2-2" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.2-3">The client responds to a Retry packet with an Initial packet that includes the
+provided Retry Token to continue connection establishment.<a href="#section-17.2.5.2-3" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.2-4">A client sets the Destination Connection ID field of this Initial packet to the
 value from the Source Connection ID in the Retry packet. Changing Destination
 Connection ID also results in a change to the keys used to protect the Initial
 packet. It also sets the Token field to the token provided in the Retry. The
 client MUST NOT change the Source Connection ID because the server could include
 the connection ID as part of its token validation logic (see
-<a href="#token-integrity" class="xref">Section 8.1.4</a>).<a href="#section-17.2.5-11" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-12">The next Initial packet from the client uses the connection ID and token values
+<a href="#token-integrity" class="xref">Section 8.1.4</a>).<a href="#section-17.2.5.2-4" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.2-5">A Retry packet does not include a packet number and cannot be explicitly
+acknowledged by a client.<a href="#section-17.2.5.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="continuing-a-handshake-after-retry">
+<section id="section-17.2.5.3">
+            <h5 id="name-continuing-a-handshake-afte">
+<a href="#section-17.2.5.3" class="section-number selfRef">17.2.5.3. </a><a href="#name-continuing-a-handshake-afte" class="section-name selfRef">Continuing a Handshake After Retry</a>
+            </h5>
+<p id="section-17.2.5.3-1">The next Initial packet from the client uses the connection ID and token values
 from the Retry packet; see <a href="#negotiating-connection-ids" class="xref">Section 7.2</a>.  Aside from this,
 the Initial packet sent by the client is subject to the same restrictions as the
 first Initial packet.  A client MUST use the same cryptographic handshake
 message it includes in this packet.  A server MAY treat a packet that
 contains a different cryptographic handshake message as a connection error or
-discard it.<a href="#section-17.2.5-12" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-13">A client MAY attempt 0-RTT after receiving a Retry packet by sending 0-RTT
+discard it.<a href="#section-17.2.5.3-1" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.3-2">A client MAY attempt 0-RTT after receiving a Retry packet by sending 0-RTT
 packets to the connection ID provided by the server.  A client MUST NOT change
-the cryptographic handshake message it sends in response to receiving a Retry.<a href="#section-17.2.5-13" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-14">A client MUST NOT reset the packet number for any packet number space after
-processing a Retry packet; <a href="#packet-0rtt" class="xref">Section 17.2.3</a> contains more information on this.<a href="#section-17.2.5-14" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-15">A server acknowledges the use of a Retry packet for a connection using the
+the cryptographic handshake message it sends in response to receiving a Retry.<a href="#section-17.2.5.3-2" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.3-3">A client MUST NOT reset the packet number for any packet number space after
+processing a Retry packet; <a href="#packet-0rtt" class="xref">Section 17.2.3</a> contains more information on this.<a href="#section-17.2.5.3-3" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.3-4">A server acknowledges the use of a Retry packet for a connection using the
 original_connection_id transport parameter (see
 <a href="#transport-parameter-definitions" class="xref">Section 18.2</a>).  If the server sends a Retry packet, it
 MUST include the Destination Connection ID field from the client's first
-Initial packet in the transport parameter.<a href="#section-17.2.5-15" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-16">If the client received and processed a Retry packet, it MUST validate that the
+Initial packet in the transport parameter.<a href="#section-17.2.5.3-4" class="pilcrow">¶</a></p>
+<p id="section-17.2.5.3-5">If the client received and processed a Retry packet, it MUST validate that the
 original_connection_id transport parameter is present and correct; otherwise, it
 MUST validate that the transport parameter is absent.  A client MUST treat a
-failed validation as a connection error of type TRANSPORT_PARAMETER_ERROR.<a href="#section-17.2.5-16" class="pilcrow">¶</a></p>
-<p id="section-17.2.5-17">A Retry packet does not include a packet number and cannot be explicitly
-acknowledged by a client.<a href="#section-17.2.5-17" class="pilcrow">¶</a></p>
+failed validation as a connection error of type TRANSPORT_PARAMETER_ERROR.<a href="#section-17.2.5.3-5" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
