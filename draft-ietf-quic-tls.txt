@@ -83,19 +83,20 @@ Table of Contents
      4.2.  TLS Version . . . . . . . . . . . . . . . . . . . . . . .  14
      4.3.  ClientHello Size  . . . . . . . . . . . . . . . . . . . .  15
      4.4.  Peer Authentication . . . . . . . . . . . . . . . . . . .  15
-     4.5.  Enabling 0-RTT  . . . . . . . . . . . . . . . . . . . . .  16
-     4.6.  Accepting and Rejecting 0-RTT . . . . . . . . . . . . . .  16
-     4.7.  Validating 0-RTT Configuration  . . . . . . . . . . . . .  17
-     4.8.  HelloRetryRequest . . . . . . . . . . . . . . . . . . . .  17
-     4.9.  TLS Errors  . . . . . . . . . . . . . . . . . . . . . . .  18
-     4.10. Discarding Unused Keys  . . . . . . . . . . . . . . . . .  18
-       4.10.1.  Discarding Initial Keys  . . . . . . . . . . . . . .  19
-       4.10.2.  Discarding Handshake Keys  . . . . . . . . . . . . .  19
-       4.10.3.  Discarding 0-RTT Keys  . . . . . . . . . . . . . . .  19
+     4.5.  Session Resumption  . . . . . . . . . . . . . . . . . . .  16
+     4.6.  Enabling 0-RTT  . . . . . . . . . . . . . . . . . . . . .  17
+     4.7.  Accepting and Rejecting 0-RTT . . . . . . . . . . . . . .  17
+     4.8.  Validating 0-RTT Configuration  . . . . . . . . . . . . .  17
+     4.9.  HelloRetryRequest . . . . . . . . . . . . . . . . . . . .  18
+     4.10. TLS Errors  . . . . . . . . . . . . . . . . . . . . . . .  18
+     4.11. Discarding Unused Keys  . . . . . . . . . . . . . . . . .  18
+       4.11.1.  Discarding Initial Keys  . . . . . . . . . . . . . .  19
+       4.11.2.  Discarding Handshake Keys  . . . . . . . . . . . . .  19
+       4.11.3.  Discarding 0-RTT Keys  . . . . . . . . . . . . . . .  20
    5.  Packet Protection . . . . . . . . . . . . . . . . . . . . . .  20
      5.1.  Packet Protection Keys  . . . . . . . . . . . . . . . . .  20
-     5.2.  Initial Secrets . . . . . . . . . . . . . . . . . . . . .  20
-     5.3.  AEAD Usage  . . . . . . . . . . . . . . . . . . . . . . .  21
+     5.2.  Initial Secrets . . . . . . . . . . . . . . . . . . . . .  21
+     5.3.  AEAD Usage  . . . . . . . . . . . . . . . . . . . . . . .  22
      5.4.  Header Protection . . . . . . . . . . . . . . . . . . . .  23
        5.4.1.  Header Protection Application . . . . . . . . . . . .  23
        5.4.2.  Header Protection Sample  . . . . . . . . . . . . . .  25
@@ -105,7 +106,6 @@ Table of Contents
      5.6.  Use of 0-RTT Keys . . . . . . . . . . . . . . . . . . . .  28
      5.7.  Receiving Out-of-Order Protected Frames . . . . . . . . .  28
      5.8.  Retry Packet Integrity  . . . . . . . . . . . . . . . . .  29
-   6.  Key Update  . . . . . . . . . . . . . . . . . . . . . . . . .  31
 
 
 
@@ -114,6 +114,7 @@ Thomson & Turner         Expires 23 October 2020                [Page 2]
 Internet-Draft          Using TLS to Secure QUIC              April 2020
 
 
+   6.  Key Update  . . . . . . . . . . . . . . . . . . . . . . . . .  31
      6.1.  Initiating a Key Update . . . . . . . . . . . . . . . . .  32
      6.2.  Responding to a Key Update  . . . . . . . . . . . . . . .  33
      6.3.  Timing of Receive Key Generation  . . . . . . . . . . . .  33
@@ -127,16 +128,17 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
      8.2.  QUIC Transport Parameters Extension . . . . . . . . . . .  37
      8.3.  Removing the EndOfEarlyData Message . . . . . . . . . . .  37
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  38
-     9.1.  Replay Attacks with 0-RTT . . . . . . . . . . . . . . . .  38
-     9.2.  Packet Reflection Attack Mitigation . . . . . . . . . . .  39
-     9.3.  Header Protection Analysis  . . . . . . . . . . . . . . .  39
-     9.4.  Header Protection Timing Side-Channels  . . . . . . . . .  40
-     9.5.  Key Diversity . . . . . . . . . . . . . . . . . . . . . .  41
+     9.1.  Session Linkability . . . . . . . . . . . . . . . . . . .  38
+     9.2.  Replay Attacks with 0-RTT . . . . . . . . . . . . . . . .  38
+     9.3.  Packet Reflection Attack Mitigation . . . . . . . . . . .  39
+     9.4.  Header Protection Analysis  . . . . . . . . . . . . . . .  39
+     9.5.  Header Protection Timing Side-Channels  . . . . . . . . .  40
+     9.6.  Key Diversity . . . . . . . . . . . . . . . . . . . . . .  41
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  41
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  41
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  41
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  42
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  42
      11.2.  Informative References . . . . . . . . . . . . . . . . .  43
-   Appendix A.  Sample Packet Protection . . . . . . . . . . . . . .  43
+   Appendix A.  Sample Packet Protection . . . . . . . . . . . . . .  44
      A.1.  Keys  . . . . . . . . . . . . . . . . . . . . . . . . . .  44
      A.2.  Client Initial  . . . . . . . . . . . . . . . . . . . . .  45
      A.3.  Server Initial  . . . . . . . . . . . . . . . . . . . . .  46
@@ -160,8 +162,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
      B.16. Since draft-ietf-quic-tls-08  . . . . . . . . . . . . . .  50
      B.17. Since draft-ietf-quic-tls-07  . . . . . . . . . . . . . .  50
      B.18. Since draft-ietf-quic-tls-05  . . . . . . . . . . . . . .  50
-     B.19. Since draft-ietf-quic-tls-04  . . . . . . . . . . . . . .  50
-     B.20. Since draft-ietf-quic-tls-03  . . . . . . . . . . . . . .  50
 
 
 
@@ -170,6 +170,8 @@ Thomson & Turner         Expires 23 October 2020                [Page 3]
 Internet-Draft          Using TLS to Secure QUIC              April 2020
 
 
+     B.19. Since draft-ietf-quic-tls-04  . . . . . . . . . . . . . .  50
+     B.20. Since draft-ietf-quic-tls-03  . . . . . . . . . . . . . .  50
      B.21. Since draft-ietf-quic-tls-02  . . . . . . . . . . . . . .  50
      B.22. Since draft-ietf-quic-tls-01  . . . . . . . . . . . . . .  51
      B.23. Since draft-ietf-quic-tls-00  . . . . . . . . . . . . . .  51
@@ -213,8 +215,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
    Internally, TLS is a layered protocol, with the structure shown in
    Figure 1.
-
-
 
 
 
@@ -593,9 +593,9 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
    QUIC is only capable of conveying TLS handshake records in CRYPTO
    frames.  TLS alerts are turned into QUIC CONNECTION_CLOSE error
-   codes; see Section 4.9.  TLS application data and other message types
-   cannot be carried by QUIC at any encryption level and is an error if
-   they are received from the TLS stack.
+   codes; see Section 4.10.  TLS application data and other message
+   types cannot be carried by QUIC at any encryption level and is an
+   error if they are received from the TLS stack.
 
    When an endpoint receives a QUIC packet containing a CRYPTO frame
    from the network, it proceeds as follows:
@@ -861,7 +861,44 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    receipt of such messages as a connection error of type
    PROTOCOL_VIOLATION.
 
-4.5.  Enabling 0-RTT
+4.5.  Session Resumption
+
+   QUIC can use the session resumption feature of TLS 1.3.  It does this
+   by carrying NewSessionTicket messages in CRYPTO frames after the
+   handshake is complete.  Session resumption is the basis of 0-RTT, but
+   can be used without also enabling 0-RTT.
+
+   Endpoints that use session resumption might need to remember some
+   information about the current connection when creating a resumed
+   connection.  TLS requires that some information be retained; see
+   Section 4.6.1 of [TLS13].  QUIC itself does not depend on any state
+   being retained when resuming a connection, unless 0-RTT is also used;
+   see Section 4.6 and Section 7.3.1 of [QUIC-TRANSPORT].  Application
+   protocols could depend on state that is retained between resumed
+   connections.
+
+   Clients can store any state required for resumption along with the
+   session ticket.  Servers can use the session ticket to help carry
+   state.
+
+   Session resumption allows servers to link activity on the original
+   connection with the resumed connection, which might be a privacy
+   issue for clients.  Clients can choose not to enable resumption to
+   avoid creating this correlation.  Client SHOULD NOT reuse tickets as
+   that allows entities other than the server to correlate connections;
+   see Section C.4 of [TLS13].
+
+
+
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 16]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
+
+4.6.  Enabling 0-RTT
 
    To communicate their willingness to process 0-RTT data, servers send
    a NewSessionTicket message that contains the "early_data" extension
@@ -878,7 +915,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    Section 4.2.10 of [TLS13]).  It then sends the application data in
    0-RTT packets.
 
-4.6.  Accepting and Rejecting 0-RTT
+4.7.  Accepting and Rejecting 0-RTT
 
    A server accepts 0-RTT by sending an early_data extension in the
    EncryptedExtensions (see Section 4.2.10 of [TLS13]).  The server then
@@ -889,15 +926,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    a TLS HelloRetryRequest.  When rejecting 0-RTT, a server MUST NOT
    process any 0-RTT packets, even if it could.  When 0-RTT was
    rejected, a client SHOULD treat receipt of an acknowledgement for a
-
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 16]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
-
    0-RTT packet as a connection error of type PROTOCOL_VIOLATION, if it
    is able to detect the condition.
 
@@ -911,13 +939,21 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    Version Negotiation packet.  These packets do not signify rejection
    of 0-RTT.
 
-4.7.  Validating 0-RTT Configuration
+4.8.  Validating 0-RTT Configuration
 
    When a server receives a ClientHello with the "early_data" extension,
    it has to decide whether to accept or reject early data from the
    client.  Some of this decision is made by the TLS stack (e.g.,
    checking that the cipher suite being resumed was included in the
    ClientHello; see Section 4.2.10 of [TLS13]).  Even when the TLS stack
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 17]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
+
    has no reason to reject early data, the QUIC stack or the application
    protocol using QUIC might reject early data because the configuration
    of the transport or application associated with the resumed session
@@ -934,7 +970,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    different requirements for determining whether to accept or reject
    early data.
 
-4.8.  HelloRetryRequest
+4.9.  HelloRetryRequest
 
    In TLS over TCP, the HelloRetryRequest feature (see Section 4.1.4 of
    [TLS13]) can be used to correct a client's incorrect KeyShare
@@ -945,16 +981,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    instead use the Retry feature (see Section 8.1 of [QUIC-TRANSPORT]).
    HelloRetryRequest is still used to request key shares.
 
-
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 17]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
-
-4.9.  TLS Errors
+4.10.  TLS Errors
 
    If TLS experiences an error, it generates an appropriate alert as
    defined in Section 6 of [TLS13].
@@ -968,12 +995,20 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    The alert level of all TLS alerts is "fatal"; a TLS stack MUST NOT
    generate alerts at the "warning" level.
 
-4.10.  Discarding Unused Keys
+4.11.  Discarding Unused Keys
 
    After QUIC moves to a new encryption level, packet protection keys
    for previous encryption levels can be discarded.  This occurs several
    times during the handshake, as well as when keys are updated; see
    Section 6.
+
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 18]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
 
    Packet protection keys are not discarded immediately when new keys
    are available.  If packets from a lower encryption level contain
@@ -997,20 +1032,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    and retransmissions of data in CRYPTO frames are sent at a previous
    encryption level.  These packets MAY also include PADDING frames.
 
-
-
-
-
-
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 18]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
-
-4.10.1.  Discarding Initial Keys
+4.11.1.  Discarding Initial Keys
 
    Packets protected with Initial secrets (Section 5.2) are not
    authenticated, meaning that an attacker could spoof packets with the
@@ -1029,13 +1051,22 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    This results in abandoning loss recovery state for the Initial
    encryption level and ignoring any outstanding Initial packets.
 
-4.10.2.  Discarding Handshake Keys
+4.11.2.  Discarding Handshake Keys
 
    An endpoint MUST discard its handshake keys when the TLS handshake is
    confirmed (Section 4.1.2).  The server MUST send a HANDSHAKE_DONE
    frame as soon as it completes the handshake.
 
-4.10.3.  Discarding 0-RTT Keys
+
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 19]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
+
+4.11.3.  Discarding 0-RTT Keys
 
    0-RTT and 1-RTT packets share the same packet number space, and
    clients do not send 0-RTT packets after sending a 1-RTT packet
@@ -1054,17 +1085,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    see [QUIC-RECOVERY]).  A server MAY discard 0-RTT keys earlier if it
    determines that it has received all 0-RTT packets, which can be done
    by keeping track of missing packet numbers.
-
-
-
-
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 19]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
 
 5.  Packet Protection
 
@@ -1093,7 +1113,14 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    input to the KDF to produce the AEAD key; the label "quic iv" is used
    to derive the IV; see Section 5.3.  The header protection key uses
    the "quic hp" label; see Section 5.4.  Using these labels provides
-   key separation between QUIC and TLS; see Section 9.5.
+   key separation between QUIC and TLS; see Section 9.6.
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 20]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
 
    The KDF used for initial secrets is always the HKDF-Expand-Label
    function from TLS 1.3 (see Section 5.2).
@@ -1114,13 +1141,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    server_initial_secret = HKDF-Expand-Label(initial_secret,
                                              "server in", "",
                                              Hash.length)
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 20]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
 
    The hash function for HKDF when deriving initial secrets and keys is
    SHA-256 [SHA].
@@ -1150,6 +1170,14 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
    Note:  The Destination Connection ID is of arbitrary length, and it
       could be zero length if the server sends a Retry packet with a
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 21]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
+
       zero-length Source Connection ID field.  In this case, the Initial
       keys provide no assurance to the client that the server received
       its packet; the client has to rely on the exchange that included
@@ -1169,14 +1197,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    (Section 5.4).  The unprotected packet header is part of the
    associated data (A).  When removing packet protection, an endpoint
    first removes the header protection.
-
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 21]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
 
    All QUIC packets other than Version Negotiation and Retry packets are
    protected with an AEAD algorithm [AEAD].  Prior to establishing a
@@ -1207,6 +1227,13 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    padded with zeros to the size of the IV.  The exclusive OR of the
    padded packet number and the IV forms the AEAD nonce.
 
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 22]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
+
    The associated data, A, for the AEAD is the contents of the QUIC
    header, starting from the flags byte in either the short or long
    header, up to and including the unprotected packet number.
@@ -1221,18 +1248,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    be lower than the packet number limit.  An endpoint MUST initiate a
    key update (Section 6) prior to exceeding any limit set for the AEAD
    that is in use.
-
-
-
-
-
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 22]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
 
 5.4.  Header Protection
 
@@ -1266,6 +1281,15 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    input to an encryption algorithm.  The algorithm used depends on the
    negotiated AEAD.
 
+
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 23]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
+
    The output of this algorithm is a 5 byte mask which is applied to the
    protected header fields using exclusive OR.  The least significant
    bits of the first byte of the packet are masked by the least
@@ -1276,19 +1300,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    Figure 6 shows a sample algorithm for applying header protection.
    Removing header protection only differs in the order in which the
    packet number length (pn_length) is determined.
-
-
-
-
-
-
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 23]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
 
    mask = header_protection(hp_key, sample)
 
@@ -1309,17 +1320,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    header packet.  Figure 7 shows the fields in each header that are
    covered by header protection and the portion of the protected packet
    payload that is sampled.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1519,7 +1519,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
 5.6.  Use of 0-RTT Keys
 
-   If 0-RTT keys are available (see Section 4.5), the lack of replay
+   If 0-RTT keys are available (see Section 4.6), the lack of replay
    protection means that restrictions on their use are necessary to
    avoid replay attacks on the protocol.
 
@@ -1701,7 +1701,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    NOT send a TLS KeyUpdate message.  Endpoints MUST treat the receipt
    of a TLS KeyUpdate message as a connection error of type 0x10a,
    equivalent to a fatal TLS alert of unexpected_message (see
-   Section 4.9).
+   Section 4.10).
 
    Figure 9 shows a key update process, where the initial set of keys
    used (identified with @M) are replaced by updated keys (identified
@@ -1836,7 +1836,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
    Endpoints responding to an apparent key update MUST NOT generate a
    timing side-channel signal that might indicate that the Key Phase bit
-   was invalid (see Section 9.3).  Endpoints can use dummy packet
+   was invalid (see Section 9.4).  Endpoints can use dummy packet
    protection keys in place of discarded keys when key updates are not
    yet permitted.  Using dummy keys will generate no variation in the
    timing signal produced by attempting to remove packet protection, and
@@ -1909,7 +1909,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    Some care is necessary to ensure that any process for selecting
    between previous, current, and next packet protection keys does not
    expose a timing side channel that might reveal which keys were used
-   to remove packet protection.  See Section 9.4 for more information.
+   to remove packet protection.  See Section 9.5 for more information.
 
    Alternatively, endpoints can retain only two sets of packet
    protection keys, swapping previous for next after enough time has
@@ -2002,7 +2002,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    MUST immediately close a connection (see Section 10.3 in
    [QUIC-TRANSPORT]) if an application protocol is not negotiated with a
    no_application_protocol TLS alert (QUIC error code 0x178, see
-   Section 4.9).  While [ALPN] only specifies that servers use this
+   Section 4.10).  While [ALPN] only specifies that servers use this
    alert, QUIC clients MUST also use it to terminate a connection when
    ALPN negotiation fails.
 
@@ -2045,7 +2045,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    receive ClientHello or EncryptedExtensions messages without the
    quic_transport_parameters extension MUST close the connection with an
    error of type 0x16d (equivalent to a fatal TLS missing_extension
-   alert, see Section 4.9).
+   alert, see Section 4.10).
 
    While the transport parameters are technically available prior to the
    completion of the handshake, they cannot be fully trusted until the
@@ -2083,14 +2083,22 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
 9.  Security Considerations
 
-   There are likely to be some real clangers here eventually, but the
-   current set of issues is well captured in the relevant sections of
-   the main text.
+   All of the security considerations that apply to TLS also apply to
+   the use of TLS in QUIC.  Reading all of [TLS13] and its appendices is
+   the best way to gain an understanding of the security properties of
+   QUIC.
 
-   Never assume that because it isn't in the security considerations
-   section it doesn't affect security.  Most of this document does.
+   This section summarizes some of the more important security aspects
+   specific to the TLS integration, though there are many security-
+   relevant details in the remainder of the document.
 
-9.1.  Replay Attacks with 0-RTT
+9.1.  Session Linkability
+
+   Use of TLS session tickets allows servers and possibly other entities
+   to correlate connections made by the same client; see Section 4.5 for
+   details.
+
+9.2.  Replay Attacks with 0-RTT
 
    As described in Section 8 of [TLS13], use of TLS early data comes
    with an exposure to replay attack.  The use of 0-RTT in QUIC is
@@ -2113,14 +2121,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    Note:  TLS session tickets and address validation tokens are used to
       carry QUIC configuration information between connections.  These
       MUST NOT be used to carry application semantics.  The potential
-      for reuse of these tokens means that they require stronger
-      protections against replay.
-
-   A server that accepts 0-RTT on a connection incurs a higher cost than
-   accepting a connection without 0-RTT.  This includes higher
-   processing and computation costs.  Servers need to consider the
-   probability of replay and all associated costs when accepting 0-RTT.
-
 
 
 
@@ -2129,6 +2129,14 @@ Thomson & Turner         Expires 23 October 2020               [Page 38]
 
 Internet-Draft          Using TLS to Secure QUIC              April 2020
 
+
+      for reuse of these tokens means that they require stronger
+      protections against replay.
+
+   A server that accepts 0-RTT on a connection incurs a higher cost than
+   accepting a connection without 0-RTT.  This includes higher
+   processing and computation costs.  Servers need to consider the
+   probability of replay and all associated costs when accepting 0-RTT.
 
    Ultimately, the responsibility for managing the risks of replay
    attacks with 0-RTT lies with an application protocol.  An application
@@ -2145,7 +2153,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    MUST either prohibit the use of extensions that carry application
    semantics in 0-RTT or provide replay mitigation strategies.
 
-9.2.  Packet Reflection Attack Mitigation
+9.3.  Packet Reflection Attack Mitigation
 
    A small ClientHello that results in a large block of handshake
    messages from a server can be used in packet reflection attacks to
@@ -2160,7 +2168,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    attacker cannot forge them.  Put together, these defenses limit the
    level of amplification.
 
-9.3.  Header Protection Analysis
+9.4.  Header Protection Analysis
 
    [NAN] analyzes authenticated encryption algorithms which provide
    nonce privacy, referred to as "Hide Nonce" (HN) transforms.  The
@@ -2171,14 +2179,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
    protected_field = field XOR PRF(hp_key, sample)
 
-   The header protection variants in this document use a pseudorandom
-   permutation (PRP) in place of a generic PRF.  However, since all PRPs
-   are also PRFs [IMC], these variants do not deviate from the HN1
-   construction.
-
-   As "hp_key" is distinct from the packet protection key, it follows
-   that header protection achieves AE2 security as defined in [NAN] and
-
 
 
 Thomson & Turner         Expires 23 October 2020               [Page 39]
@@ -2186,6 +2186,13 @@ Thomson & Turner         Expires 23 October 2020               [Page 39]
 Internet-Draft          Using TLS to Secure QUIC              April 2020
 
 
+   The header protection variants in this document use a pseudorandom
+   permutation (PRP) in place of a generic PRF.  However, since all PRPs
+   are also PRFs [IMC], these variants do not deviate from the HN1
+   construction.
+
+   As "hp_key" is distinct from the packet protection key, it follows
+   that header protection achieves AE2 security as defined in [NAN] and
    therefore guarantees privacy of "field", the protected packet header.
    Future header protection variants based on this construction MUST use
    a PRF to ensure equivalent security guarantees.
@@ -2204,7 +2211,7 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    fields that are falsified or modified can only be detected once the
    packet protection is removed.
 
-9.4.  Header Protection Timing Side-Channels
+9.5.  Header Protection Timing Side-Channels
 
    An attacker could guess values for packet numbers or Key Phase and
    have an endpoint confirm guesses through timing side channels.
@@ -2227,13 +2234,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    could reveal the value of the Key Phase on injected packets.  After
    receiving a key update, an endpoint SHOULD generate and save the next
    set of receive packet protection keys, as described in Section 6.3.
-   By generating new keys before a key update is received, receipt of
-   packets will not create timing signals that leak the value of the Key
-   Phase.
-
-   This depends on not doing this key generation during packet
-   processing and it can require that endpoints maintain three sets of
-   packet protection keys for receiving: for the previous key phase, for
 
 
 
@@ -2242,12 +2242,19 @@ Thomson & Turner         Expires 23 October 2020               [Page 40]
 Internet-Draft          Using TLS to Secure QUIC              April 2020
 
 
+   By generating new keys before a key update is received, receipt of
+   packets will not create timing signals that leak the value of the Key
+   Phase.
+
+   This depends on not doing this key generation during packet
+   processing and it can require that endpoints maintain three sets of
+   packet protection keys for receiving: for the previous key phase, for
    the current key phase, and for the next key phase.  Endpoints can
    instead choose to defer generation of the next receive packet
    protection keys until they discard old keys so that only two sets of
    receive keys need to be retained at any point in time.
 
-9.5.  Key Diversity
+9.6.  Key Diversity
 
    In using TLS, the central key schedule of TLS is used.  As a result
    of the TLS handshake messages being integrated into the calculation
@@ -2283,13 +2290,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
    *  QUIC Transport Error Codes Registry [QUIC-TRANSPORT] - IANA is to
       register the KEY_UPDATE_ERROR (0xE), as described in Section 6.7.
 
-11.  References
-
-11.1.  Normative References
-
-   [AEAD]     McGrew, D., "An Interface and Algorithms for Authenticated
-              Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
-              <https://www.rfc-editor.org/info/rfc5116>.
 
 
 
@@ -2297,6 +2297,14 @@ Thomson & Turner         Expires 23 October 2020               [Page 41]
 
 Internet-Draft          Using TLS to Secure QUIC              April 2020
 
+
+11.  References
+
+11.1.  Normative References
+
+   [AEAD]     McGrew, D., "An Interface and Algorithms for Authenticated
+              Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
+              <https://www.rfc-editor.org/info/rfc5116>.
 
    [AES]      "Advanced encryption standard (AES)",
               DOI 10.6028/nist.fips.197, National Institute of Standards
@@ -2337,14 +2345,6 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
 
    [SHA]      Dang, Q., "Secure Hash Standard",
               DOI 10.6028/nist.fips.180-4, National Institute of
-              Standards and Technology report, July 2015,
-              <https://doi.org/10.6028/nist.fips.180-4>.
-
-   [TLS-REGISTRIES]
-              Salowey, J. and S. Turner, "IANA Registry Updates for TLS
-              and DTLS", RFC 8447, DOI 10.17487/RFC8447, August 2018,
-              <https://www.rfc-editor.org/info/rfc8447>.
-
 
 
 
@@ -2353,6 +2353,14 @@ Thomson & Turner         Expires 23 October 2020               [Page 42]
 
 Internet-Draft          Using TLS to Secure QUIC              April 2020
 
+
+              Standards and Technology report, July 2015,
+              <https://doi.org/10.6028/nist.fips.180-4>.
+
+   [TLS-REGISTRIES]
+              Salowey, J. and S. Turner, "IANA Registry Updates for TLS
+              and DTLS", RFC 8447, DOI 10.17487/RFC8447, August 2018,
+              <https://www.rfc-editor.org/info/rfc8447>.
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
@@ -2394,6 +2402,14 @@ Internet-Draft          Using TLS to Secure QUIC              April 2020
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/info/rfc5280>.
 
+
+
+
+Thomson & Turner         Expires 23 October 2020               [Page 43]
+
+Internet-Draft          Using TLS to Secure QUIC              April 2020
+
+
 Appendix A.  Sample Packet Protection
 
    This section shows examples of packet protection so that
@@ -2402,13 +2418,6 @@ Appendix A.  Sample Packet Protection
    These packets use an 8-byte client-chosen Destination Connection ID
    of 0x8394c8f03e515708.  Some intermediate values are included.  All
    values are shown in hexadecimal.
-
-
-
-Thomson & Turner         Expires 23 October 2020               [Page 43]
-
-Internet-Draft          Using TLS to Secure QUIC              April 2020
-
 
 A.1.  Keys
 
@@ -2447,15 +2456,6 @@ A.1.  Keys
        = a980b8b4fb7d9fbc13e814c23164253d
 
    The secrets for protecting server packets are:
-
-
-
-
-
-
-
-
-
 
 
 
