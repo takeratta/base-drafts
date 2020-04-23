@@ -869,11 +869,11 @@ developed.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <a href="#name-note-to-readers" class="section-name selfRef">Note to Readers</a>
       </h2>
 <p id="section-note.1-1">Discussion of this draft takes place on the QUIC working group mailing list
-(quic@ietf.org), which is archived at
-<a href="https://mailarchive.ietf.org/arch/search/?email_list=quic">https://mailarchive.ietf.org/arch/search/?email_list=quic</a>.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
-<p id="section-note.1-2">Working Group information can be found at <a href="https://github.com/quicwg">https://github.com/quicwg</a>; source
+(<a href="mailto:quic@ietf.org">quic@ietf.org</a>), which is archived at
+<span><a href="https://mailarchive.ietf.org/arch/search/?email_list=quic">https://mailarchive.ietf.org/arch/search/?email_list=quic</a></span>.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Working Group information can be found at <span><a href="https://github.com/quicwg">https://github.com/quicwg</a></span>; source
 code and issues list for this draft can be found at
-<a href="https://github.com/quicwg/base-drafts/labels/-invariants">https://github.com/quicwg/base-drafts/labels/-invariants</a>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<span><a href="https://github.com/quicwg/base-drafts/labels/-invariants">https://github.com/quicwg/base-drafts/labels/-invariants</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1006,10 +1006,11 @@ version of QUIC.<a href="#section-1-4" class="pilcrow">¶</a></p>
       <h2 id="name-conventions-and-definitions">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
       </h2>
-<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span>
-when, and only when, they appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">This document uses terms and notational conventions from <span>[<a href="#QUIC-TRANSPORT" class="xref">QUIC-TRANSPORT</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1047,23 +1048,16 @@ version-specific semantics are marked with an X.<a href="#section-4.1-1" class="
 <figure id="figure-1">
           <div class="artwork art-text alignLeft" id="section-4.1-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+
-|1|X X X X X X X|
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Version (32)                          |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| DCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|               Destination Connection ID (0..2040)           ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| SCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Source Connection ID (0..2040)              ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Long Header Packet {
+  Header Form (1) = 1,
+  Version-Specific Bits (7),
+  Version (32),
+  DCID Len (8),
+  Destination Connection ID (0..160),
+  SCID Len (8),
+  Source Connection ID (0..160),
+  Version-Specific Data (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
@@ -1095,15 +1089,12 @@ version-specific semantics are marked with an X.<a href="#section-4.2-1" class="
 <figure id="figure-2">
           <div class="artwork art-text alignLeft" id="section-4.2-2.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+
-|0|X X X X X X X|
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Destination Connection ID (*)               ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X  ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Short Header Packet {
+  Header Form (1) = 0,
+  Version-Specific Bits (7),
+  Destination Connection ID (..),
+  Version-Specific Data (..),
+}
 </pre>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
@@ -1169,29 +1160,16 @@ Version field, which is set to 0x00000000.<a href="#section-5-2" class="pilcrow"
 <figure id="figure-3">
         <div class="artwork art-text alignLeft" id="section-5-3.1">
 <pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+
-|1|X X X X X X X|
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Version (32) = 0                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| DCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|               Destination Connection ID (0..2040)           ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| SCID Len (8)  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Source Connection ID (0..2040)              ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                    Supported Version 1 (32)                   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   [Supported Version 2 (32)]                  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                               ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   [Supported Version N (32)]                  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Version Negotiation Packet {
+  Header Form (1) = 1,
+  Unused (7),
+  Version (32) = 0,
+  DCID Len (8),
+  Destination Connection ID (0..160),
+  SCID Len (8),
+  Source Connection ID (0..160),
+  Supported Version (32) ...,
+}
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
@@ -1313,7 +1291,7 @@ to contain an acknowledgment<a href="#section-appendix.a-4.5" class="pilcrow">¶
 <li id="section-appendix.a-4.6">QUIC uses an AEAD (AEAD_AES_128_GCM <span>[<a href="#RFC5116" class="xref">RFC5116</a>]</span>) to protect the packets it
 exchanges during connection establishment<a href="#section-appendix.a-4.6" class="pilcrow">¶</a>
 </li>
-<li id="section-appendix.a-4.7">QUIC packet numbers appear after the Version field<a href="#section-appendix.a-4.7" class="pilcrow">¶</a>
+<li id="section-appendix.a-4.7">QUIC packet numbers are encrypted and appear as the first encrypted bytes<a href="#section-appendix.a-4.7" class="pilcrow">¶</a>
 </li>
 <li id="section-appendix.a-4.8">QUIC packet numbers increase by one for every packet sent<a href="#section-appendix.a-4.8" class="pilcrow">¶</a>
 </li>
@@ -1321,17 +1299,19 @@ exchanges during connection establishment<a href="#section-appendix.a-4.6" class
 </li>
 <li id="section-appendix.a-4.10">QUIC stipulates that a client speaks first<a href="#section-appendix.a-4.10" class="pilcrow">¶</a>
 </li>
-<li id="section-appendix.a-4.11">A QUIC Version Negotiation packet is only sent by a server<a href="#section-appendix.a-4.11" class="pilcrow">¶</a>
+<li id="section-appendix.a-4.11">QUIC packets always have the second bit of the first byte (0x40) set<a href="#section-appendix.a-4.11" class="pilcrow">¶</a>
 </li>
-<li id="section-appendix.a-4.12">A QUIC connection ID changes infrequently<a href="#section-appendix.a-4.12" class="pilcrow">¶</a>
+<li id="section-appendix.a-4.12">A QUIC Version Negotiation packet is only sent by a server<a href="#section-appendix.a-4.12" class="pilcrow">¶</a>
 </li>
-<li id="section-appendix.a-4.13">QUIC endpoints change the version they speak if they are sent a Version
-Negotiation packet<a href="#section-appendix.a-4.13" class="pilcrow">¶</a>
+<li id="section-appendix.a-4.13">A QUIC connection ID changes infrequently<a href="#section-appendix.a-4.13" class="pilcrow">¶</a>
 </li>
-<li id="section-appendix.a-4.14">The version field in a QUIC long header is the same in both directions<a href="#section-appendix.a-4.14" class="pilcrow">¶</a>
+<li id="section-appendix.a-4.14">QUIC endpoints change the version they speak if they are sent a Version
+Negotiation packet<a href="#section-appendix.a-4.14" class="pilcrow">¶</a>
 </li>
-<li id="section-appendix.a-4.15">Only one connection at a time is established between any pair of QUIC
-endpoints<a href="#section-appendix.a-4.15" class="pilcrow">¶</a>
+<li id="section-appendix.a-4.15">The version field in a QUIC long header is the same in both directions<a href="#section-appendix.a-4.15" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.a-4.16">Only one connection at a time is established between any pair of QUIC
+endpoints<a href="#section-appendix.a-4.16" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>

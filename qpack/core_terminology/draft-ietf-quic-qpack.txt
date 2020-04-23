@@ -24,14 +24,13 @@ Abstract
 Note to Readers
 
    Discussion of this draft takes place on the QUIC working group
-   mailing list (quic@ietf.org), which is archived at
-   https://mailarchive.ietf.org/arch/search/?email_list=quic
-   (https://mailarchive.ietf.org/arch/search/?email_list=quic).
+   mailing list (quic@ietf.org (mailto:quic@ietf.org)), which is
+   archived at https://mailarchive.ietf.org/arch/
+   search/?email_list=quic.
 
-   Working Group information can be found at https://github.com/quicwg
-   (https://github.com/quicwg); source code and issues list for this
-   draft can be found at https://github.com/quicwg/base-drafts/labels/-
-   qpack (https://github.com/quicwg/base-drafts/labels/-qpack).
+   Working Group information can be found at https://github.com/quicwg;
+   source code and issues list for this draft can be found at
+   https://github.com/quicwg/base-drafts/labels/-qpack.
 
 Status of This Memo
 
@@ -49,6 +48,7 @@ Status of This Memo
    material or to cite them other than as "work in progress."
 
    This Internet-Draft will expire on 25 October 2020.
+
 
 
 
@@ -185,8 +185,8 @@ Internet-Draft                    QPACK                       April 2020
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
    Definitions of terms that are used in this document:
@@ -1204,7 +1204,7 @@ Internet-Draft                    QPACK                       April 2020
 
    For example, if the dynamic table is 100 bytes, then the Required
    Insert Count will be encoded modulo 6.  If a decoder has received 10
-   inserts, then an encoded value of 3 indicates that the Required
+   inserts, then an encoded value of 4 indicates that the Required
    Insert Count is 9 for the field section.
 
 4.5.1.2.  Base
