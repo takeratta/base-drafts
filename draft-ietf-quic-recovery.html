@@ -1829,7 +1829,11 @@ to a single lost datagram or transmit data from multiple packet number spaces.
 All probe packets sent on a PTO MUST be ack-eliciting.<a href="#section-5.2.4-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.4-2">In addition to sending data in the packet number space for which the timer
 expired, the sender SHOULD send ack-eliciting packets from other packet
-number spaces with in-flight data, coalescing packets if possible.<a href="#section-5.2.4-2" class="pilcrow">¶</a></p>
+number spaces with in-flight data, coalescing packets if possible.  This is
+particularly valuable when the server has both Initial and Handshake data
+in-flight or the client has both Handshake and ApplicationData in-flight,
+because the peer might only have receive keys for one of the two packet number
+spaces.<a href="#section-5.2.4-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.4-3">If the sender wants to elicit a faster acknowledgement on PTO, it can skip a
 packet number to eliminate the ack delay.<a href="#section-5.2.4-3" class="pilcrow">¶</a></p>
 <p id="section-5.2.4-4">When the PTO timer expires, and there is new or previously sent unacknowledged

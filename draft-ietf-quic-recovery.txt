@@ -827,13 +827,13 @@ Internet-Draft             QUIC Loss Detection                April 2020
    In addition to sending data in the packet number space for which the
    timer expired, the sender SHOULD send ack-eliciting packets from
    other packet number spaces with in-flight data, coalescing packets if
-   possible.
+   possible.  This is particularly valuable when the server has both
+   Initial and Handshake data in-flight or the client has both Handshake
+   and ApplicationData in-flight, because the peer might only have
+   receive keys for one of the two packet number spaces.
 
    If the sender wants to elicit a faster acknowledgement on PTO, it can
    skip a packet number to eliminate the ack delay.
-
-   When the PTO timer expires, and there is new or previously sent
-   unacknowledged data, it MUST be sent.  A probe packet SHOULD carry
 
 
 
@@ -842,6 +842,8 @@ Iyengar & Swett          Expires 30 October 2020               [Page 15]
 Internet-Draft             QUIC Loss Detection                April 2020
 
 
+   When the PTO timer expires, and there is new or previously sent
+   unacknowledged data, it MUST be sent.  A probe packet SHOULD carry
    new data when possible.  A probe packet MAY carry retransmitted
    unacknowledged data when new data is unavailable, when flow control
    does not permit new data to be sent, or to opportunistically reduce
@@ -886,8 +888,6 @@ Internet-Draft             QUIC Loss Detection                April 2020
    acknowledgement is received that newly acknowledges packets, loss
    detection proceeds as dictated by packet and time threshold
    mechanisms; see Section 5.1.
-
-
 
 
 
