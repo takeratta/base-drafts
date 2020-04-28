@@ -2759,15 +2759,16 @@ IDs by sending a NEW_CONNECTION_ID frame with an increased Retire Prior To
 field.  The endpoint SHOULD continue to accept the previously issued connection
 IDs until they are retired by the peer.  If the endpoint can no longer process
 the indicated connection IDs, it MAY close the connection.<a href="#section-5.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.1.2-5">Upon receipt of an increased Retire Prior To field, the peer MUST stop using the
-corresponding connection IDs and retire them with RETIRE_CONNECTION_ID frames
-before adding the newly provided connection ID to the set of active connection
-IDs. This ordering allows an endpoint that has already supplied its peer with as
-many connection IDs as allowed by the active_connection_id_limit transport
-parameter to replace those connection IDs with new ones as necessary.  Failure
-to cease using the connection IDs when requested can result in connection
-failures, as the issuing endpoint might be unable to continue using the
-connection IDs with the active connection.<a href="#section-5.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-5.1.2-5">Upon receipt of an increased Retire Prior To field, the peer MUST stop using
+the corresponding connection IDs and retire them with RETIRE_CONNECTION_ID
+frames before adding the newly provided connection ID to the set of active
+connection IDs. This ordering allows an endpoint to replace all active
+connection IDs without the possibility of a peer having no available connection
+IDs and without exceeding the limit the peer sets in the
+active_connection_id_limit transport parameter; see
+<a href="#transport-parameter-definitions" class="xref">Section 18.2</a>. Failure to cease using the connection IDs
+when requested can result in connection failures, as the issuing endpoint might
+be unable to continue using the connection IDs with the active connection.<a href="#section-5.1.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

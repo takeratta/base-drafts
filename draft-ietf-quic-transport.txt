@@ -1602,12 +1602,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    stop using the corresponding connection IDs and retire them with
    RETIRE_CONNECTION_ID frames before adding the newly provided
    connection ID to the set of active connection IDs.  This ordering
-   allows an endpoint that has already supplied its peer with as many
-   connection IDs as allowed by the active_connection_id_limit transport
-   parameter to replace those connection IDs with new ones as necessary.
-   Failure to cease using the connection IDs when requested can result
-   in connection failures, as the issuing endpoint might be unable to
-   continue using the connection IDs with the active connection.
+   allows an endpoint to replace all active connection IDs without the
+   possibility of a peer having no available connection IDs and without
+   exceeding the limit the peer sets in the active_connection_id_limit
+   transport parameter; see Section 18.2.  Failure to cease using the
+   connection IDs when requested can result in connection failures, as
+   the issuing endpoint might be unable to continue using the connection
+   IDs with the active connection.
 
 5.2.  Matching Packets to Connections
 
@@ -1617,7 +1618,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Endpoints try to associate a packet with an existing connection.  If
    the packet has a non-zero-length Destination Connection ID
-   corresponding to an existing connection, QUIC processes that packet
 
 
 
@@ -1626,6 +1626,7 @@ Iyengar & Thomson        Expires 30 October 2020               [Page 29]
 Internet-Draft           QUIC Transport Protocol              April 2020
 
 
+   corresponding to an existing connection, QUIC processes that packet
    accordingly.  Note that more than one connection ID can be associated
    with a connection; see Section 5.1.
 
@@ -1668,7 +1669,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    If a client receives a packet that has an unsupported version, it
    MUST discard that packet.
-
 
 
 
