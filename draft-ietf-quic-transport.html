@@ -3023,14 +3023,14 @@ MUST NOT be used outside of draft implementations.<a href="#section-6.2.1-5" cla
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-using-reserved-versions" class="section-name selfRef">Using Reserved Versions</a>
         </h3>
 <p id="section-6.3-1">For a server to use a new version in the future, clients need to correctly
-handle unsupported versions. To help ensure this, a server SHOULD include a
-version that is reserved for forcing version negotiation (0x?a?a?a?a as defined
-in <a href="#versions" class="xref">Section 15</a>) when generating a Version Negotiation packet.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.3-2">The design of version negotiation permits a server to avoid maintaining state
-for packets that it rejects in this fashion.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
-<p id="section-6.3-3">A client MAY send a packet using a version that is reserved for forcing version
-negotiation.  This can be used to solicit a list of supported versions from a
-server.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
+handle unsupported versions. Some version numbers (0x?a?a?a?a as defined in
+<a href="#versions" class="xref">Section 15</a>) are reserved for inclusion in fields that contain version
+numbers.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-2">Endpoints MAY add reserved versions to any field where unknown or unsupported
+versions are ignored to test that a peer correctly ignores the value. For
+instance, an endpoint could include a reserved version in a Version Negotiation
+packet; see <a href="#packet-version" class="xref">Section 17.2.1</a>. Endpoints MAY send packets with a reserved
+version to test that a peer correctly discards the packet.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
