@@ -3182,10 +3182,10 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    for this connection received on the old IP address, but MAY continue
    to process delayed packets.
 
-
-
-
-
+   The addresses that a server provides in the preferred_address
+   transport parameter are only valid for the connection in which they
+   are provided.  A client MUST NOT use these for other connections,
+   including connections that are resumed from the current connection.
 
 
 
@@ -3223,6 +3223,12 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    A client that migrates to a new address SHOULD use a preferred
    address from the same address family for the server.
 
+   The connection ID provided in the preferred_address transport
+   parameter is not specific to the addresses that are provided.  This
+   connection ID is provided to ensure that the client has a connection
+   ID available for migration, but the client MAY use this connection ID
+   on any path.
+
 9.7.  Use of IPv6 Flow-Label and Migration
 
    Endpoints that send data using IPv6 SHOULD apply an IPv6 flow label
@@ -3236,12 +3242,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    label, as this would enable correlating activity on multiple paths;
    see Section 9.5.
 
-   A possible implementation is to compute the flow label as a
-   cryptographic hash function of the source and destination addresses,
-   source and destination UDP ports, destination CID, and a local
-   secret.
-
-
 
 
 
@@ -3249,6 +3249,11 @@ Iyengar & Thomson        Expires 30 October 2020               [Page 58]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
 
+
+   A possible implementation is to compute the flow label as a
+   cryptographic hash function of the source and destination addresses,
+   source and destination UDP ports, destination CID, and a local
+   secret.
 
 10.  Connection Termination
 
@@ -3293,11 +3298,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    An endpoint MAY transition from the closing period to the draining
    period if it receives a CONNECTION_CLOSE frame or stateless reset,
    both of which indicate that the peer is also closing or draining.
-   The draining period SHOULD end when the closing period would have
-   ended.  In other words, the endpoint can use the same end time, but
-   cease retransmission of the closing packet.
-
-
 
 
 
@@ -3305,6 +3305,10 @@ Iyengar & Thomson        Expires 30 October 2020               [Page 59]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
 
+
+   The draining period SHOULD end when the closing period would have
+   ended.  In other words, the endpoint can use the same end time, but
+   cease retransmission of the closing packet.
 
    Disposing of connection state prior to the end of the closing or
    draining period could cause delayed or reordered packets to generate
@@ -3349,10 +3353,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    initiating an immediate close (Section 10.3) if it abandons the
    connection prior to the effective value.
 
-   An endpoint restarts its idle timer when a packet from its peer is
-   received and processed successfully.  An endpoint also restarts its
-   idle timer when sending an ack-eliciting packet if no other ack-
-   eliciting packets have been sent since last receiving and processing
 
 
 
@@ -3362,6 +3362,10 @@ Iyengar & Thomson        Expires 30 October 2020               [Page 60]
 Internet-Draft           QUIC Transport Protocol              April 2020
 
 
+   An endpoint restarts its idle timer when a packet from its peer is
+   received and processed successfully.  An endpoint also restarts its
+   idle timer when sending an ack-eliciting packet if no other ack-
+   eliciting packets have been sent since last receiving and processing
    a packet.  Restarting this timer when sending a packet ensures that
    connections are not closed after new activity is initiated.
 
@@ -3406,10 +3410,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    frame.  To minimize the state that an endpoint maintains for a
    closing connection, endpoints MAY send the exact same packet.
 
-   Note:  Allowing retransmission of a closing packet contradicts other
-      advice in this document that recommends the creation of new packet
-      numbers for every packet.  Sending new packet numbers is primarily
-      of advantage to loss recovery and congestion control, which are
 
 
 
@@ -3418,6 +3418,10 @@ Iyengar & Thomson        Expires 30 October 2020               [Page 61]
 Internet-Draft           QUIC Transport Protocol              April 2020
 
 
+   Note:  Allowing retransmission of a closing packet contradicts other
+      advice in this document that recommends the creation of new packet
+      numbers for every packet.  Sending new packet numbers is primarily
+      of advantage to loss recovery and congestion control, which are
       not expected to be relevant for a closed connection.
       Retransmitting the final packet requires less state.
 
@@ -3462,10 +3466,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       (see Section 17.2.2.1), but it is possible that a server does not
       know whether the client has Handshake keys.  Under these
       circumstances, a server SHOULD send a CONNECTION_CLOSE frame in
-      both Handshake and Initial packets to ensure that at least one of
-      them is processable by the client.
-
-
 
 
 
@@ -3473,6 +3473,9 @@ Iyengar & Thomson        Expires 30 October 2020               [Page 62]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
 
+
+      both Handshake and Initial packets to ensure that at least one of
+      them is processable by the client.
 
    *  A client that sends CONNECTION_CLOSE in a 0-RTT packet cannot be
       assured of the server has accepted 0-RTT and so sending a
@@ -3514,9 +3517,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    state.  An endpoint that has no state for the connection does not
    enter a closing or draining period on sending a CONNECTION_CLOSE
    frame.
-
-
-
 
 
 
