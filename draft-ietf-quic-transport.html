@@ -1024,6 +1024,9 @@ code and issues list for this draft can be found at
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.2.2.2">
                     <p id="section-toc.1-1.5.2.2.2.2.1" class="keepWithNext"><a href="#section-5.2.2" class="xref">5.2.2</a>.  <a href="#name-server-packet-handling" class="xref">Server Packet Handling</a><a href="#section-toc.1-1.5.2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.5.2.2.2.3">
+                    <p id="section-toc.1-1.5.2.2.2.3.1" class="keepWithNext"><a href="#section-5.2.3" class="xref">5.2.3</a>.  <a href="#name-considerations-for-simple-l" class="xref">Considerations for Simple Load Balancers</a><a href="#section-toc.1-1.5.2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.3">
@@ -2852,6 +2855,35 @@ packets in anticipation of a late-arriving Initial packet. Clients are not able
 to send Handshake packets prior to receiving a server response, so servers
 SHOULD ignore any such packets.<a href="#section-5.2.2-6" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-7">Servers MUST drop incoming packets under all other circumstances.<a href="#section-5.2.2-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="considerations-for-simple-load-balancers">
+<section id="section-5.2.3">
+          <h4 id="name-considerations-for-simple-l">
+<a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-considerations-for-simple-l" class="section-name selfRef">Considerations for Simple Load Balancers</a>
+          </h4>
+<p id="section-5.2.3-1">A server deployment could load balance among servers using only source and
+destination IP addresses and ports. Changes to the client's IP address or port
+could result in packets being forwarded to the wrong server. Such a server
+deployment could use one of the following methods for connection continuity
+when a client's address changes.<a href="#section-5.2.3-1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-5.2.3-2.1">Servers could use an out-of-band mechanism to forward packets to the correct
+server based on Connection ID.<a href="#section-5.2.3-2.1" class="pilcrow">¶</a>
+</li>
+<li id="section-5.2.3-2.2">If servers can use other dedicated server IP addresses or ports than
+the one that the client initially connects to, they could use the
+preferred_address transport parameter to request that clients move
+connections to these dedicated addresses. Note that clients could
+choose not to use the preferred address.<a href="#section-5.2.3-2.2" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-5.2.3-3">A server in a deployment that does not implement a solution to
+maintain connection continuity during connection migration
+SHOULD disallow migration using the disable_active_migration transport
+parameter.<a href="#section-5.2.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.3-4">Server deployments that use this simple form of load balancing MUST avoid the
+creation of a stateless reset oracle; see <a href="#reset-oracle" class="xref">Section 21.9</a>.<a href="#section-5.2.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
