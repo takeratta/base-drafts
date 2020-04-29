@@ -1555,10 +1555,10 @@ Internet-Draft                   HTTP/3                       April 2020
 
 6.2.3.  Reserved Stream Types
 
-   Stream types of the format "0x1f * N + 0x21" for integer values of N
-   are reserved to exercise the requirement that unknown types be
-   ignored.  These streams have no semantics, and can be sent when
-   application-layer padding is desired.  They MAY also be sent on
+   Stream types of the format "0x1f * N + 0x21" for non-negative integer
+   values of N are reserved to exercise the requirement that unknown
+   types be ignored.  These streams have no semantics, and can be sent
+   when application-layer padding is desired.  They MAY also be sent on
    connections where no data is currently being transferred.  Endpoints
    MUST NOT consider these streams to have any meaning upon receipt.
 
@@ -1850,12 +1850,12 @@ Bishop                   Expires 31 October 2020               [Page 33]
 Internet-Draft                   HTTP/3                       April 2020
 
 
-   Setting identifiers of the format "0x1f * N + 0x21" for integer
-   values of N are reserved to exercise the requirement that unknown
-   identifiers be ignored.  Such settings have no defined meaning.
-   Endpoints SHOULD include at least one such setting in their SETTINGS
-   frame.  Endpoints MUST NOT consider such settings to have any meaning
-   upon receipt.
+   Setting identifiers of the format "0x1f * N + 0x21" for non-negative
+   integer values of N are reserved to exercise the requirement that
+   unknown identifiers be ignored.  Such settings have no defined
+   meaning.  Endpoints SHOULD include at least one such setting in their
+   SETTINGS frame.  Endpoints MUST NOT consider such settings to have
+   any meaning upon receipt.
 
    Because the setting has no defined meaning, the value of the setting
    can be any value the implementation selects.
@@ -2091,13 +2091,13 @@ Internet-Draft                   HTTP/3                       April 2020
 
 7.2.8.  Reserved Frame Types
 
-   Frame types of the format "0x1f * N + 0x21" for integer values of N
-   are reserved to exercise the requirement that unknown types be
-   ignored (Section 9).  These frames have no semantics, and can be sent
-   on any open stream when application-layer padding is desired.  They
-   MAY also be sent on connections where no data is currently being
-   transferred.  Endpoints MUST NOT consider these frames to have any
-   meaning upon receipt.
+   Frame types of the format "0x1f * N + 0x21" for non-negative integer
+   values of N are reserved to exercise the requirement that unknown
+   types be ignored (Section 9).  These frames have no semantics, and
+   can be sent on any open stream when application-layer padding is
+   desired.  They MAY also be sent on connections where no data is
+   currently being transferred.  Endpoints MUST NOT consider these
+   frames to have any meaning upon receipt.
 
    The payload and length of the frames are selected in any manner the
    implementation chooses.
@@ -2198,11 +2198,11 @@ Internet-Draft                   HTTP/3                       April 2020
    H3_VERSION_FALLBACK (0x110):  The requested operation cannot be
       served over HTTP/3.  The peer should retry over HTTP/1.1.
 
-   Error codes of the format "0x1f * N + 0x21" for integer values of N
-   are reserved to exercise the requirement that unknown error codes be
-   treated as equivalent to H3_NO_ERROR (Section 9).  Implementations
-   SHOULD select an error code from this space with some probability
-   when they would have sent H3_NO_ERROR.
+   Error codes of the format "0x1f * N + 0x21" for non-negative integer
+   values of N are reserved to exercise the requirement that unknown
+   error codes be treated as equivalent to H3_NO_ERROR (Section 9).
+   Implementations SHOULD select an error code from this space with some
+   probability when they would have sent H3_NO_ERROR.
 
 9.  Extensions to HTTP/3
 
@@ -2662,8 +2662,8 @@ Internet-Draft                   HTTP/3                       April 2020
 
                    Table 2: Initial HTTP/3 Frame Types
 
-   Additionally, each code of the format "0x1f * N + 0x21" for integer
-   values of N (that is, "0x21", "0x40", ..., through
+   Additionally, each code of the format "0x1f * N + 0x21" for non-
+   negative integer values of N (that is, "0x21", "0x40", ..., through
    "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
 
 11.2.2.  Settings Parameters
@@ -2717,8 +2717,8 @@ Internet-Draft                   HTTP/3                       April 2020
 
                      Table 3: Initial HTTP/3 Settings
 
-   Additionally, each code of the format "0x1f * N + 0x21" for integer
-   values of N (that is, "0x21", "0x40", ..., through
+   Additionally, each code of the format "0x1f * N + 0x21" for non-
+   negative integer values of N (that is, "0x21", "0x40", ..., through
    "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
 
 11.2.3.  Error Codes
@@ -2837,8 +2837,8 @@ Internet-Draft                   HTTP/3                       April 2020
 
                     Table 4: Initial HTTP/3 Error Codes
 
-   Additionally, each code of the format "0x1f * N + 0x21" for integer
-   values of N (that is, "0x21", "0x40", ..., through
+   Additionally, each code of the format "0x1f * N + 0x21" for non-
+   negative integer values of N (that is, "0x21", "0x40", ..., through
    "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
 
 
@@ -2893,8 +2893,8 @@ Internet-Draft                   HTTP/3                       April 2020
 
                                   Table 5
 
-   Additionally, each code of the format "0x1f * N + 0x21" for integer
-   values of N (that is, "0x21", "0x40", ..., through
+   Additionally, each code of the format "0x1f * N + 0x21" for non-
+   negative integer values of N (that is, "0x21", "0x40", ..., through
    "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
 
 12.  References

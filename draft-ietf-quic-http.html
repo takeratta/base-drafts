@@ -2459,8 +2459,8 @@ client MUST treat this as a connection error of type H3_ID_ERROR.<a href="#secti
           <h4 id="name-reserved-stream-types">
 <a href="#section-6.2.3" class="section-number selfRef">6.2.3. </a><a href="#name-reserved-stream-types" class="section-name selfRef">Reserved Stream Types</a>
           </h4>
-<p id="section-6.2.3-1">Stream types of the format <code>0x1f * N + 0x21</code> for integer values of N are
-reserved to exercise the requirement that unknown types be ignored. These
+<p id="section-6.2.3-1">Stream types of the format <code>0x1f * N + 0x21</code> for non-negative integer values of
+N are reserved to exercise the requirement that unknown types be ignored. These
 streams have no semantics, and can be sent when application-layer padding is
 desired. They MAY also be sent on connections where no data is currently being
 transferred. Endpoints MUST NOT consider these streams to have any meaning upon
@@ -2807,11 +2807,11 @@ not understand.<a href="#section-7.2.4-9" class="pilcrow">¶</a></p>
   The default value is unlimited.  See <a href="#header-formatting" class="xref">Section 4.1.1</a> for usage.<a href="#section-7.2.4.1-2.2" class="pilcrow">¶</a>
 </dd>
 </dl>
-<p id="section-7.2.4.1-3">Setting identifiers of the format <code>0x1f * N + 0x21</code> for integer values of N are
-reserved to exercise the requirement that unknown identifiers be ignored.  Such
-settings have no defined meaning. Endpoints SHOULD include at least one such
-setting in their SETTINGS frame. Endpoints MUST NOT consider such settings to
-have any meaning upon receipt.<a href="#section-7.2.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.2.4.1-3">Setting identifiers of the format <code>0x1f * N + 0x21</code> for non-negative integer
+values of N are reserved to exercise the requirement that unknown identifiers be
+ignored.  Such settings have no defined meaning. Endpoints SHOULD include at
+least one such setting in their SETTINGS frame. Endpoints MUST NOT consider such
+settings to have any meaning upon receipt.<a href="#section-7.2.4.1-3" class="pilcrow">¶</a></p>
 <p id="section-7.2.4.1-4">Because the setting has no defined meaning, the value of the setting can be any
 value the implementation selects.<a href="#section-7.2.4.1-4" class="pilcrow">¶</a></p>
 <p id="section-7.2.4.1-5">Additional settings can be defined by extensions to HTTP/3; see <a href="#extensions" class="xref">Section 9</a>
@@ -3017,12 +3017,12 @@ MUST be treated as a connection error of type H3_ID_ERROR.<a href="#section-7.2.
           <h4 id="name-reserved-frame-types">
 <a href="#section-7.2.8" class="section-number selfRef">7.2.8. </a><a href="#name-reserved-frame-types" class="section-name selfRef">Reserved Frame Types</a>
           </h4>
-<p id="section-7.2.8-1">Frame types of the format <code>0x1f * N + 0x21</code> for integer values of N are reserved
-to exercise the requirement that unknown types be ignored (<a href="#extensions" class="xref">Section 9</a>).
-These frames have no semantics, and can be sent on any open stream when
-application-layer padding is desired. They MAY also be sent on connections where
-no data is currently being transferred. Endpoints MUST NOT consider these frames
-to have any meaning upon receipt.<a href="#section-7.2.8-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.8-1">Frame types of the format <code>0x1f * N + 0x21</code> for non-negative integer values of N
+are reserved to exercise the requirement that unknown types be ignored
+(<a href="#extensions" class="xref">Section 9</a>).  These frames have no semantics, and can be sent on any open
+stream when application-layer padding is desired. They MAY also be sent on
+connections where no data is currently being transferred. Endpoints MUST NOT
+consider these frames to have any meaning upon receipt.<a href="#section-7.2.8-1" class="pilcrow">¶</a></p>
 <p id="section-7.2.8-2">The payload and length of the frames are selected in any manner the
 implementation chooses.<a href="#section-7.2.8-2" class="pilcrow">¶</a></p>
 <p id="section-7.2.8-3">Frame types which were used in HTTP/2 where there is no corresponding HTTP/3
@@ -3133,10 +3133,11 @@ abnormally closed.<a href="#section-8.1-2.30" class="pilcrow">¶</a>
 retry over HTTP/1.1.<a href="#section-8.1-2.32" class="pilcrow">¶</a>
 </dd>
 </dl>
-<p id="section-8.1-3">Error codes of the format <code>0x1f * N + 0x21</code> for integer values of N are reserved
-to exercise the requirement that unknown error codes be treated as equivalent to
-H3_NO_ERROR (<a href="#extensions" class="xref">Section 9</a>). Implementations SHOULD select an error code from
-this space with some probability when they would have sent H3_NO_ERROR.<a href="#section-8.1-3" class="pilcrow">¶</a></p>
+<p id="section-8.1-3">Error codes of the format <code>0x1f * N + 0x21</code> for non-negative integer values of N
+are reserved to exercise the requirement that unknown error codes be treated as
+equivalent to H3_NO_ERROR (<a href="#extensions" class="xref">Section 9</a>). Implementations SHOULD select an
+error code from this space with some probability when they would have sent
+H3_NO_ERROR.<a href="#section-8.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3585,9 +3586,9 @@ its semantics, including any parts of the frame that are conditionally present.<
             </tbody>
           </table>
 </div>
-<p id="section-11.2.1-8">Additionally, each code of the format <code>0x1f * N + 0x21</code> for integer values of N
-(that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST NOT be
-assigned by IANA.<a href="#section-11.2.1-8" class="pilcrow">¶</a></p>
+<p id="section-11.2.1-8">Additionally, each code of the format <code>0x1f * N + 0x21</code> for non-negative integer
+values of N (that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST
+NOT be assigned by IANA.<a href="#section-11.2.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-settings">
@@ -3670,9 +3671,9 @@ most restrictive possible value.<a href="#section-11.2.2-4.4" class="pilcrow">¶
             </tbody>
           </table>
 </div>
-<p id="section-11.2.2-7">Additionally, each code of the format <code>0x1f * N + 0x21</code> for integer values of N
-(that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST NOT be
-assigned by IANA.<a href="#section-11.2.2-7" class="pilcrow">¶</a></p>
+<p id="section-11.2.2-7">Additionally, each code of the format <code>0x1f * N + 0x21</code> for non-negative integer
+values of N (that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST
+NOT be assigned by IANA.<a href="#section-11.2.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-error-codes">
@@ -3850,9 +3851,9 @@ registrations in this registry MUST include the following fields:<a href="#secti
             </tbody>
           </table>
 </div>
-<p id="section-11.2.3-7">Additionally, each code of the format <code>0x1f * N + 0x21</code> for integer values of N
-(that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST NOT be
-assigned by IANA.<a href="#section-11.2.3-7" class="pilcrow">¶</a></p>
+<p id="section-11.2.3-7">Additionally, each code of the format <code>0x1f * N + 0x21</code> for non-negative integer
+values of N (that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST
+NOT be assigned by IANA.<a href="#section-11.2.3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-stream-types">
@@ -3912,9 +3913,9 @@ stream type, including the layout semantics of the stream contents.<a href="#sec
               </tr>
             </tbody>
           </table>
-<p id="section-11.2.4-7">Additionally, each code of the format <code>0x1f * N + 0x21</code> for integer values of N
-(that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST NOT be
-assigned by IANA.<a href="#section-11.2.4-7" class="pilcrow">¶</a></p>
+<p id="section-11.2.4-7">Additionally, each code of the format <code>0x1f * N + 0x21</code> for non-negative integer
+values of N (that is, <code>0x21</code>, <code>0x40</code>, ..., through <code>0x3FFFFFFFFFFFFFFE</code>) MUST
+NOT be assigned by IANA.<a href="#section-11.2.4-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
