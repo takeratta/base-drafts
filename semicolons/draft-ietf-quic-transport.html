@@ -3357,8 +3357,8 @@ on its own.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">The primary defense against amplification attack is verifying that an endpoint
 is able to receive packets at the transport address that it claims.  Address
 validation is performed both during connection establishment (see
-<a href="#validate-handshake" class="xref">Section 8.1</a>) and during connection migration; see
-<a href="#migrate-validate" class="xref">Section 8.2</a>.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<a href="#validate-handshake" class="xref">Section 8.1</a>) and during connection migration (see
+<a href="#migrate-validate" class="xref">Section 8.2</a>).<a href="#section-8-2" class="pilcrow">¶</a></p>
 <div id="validate-handshake">
 <section id="section-8.1">
         <h3 id="name-address-validation-during-c">
@@ -3395,8 +3395,8 @@ Handshake keys, and otherwise send a Handshake packet.<a href="#section-8.1-4" c
 cryptographic handshake. QUIC uses a token in the Initial packet to provide
 address validation prior to completing the handshake. This token is delivered to
 the client during connection establishment with a Retry packet (see
-<a href="#validate-retry" class="xref">Section 8.1.2</a>) or in a previous connection using the NEW_TOKEN frame; see
-<a href="#validate-future" class="xref">Section 8.1.3</a>.<a href="#section-8.1-5" class="pilcrow">¶</a></p>
+<a href="#validate-retry" class="xref">Section 8.1.2</a>) or in a previous connection using the NEW_TOKEN frame (see
+<a href="#validate-future" class="xref">Section 8.1.3</a>).<a href="#section-8.1-5" class="pilcrow">¶</a></p>
 <p id="section-8.1-6">In addition to sending limits imposed prior to address validation, servers are
 also constrained in what they can send by the limits set by the congestion
 controller.  Clients are only constrained by the congestion controller.<a href="#section-8.1-6" class="pilcrow">¶</a></p>
