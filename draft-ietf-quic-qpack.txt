@@ -308,8 +308,8 @@ Internet-Draft                    QPACK                       April 2020
    into the dynamic table (including duplicates of existing entries).
    In order to avoid this, an encoder that uses the dynamic table has to
    keep track of each dynamic table entry referenced by each header
-   block until that header block is acknowledged by the decoder (see
-   Section 4.4.1).
+   block until that header block is acknowledged by the decoder; see
+   Section 4.4.1.
 
 2.1.1.1.  Avoiding Prohibited Insertions
 

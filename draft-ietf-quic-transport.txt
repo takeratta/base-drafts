@@ -204,7 +204,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
      18.1.  Reserved Transport Parameters  . . . . . . . . . . . . . 107
      18.2.  Transport Parameter Definitions  . . . . . . . . . . . . 108
    19. Frame Types and Formats . . . . . . . . . . . . . . . . . . . 111
-     19.1.  PADDING Frame  . . . . . . . . . . . . . . . . . . . . . 111
+     19.1.  PADDING Frame  . . . . . . . . . . . . . . . . . . . . . 112
      19.2.  PING Frame . . . . . . . . . . . . . . . . . . . . . . . 112
      19.3.  ACK Frames . . . . . . . . . . . . . . . . . . . . . . . 112
        19.3.1.  ACK Ranges . . . . . . . . . . . . . . . . . . . . . 114
@@ -428,7 +428,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Ack-eliciting Packet:  A QUIC packet that contains frames other than
       ACK, PADDING, and CONNECTION_CLOSE.  These cause a recipient to
-      send an acknowledgment (see Section 13.2.1).
+      send an acknowledgment; see Section 13.2.1.
 
    Out-of-order packet:  A packet that does not increase the largest
       received packet number for its packet number space (Section 12.3)
@@ -548,8 +548,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    QUIC allows for an arbitrary number of streams to operate
    concurrently and for an arbitrary amount of data to be sent on any
-   stream, subject to flow control constraints (see Section 4) and
-   stream limits.
+   stream, subject to flow control constraints and stream limits; see
+   Section 4.
 
 
 
@@ -1369,7 +1369,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Once a final size for a stream is known, it cannot change.  If a
    RESET_STREAM or STREAM frame is received indicating a change in the
    final size for the stream, an endpoint SHOULD respond with a
-   FINAL_SIZE_ERROR error (see Section 11).  A receiver SHOULD treat
+   FINAL_SIZE_ERROR error; see Section 11.  A receiver SHOULD treat
    receipt of data at or beyond the final size as a FINAL_SIZE_ERROR
    error, even after a stream is closed.  Generating these errors is not
    mandatory, but only because requiring that an endpoint generate these
@@ -2003,9 +2003,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    ClientHello.
 
    Note that multiple QUIC packets - even of different packet types -
-   can be coalesced into a single UDP datagram (see Section 12.2), and
-   so this handshake may consist of as few as 4 UDP datagrams, or any
-   number more.  For instance, the server's first flight contains
+   can be coalesced into a single UDP datagram; see Section 12.2).  As a
+   result, this handshake may consist of as few as 4 UDP datagrams, or
+   any number more.  For instance, the server's first flight contains
    Initial packets, Handshake packets, and "0.5-RTT data" in 1-RTT
    packets with a short header.
 
@@ -2566,10 +2566,10 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Attackers could replay tokens to use servers as amplifiers in DDoS
    attacks.  To protect against such attacks, servers SHOULD ensure that
    tokens sent in Retry packets are only accepted for a short time.
-   Tokens that are provided in NEW_TOKEN frames (see Section 19.7) need
-   to be valid for longer, but SHOULD NOT be accepted multiple times in
-   a short period.  Servers are encouraged to allow tokens to be used
-   only once, if possible.
+   Tokens that are provided in NEW_TOKEN frames (Section 19.7) need to
+   be valid for longer, but SHOULD NOT be accepted multiple times in a
+   short period.  Servers are encouraged to allow tokens to be used only
+   once, if possible.
 
 
 
@@ -2917,7 +2917,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    being used for a denial of service attack against an unsuspecting
    victim.  Note that since the endpoint will not have any round-trip
    time measurements to this address, the estimate SHOULD be the default
-   initial value (see [QUIC-RECOVERY]).
+   initial value; see [QUIC-RECOVERY].
 
    If an endpoint skips validation of a peer address as described in
    Section 9.3, it does not need to limit its sending rate.
@@ -3817,9 +3817,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    An endpoint that detects an error SHOULD signal the existence of that
    error to its peer.  Both transport-level and application-level errors
-   can affect an entire connection (see Section 11.1), while only
-   application-level errors can be isolated to a single stream; see
-   Section 11.2.
+   can affect an entire connection; see Section 11.1.  Only application-
+   level errors can be isolated to a single stream; see Section 11.2.
 
    The most appropriate error code (Section 20) SHOULD be included in
    the frame that signals the error.  Where this specification
@@ -3861,6 +3860,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
+
 Iyengar & Thomson        Expires 31 October 2020               [Page 69]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
@@ -3897,19 +3897,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 12.  Packets and Frames
 
    QUIC endpoints communicate by exchanging packets.  Packets have
-   confidentiality and integrity protection (see Section 12.1) and are
-   carried in UDP datagrams (see Section 12.2).
+   confidentiality and integrity protection; see Section 12.1.  Packets
+   are carried in UDP datagrams; see Section 12.2.
 
-   This version of QUIC uses the long packet header (see Section 17.2)
-   during connection establishment.  Packets with the long header are
+   This version of QUIC uses the long packet header during connection
+   establishment; see Section 17.2.  Packets with the long header are
    Initial (Section 17.2.2), 0-RTT (Section 17.2.3), Handshake
    (Section 17.2.4), and Retry (Section 17.2.5).  Version negotiation
-   uses a version-independent packet with a long header (see
-   Section 17.2.1).
+   uses a version-independent packet with a long header; see
+   Section 17.2.1.
 
-   Packets with the short header (Section 17.3) are designed for minimal
-   overhead and are used after a connection is established and 1-RTT
-   keys are available.
+   Packets with the short header are designed for minimal overhead and
+   are used after a connection is established and 1-RTT keys are
+   available; see Section 17.3.
 
 
 
@@ -4652,7 +4652,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Endpoints SHOULD prioritize retransmission of data over sending new
    data, unless priorities specified by the application indicate
-   otherwise (see Section 2.3).
+   otherwise; see Section 2.3.
 
    Even though a sender is encouraged to assemble frames containing up-
    to-date information every time it sends a packet, it is not forbidden
@@ -5296,13 +5296,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Reserved Bits:  Two bits (those with a mask of 0x0c) of byte 0 are
       reserved across multiple packet types.  These bits are protected
-      using header protection (see Section 5.4 of [QUIC-TLS]).  The
-      value included prior to protection MUST be set to 0.  An endpoint
-      MUST treat receipt of a packet that has a non-zero value for these
+      using header protection; see Section 5.4 of [QUIC-TLS].  The value
+      included prior to protection MUST be set to 0.  An endpoint MUST
+      treat receipt of a packet that has a non-zero value for these
       bits, after removing both packet and header protection, as a
       connection error of type PROTOCOL_VIOLATION.  Discarding such a
       packet after only removing header protection can expose the
-      endpoint to attacks (see Section 9.3 of [QUIC-TLS]).
+      endpoint to attacks; see Section 9.3 of [QUIC-TLS].
 
    Packet Number Length:  In packet types which contain a Packet Number
       field, the least significant two bits (those with a mask of 0x03)
@@ -5310,7 +5310,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       unsigned, two-bit integer that is one less than the length of the
       packet number field in bytes.  That is, the length of the packet
       number field is the value of this field, plus one.  These bits are
-      protected using header protection (see Section 5.4 of [QUIC-TLS]).
+      protected using header protection; see Section 5.4 of [QUIC-TLS].
 
    Length:  The length of the remainder of the packet (that is, the
 
@@ -5329,7 +5329,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       packet number has confidentiality protection separate from packet
       protection, as described in Section 5.4 of [QUIC-TLS].  The length
       of the packet number field is encoded in the Packet Number Length
-      bits of byte 0 (see above).
+      bits of byte 0; see above.
 
 17.2.1.  Version Negotiation Packet
 
@@ -5503,7 +5503,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    acknowledgment, no further Initial packets need to be exchanged
    beyond this point.  Initial packet protection keys are discarded (see
    Section 4.10.1 of [QUIC-TLS]) along with any loss recovery and
-   congestion control state (see Section 6.5 of [QUIC-RECOVERY]).
+   congestion control state; see Section 6.5 of [QUIC-RECOVERY].
 
    Any data in CRYPTO frames is discarded - and no longer retransmitted
    - when Initial keys are discarded.
@@ -5628,7 +5628,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    The Destination Connection ID field in a Handshake packet contains a
    connection ID that is chosen by the recipient of the packet; the
    Source Connection ID includes the connection ID that the sender of
-   the packet wishes to use (see Section 7.2).
+   the packet wishes to use; see Section 7.2.
 
    Handshake packets are their own packet number space, and thus the
    first Handshake packet sent by a server contains a packet number of
@@ -5738,8 +5738,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    to the keys used to protect the Initial packet.  It also sets the
    Token field to the token provided in the Retry.  The client MUST NOT
    change the Source Connection ID because the server could include the
-   connection ID as part of its token validation logic (see
-   Section 8.1.4).
+   connection ID as part of its token validation logic; see
+   Section 8.1.4.
 
    A Retry packet does not include a packet number and cannot be
    explicitly acknowledged by a client.
@@ -5771,8 +5771,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
    A server acknowledges the use of a Retry packet for a connection
-   using the original_connection_id transport parameter (see
-   Section 18.2).  If the server sends a Retry packet, it MUST include
+   using the original_connection_id transport parameter; see
+   Section 18.2.  If the server sends a Retry packet, it MUST include
    the Destination Connection ID field from the client's first Initial
    packet in the transport parameter.
 
@@ -5816,8 +5816,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       latency spin bit, set as described in Section 17.3.1.
 
    Reserved Bits:  The next two bits (those with a mask of 0x18) of byte
-      0 are reserved.  These bits are protected using header protection
-      (see Section 5.4 of [QUIC-TLS]).  The value included prior to
+      0 are reserved.  These bits are protected using header protection;
+      see Section 5.4 of [QUIC-TLS].  The value included prior to
 
 
 
@@ -5830,8 +5830,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       packet that has a non-zero value for these bits, after removing
       both packet and header protection, as a connection error of type
       PROTOCOL_VIOLATION.  Discarding such a packet after only removing
-      header protection can expose the endpoint to attacks (see
-      Section 9.3 of [QUIC-TLS]).
+      header protection can expose the endpoint to attacks; see
+      Section 9.3 of [QUIC-TLS].
 
    Key Phase:  The next bit (0x04) of byte 0 indicates the key phase,
       which allows a recipient of a packet to identify the packet
@@ -5844,8 +5844,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       encoded as an unsigned, two-bit integer that is one less than the
       length of the packet number field in bytes.  That is, the length
       of the packet number field is the value of this field, plus one.
-      These bits are protected using header protection (see Section 5.4
-      of [QUIC-TLS]).
+      These bits are protected using header protection; see Section 5.4
+      of [QUIC-TLS].
 
    Destination Connection ID:  The Destination Connection ID is a
       connection ID that is chosen by the intended recipient of the
@@ -6001,8 +6001,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Many transport parameters listed here have integer values.  Those
    transport parameters that are identified as integers use a variable-
-   length integer encoding (see Section 16) and have a default value of
-   0 if the transport parameter is absent, unless otherwise stated.
+   length integer encoding; see Section 16.  Transport parameters have a
+   default value of 0 if the transport parameter is absent unless
+   otherwise stated.
 
    The following transport parameters are defined:
 
@@ -6040,8 +6041,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       endpoint and not the path.  It is expected that this is the space
       an endpoint dedicates to holding incoming packets.
 
-   initial_max_data (0x04):  The initial maximum data parameter is an
-      integer value that contains the initial value for the maximum
+
 
 
 
@@ -6050,6 +6050,8 @@ Iyengar & Thomson        Expires 31 October 2020              [Page 108]
 Internet-Draft           QUIC Transport Protocol              April 2020
 
 
+   initial_max_data (0x04):  The initial maximum data parameter is an
+      integer value that contains the initial value for the maximum
       amount of data that can be sent on the connection.  This is
       equivalent to sending a MAX_DATA (Section 19.9) for the connection
       immediately after completing the handshake.
@@ -6095,8 +6097,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       maximum number of unidirectional streams the peer may initiate.
       If this parameter is absent or zero, the peer cannot open
       unidirectional streams until a MAX_STREAMS frame is sent.  Setting
-      this parameter is equivalent to sending a MAX_STREAMS
-      (Section 19.11) of the corresponding type with the same value.
 
 
 
@@ -6105,6 +6105,9 @@ Iyengar & Thomson        Expires 31 October 2020              [Page 109]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
 
+
+      this parameter is equivalent to sending a MAX_STREAMS
+      (Section 19.11) of the corresponding type with the same value.
 
    ack_delay_exponent (0x0a):  The ACK delay exponent is an integer
       value indicating an exponent used to decode the ACK Delay field in
@@ -6145,6 +6148,20 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       connection ID when the client initiates migration to the preferred
       address.
 
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson        Expires 31 October 2020              [Page 110]
+
+Internet-Draft           QUIC Transport Protocol              April 2020
+
+
    Preferred Address {
      IPv4 Address (32),
      IPv4 Port (16),
@@ -6154,13 +6171,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
      Connection ID (..),
      Stateless Reset Token (128),
    }
-
-
-
-Iyengar & Thomson        Expires 31 October 2020              [Page 110]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
                     Figure 19: Preferred Address format
 
@@ -6196,16 +6206,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    This section describes the format and semantics of the core QUIC
    frame types.
 
-19.1.  PADDING Frame
-
-   The PADDING frame (type=0x00) has no semantic value.  PADDING frames
-   can be used to increase the size of a packet.  Padding can be used to
-   increase an initial client packet to the minimum required size, or to
-   provide protection against traffic analysis for protected packets.
-
-   A PADDING frame has no content.  That is, a PADDING frame consists of
-   the single byte that identifies the frame as a PADDING frame.
-
 
 
 
@@ -6217,6 +6217,16 @@ Iyengar & Thomson        Expires 31 October 2020              [Page 111]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
 
+
+19.1.  PADDING Frame
+
+   The PADDING frame (type=0x00) has no semantic value.  PADDING frames
+   can be used to increase the size of a packet.  Padding can be used to
+   increase an initial client packet to the minimum required size, or to
+   provide protection against traffic analysis for protected packets.
+
+   A PADDING frame has no content.  That is, a PADDING frame consists of
+   the single byte that identifies the frame as a PADDING frame.
 
 19.2.  PING Frame
 
@@ -6255,6 +6265,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    and, if they have enabled ECN for packets they send, they SHOULD use
    the information in the ECN section to manage their congestion state.
 
+
+
+
+
+Iyengar & Thomson        Expires 31 October 2020              [Page 112]
+
+Internet-Draft           QUIC Transport Protocol              April 2020
+
+
    QUIC acknowledgements are irrevocable.  Once acknowledged, a packet
    remains acknowledged, even if it does not appear in a future ACK
    frame.  This is unlike TCP SACKs ([RFC2018]).
@@ -6264,15 +6283,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    indicate both a packet number and a packet number space.  This is
    accomplished by having each ACK frame only acknowledge packet numbers
    in the same space as the packet in which the ACK frame is contained.
-
-
-
-
-
-Iyengar & Thomson        Expires 31 October 2020              [Page 112]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Version Negotiation and Retry packets cannot be acknowledged because
    they do not contain a packet number.  Rather than relying on ACK
@@ -6313,6 +6323,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       doesn't use the ACK Delay for Initial and Handshake packets, a
       sender SHOULD send a value of 0.
 
+
+
+Iyengar & Thomson        Expires 31 October 2020              [Page 113]
+
+Internet-Draft           QUIC Transport Protocol              April 2020
+
+
    ACK Range Count:  A variable-length integer specifying the number of
       Gap and ACK Range fields in the frame.
 
@@ -6321,15 +6338,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       being acknowledged.  The First ACK Range is encoded as an ACK
       Range; see Section 19.3.1 starting from the Largest Acknowledged.
       That is, the smallest packet acknowledged in the range is
-
-
-
-
-Iyengar & Thomson        Expires 31 October 2020              [Page 113]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
       determined by subtracting the First ACK Range value from the
       Largest Acknowledged.
 
@@ -6371,14 +6379,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    subtracted, so that each ACK Range describes progressively lower-
    numbered packets.
 
-   Each ACK Range acknowledges a contiguous range of packets by
-   indicating the number of acknowledged packets that precede the
-   largest packet number in that range.  A value of zero indicates that
-   only the largest packet number is acknowledged.  Larger ACK Range
-   values indicate a larger range, with corresponding lower values for
-   the smallest packet number in the range.  Thus, given a largest
-
-
 
 
 Iyengar & Thomson        Expires 31 October 2020              [Page 114]
@@ -6386,6 +6386,12 @@ Iyengar & Thomson        Expires 31 October 2020              [Page 114]
 Internet-Draft           QUIC Transport Protocol              April 2020
 
 
+   Each ACK Range acknowledges a contiguous range of packets by
+   indicating the number of acknowledged packets that precede the
+   largest packet number in that range.  A value of zero indicates that
+   only the largest packet number is acknowledged.  Larger ACK Range
+   values indicate a larger range, with corresponding lower values for
+   the smallest packet number in the range.  Thus, given a largest
    packet number for the range, the smallest value is determined by the
    formula:
 
@@ -6429,18 +6435,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    The three ECN Counts are:
 
-   ECT0 Count:  A variable-length integer representing the total number
-      of packets received with the ECT(0) codepoint in the packet number
-      space of the ACK frame.
-
-
-
 
 
 Iyengar & Thomson        Expires 31 October 2020              [Page 115]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
 
+
+   ECT0 Count:  A variable-length integer representing the total number
+      of packets received with the ECT(0) codepoint in the packet number
+      space of the ACK frame.
 
    ECT1 Count:  A variable-length integer representing the total number
       of packets received with the ECT(1) codepoint in the packet number
@@ -6485,10 +6489,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       containing the application protocol error code (see Section 20.1)
       which indicates why the stream is being closed.
 
-   Final Size:  A variable-length integer indicating the final size of
-      the stream by the RESET_STREAM sender, in unit of bytes.
-
-
 
 
 
@@ -6497,6 +6497,9 @@ Iyengar & Thomson        Expires 31 October 2020              [Page 116]
 
 Internet-Draft           QUIC Transport Protocol              April 2020
 
+
+   Final Size:  A variable-length integer indicating the final size of
+      the stream by the RESET_STREAM sender, in unit of bytes.
 
 19.5.  STOP_SENDING Frame
 
@@ -6541,9 +6544,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    optional length, and the end of the stream.
 
    The CRYPTO frame is shown in Figure 25.
-
-
-
 
 
 
@@ -6684,7 +6684,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    STREAM frames contain the following fields:
 
    Stream ID:  A variable-length integer indicating the stream ID of the
-      stream (see Section 2.1).
+      stream; see Section 2.1.
 
    Offset:  A variable-length integer specifying the byte offset in the
       stream for the data in this STREAM frame.  This field is present
@@ -6751,8 +6751,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    inform a peer of the maximum amount of data that can be sent on a
    stream.
 
-   A MAX_STREAM_DATA frame can be sent for streams in the Recv state
-   (see Section 3.1).  Receiving a MAX_STREAM_DATA frame for a locally-
+   A MAX_STREAM_DATA frame can be sent for streams in the Recv state;
+   see Section 3.1.  Receiving a MAX_STREAM_DATA frame for a locally-
    initiated stream that has not yet been created MUST be treated as a
    connection error of type STREAM_STATE_ERROR.  An endpoint that
    receives a MAX_STREAM_DATA frame for a receive-only stream MUST
@@ -6854,9 +6854,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 19.12.  DATA_BLOCKED Frame
 
    A sender SHOULD send a DATA_BLOCKED frame (type=0x14) when it wishes
-   to send data, but is unable to due to connection-level flow control
-   (see Section 4).  DATA_BLOCKED frames can be used as input to tuning
-   of flow control algorithms; see Section 4.2.
+   to send data, but is unable to due to connection-level flow control;
+   see Section 4.  DATA_BLOCKED frames can be used as input to tuning of
+   flow control algorithms; see Section 4.2.
 
    The DATA_BLOCKED frame is shown in Figure 31.
 
@@ -8303,8 +8303,8 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    In addition to the advice in Section 22.1, specifications for new
    permanent registrations SHOULD describe the means by which an
    endpoint might determine that it can send the identified type of
-   frame.  An accompanying transport parameter registration (see
-   Section 22.2) is expected for most registrations.  Specifications for
+   frame.  An accompanying transport parameter registration is expected
+   for most registrations; see Section 22.2.  Specifications for
    permanent registrations also needs to describe the format and
    assigned semantics of any fields in the frame.
 
