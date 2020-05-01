@@ -5610,20 +5610,11 @@ SHOULD use the quoted packet supplied in the payload of an ICMP message to
 associate the message with a corresponding transport connection <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.<a href="#section-14.2-4" class="pilcrow">¶</a></p>
 <p id="section-14.2-5">ICMP message validation MUST include matching IP addresses and UDP ports
 <span>[<a href="#RFC8085" class="xref">RFC8085</a>]</span> and, when possible, connection IDs to an active QUIC session.<a href="#section-14.2-5" class="pilcrow">¶</a></p>
-<p id="section-14.2-6">Further validation can also be provided:<a href="#section-14.2-6" class="pilcrow">¶</a></p>
-<ul>
-<li id="section-14.2-7.1">An IPv4 endpoint could set the Don't Fragment (DF) bit on a small proportion
-of packets, so that most invalid ICMP messages arrive when there are no DF
-packets outstanding, and can therefore be identified as spurious.<a href="#section-14.2-7.1" class="pilcrow">¶</a>
-</li>
-<li id="section-14.2-7.2">An endpoint could store additional information from the IP or UDP headers to
-use for validation (for example, the IP ID or UDP checksum).<a href="#section-14.2-7.2" class="pilcrow">¶</a>
-</li>
-</ul>
-<p id="section-14.2-8">The endpoint SHOULD ignore all ICMP messages that fail validation.<a href="#section-14.2-8" class="pilcrow">¶</a></p>
-<p id="section-14.2-9">An endpoint MUST NOT increase PMTU based on ICMP messages.  Any reduction in the
-QUIC maximum packet size MAY be provisional until QUIC's loss detection
-algorithm determines that the quoted packet has actually been lost.<a href="#section-14.2-9" class="pilcrow">¶</a></p>
+<p id="section-14.2-6">The endpoint SHOULD ignore all ICMP messages that fail validation.<a href="#section-14.2-6" class="pilcrow">¶</a></p>
+<p id="section-14.2-7">An endpoint MUST NOT increase PMTU based on ICMP messages; see Section 3, clause
+6 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.  Any reduction in the QUIC maximum packet size in response
+to ICMP messages MAY be provisional until QUIC's loss detection algorithm
+determines that the quoted packet has actually been lost.<a href="#section-14.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="datagram-packetization-layer-pmtu-discovery">
@@ -5649,18 +5640,20 @@ apply if these messages are used by DPLPMTUD.<a href="#section-14.3-5" class="pi
           <h4 id="name-pmtu-probes-containing-sour">
 <a href="#section-14.3.1" class="section-number selfRef">14.3.1. </a><a href="#name-pmtu-probes-containing-sour" class="section-name selfRef">PMTU Probes Containing Source Connection ID</a>
           </h4>
-<p id="section-14.3.1-1">Endpoints that rely on the destination connection ID for routing QUIC packets
-are likely to require that the connection ID be included in PMTU probe packets
-to route any resulting ICMP messages (<a href="#icmp-pmtud" class="xref">Section 14.2</a>) back to the correct
-endpoint.  However, only long header packets (<a href="#long-header" class="xref">Section 17.2</a>) contain source
-connection IDs, and long header packets are not decrypted or acknowledged by
-the peer once the handshake is complete.  One way to construct a PMTU probe is
-to coalesce (see <a href="#packet-coalesce" class="xref">Section 12.2</a>) a Handshake packet (<a href="#packet-handshake" class="xref">Section 17.2.4</a>)
-with a short header packet in a single UDP datagram.  If the UDP datagram
-reaches the endpoint, the Handshake packet will be ignored, but the short header
-packet will be acknowledged.  If the UDP datagram elicits an ICMP message, that
-message will likely contain the source connection ID within the quoted portion
-of the UDP datagram.<a href="#section-14.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-14.3.1-1">Endpoints that rely on the destination connection ID for routing incoming QUIC
+packets are likely to require that the connection ID be included in PMTU probe
+packets to route any resulting ICMP messages (<a href="#icmp-pmtud" class="xref">Section 14.2</a>) back to the
+correct endpoint.  However, only long header packets (<a href="#long-header" class="xref">Section 17.2</a>) contain
+source connection IDs, and long header packets are not decrypted or acknowledged
+by the peer once the handshake is complete.<a href="#section-14.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-14.3.1-2">One way to construct a probe for the path MTU is to coalesce (see
+<a href="#packet-coalesce" class="xref">Section 12.2</a>) a Handshake packet (<a href="#packet-handshake" class="xref">Section 17.2.4</a>) with a short
+header packet in a single UDP datagram.  If the UDP datagram reaches the
+endpoint, the Handshake packet will be ignored, but the short header packet will
+be acknowledged.  If the UDP datagram causes an ICMP message to be sent, the
+first part of the datagram will be quoted in that message.  If the the source
+connection ID is within the quoted portion of the UDP datagram, that could be
+used for routing.<a href="#section-14.3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
