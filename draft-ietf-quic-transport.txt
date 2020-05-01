@@ -306,7 +306,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
      C.27. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 173
      C.28. Since draft-hamilton-quic-transport-protocol-01 . . . . . 173
    Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 173
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 174
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 175
 
 1.  Introduction
 
@@ -9692,15 +9692,77 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    The IETF QUIC Working Group received an enormous amount of support
    from many people.  The following people provided substantive
-   contributions to this document: Alessandro Ghedini, Alyssa Wilk,
-   Antoine Delignat-Lavaud, Brian Trammell, Christian Huitema, Colin
-   Perkins, David Schinazi, Dmitri Tikhonov, Eric Kinnear, Eric
-   Rescorla, Gorry Fairhurst, Ian Swett, Igor Lubashev, 奥 一穂 (Kazuho
-   Oku), Lucas Pardue, Magnus Westerlund, Marten Seemann, Martin Duke,
-   Mike Bishop, Mikkel Fahnøe Jørgensen, Mirja Kühlewind, Nick Banks,
-   Nick Harper, Patrick McManus, Roberto Peon, Ryan Hamilton, Subodh
-   Iyengar, Tatsuhiro Tsujikawa, Ted Hardie, Tom Jones, and Victor
-   Vasiliev.
+   contributions to this document:
+
+   *  Alessandro Ghedini
+
+   *  Alyssa Wilk
+
+   *  Antoine Delignat-Lavaud
+
+   *  Brian Trammell
+
+   *  Christian Huitema
+
+   *  Colin Perkins
+
+   *  David Schinazi
+
+   *  Dmitri Tikhonov
+
+   *  Eric Kinnear
+
+   *  Eric Rescorla
+
+   *  Gorry Fairhurst
+
+   *  Ian Swett
+
+   *  Igor Lubashev
+
+   *  奥 一穂 (Kazuho Oku)
+
+   *  Lucas Pardue
+
+   *  Magnus Westerlund
+
+   *  Marten Seemann
+
+   *  Martin Duke
+
+   *  Mike Bishop
+
+   *  Mikkel Fahnøe Jørgensen
+
+   *  Mirja Kühlewind
+
+   *  Nick Banks
+
+
+
+
+Iyengar & Thomson        Expires 2 November 2020              [Page 174]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
+   *  Nick Harper
+
+   *  Patrick McManus
+
+   *  Roberto Peon
+
+   *  Ryan Hamilton
+
+   *  Subodh Iyengar
+
+   *  Tatsuhiro Tsujikawa
+
+   *  Ted Hardie
+
+   *  Tom Jones
+
+   *  Victor Vasiliev
 
 Authors' Addresses
 
@@ -9735,10 +9797,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-Iyengar & Thomson        Expires 2 November 2020              [Page 174]
+Iyengar & Thomson        Expires 2 November 2020              [Page 175]
