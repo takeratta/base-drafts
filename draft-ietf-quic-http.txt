@@ -75,7 +75,7 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
-     1.1.  Prior versions of HTTP  . . . . . . . . . . . . . . . . .   4
+     1.1.  Prior versions of HTTP  . . . . . . . . . . . . . . . . .   5
      1.2.  Delegation to QUIC  . . . . . . . . . . . . . . . . . . .   5
    2.  HTTP/3 Protocol Overview  . . . . . . . . . . . . . . . . . .   5
      2.1.  Document Organization . . . . . . . . . . . . . . . . . .   6
@@ -87,7 +87,7 @@ Table of Contents
        3.2.2.  Other Schemes . . . . . . . . . . . . . . . . . . . .  10
      3.3.  Connection Establishment  . . . . . . . . . . . . . . . .  10
      3.4.  Connection Reuse  . . . . . . . . . . . . . . . . . . . .  11
-   4.  HTTP Request Lifecycle  . . . . . . . . . . . . . . . . . . .  11
+   4.  HTTP Request Lifecycle  . . . . . . . . . . . . . . . . . . .  12
      4.1.  HTTP Message Exchanges  . . . . . . . . . . . . . . . . .  12
        4.1.1.  Field Formatting and Compression  . . . . . . . . . .  13
        4.1.2.  Request Cancellation and Rejection  . . . . . . . . .  17
@@ -161,7 +161,7 @@ Internet-Draft                   HTTP/3                         May 2020
        A.2.4.  Mapping Between HTTP/2 and HTTP/3 Frame Types . . . .  57
      A.3.  HTTP/2 SETTINGS Parameters  . . . . . . . . . . . . . . .  58
      A.4.  HTTP/2 Error Codes  . . . . . . . . . . . . . . . . . . .  59
-   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  60
+       A.4.1.  Mapping Between HTTP/2 and HTTP/3 Errors  . . . . . .  60
 
 
 
@@ -170,36 +170,37 @@ Bishop                   Expires 6 November 2020                [Page 3]
 Internet-Draft                   HTTP/3                         May 2020
 
 
-     B.1.  Since draft-ietf-quic-http-26 . . . . . . . . . . . . . .  60
-     B.2.  Since draft-ietf-quic-http-25 . . . . . . . . . . . . . .  60
-     B.3.  Since draft-ietf-quic-http-24 . . . . . . . . . . . . . .  60
-     B.4.  Since draft-ietf-quic-http-23 . . . . . . . . . . . . . .  60
-     B.5.  Since draft-ietf-quic-http-22 . . . . . . . . . . . . . .  60
-     B.6.  Since draft-ietf-quic-http-21 . . . . . . . . . . . . . .  61
-     B.7.  Since draft-ietf-quic-http-20 . . . . . . . . . . . . . .  61
-     B.8.  Since draft-ietf-quic-http-19 . . . . . . . . . . . . . .  62
-     B.9.  Since draft-ietf-quic-http-18 . . . . . . . . . . . . . .  62
-     B.10. Since draft-ietf-quic-http-17 . . . . . . . . . . . . . .  63
-     B.11. Since draft-ietf-quic-http-16 . . . . . . . . . . . . . .  63
+   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  60
+     B.1.  Since draft-ietf-quic-http-26 . . . . . . . . . . . . . .  61
+     B.2.  Since draft-ietf-quic-http-25 . . . . . . . . . . . . . .  61
+     B.3.  Since draft-ietf-quic-http-24 . . . . . . . . . . . . . .  61
+     B.4.  Since draft-ietf-quic-http-23 . . . . . . . . . . . . . .  61
+     B.5.  Since draft-ietf-quic-http-22 . . . . . . . . . . . . . .  61
+     B.6.  Since draft-ietf-quic-http-21 . . . . . . . . . . . . . .  62
+     B.7.  Since draft-ietf-quic-http-20 . . . . . . . . . . . . . .  62
+     B.8.  Since draft-ietf-quic-http-19 . . . . . . . . . . . . . .  63
+     B.9.  Since draft-ietf-quic-http-18 . . . . . . . . . . . . . .  63
+     B.10. Since draft-ietf-quic-http-17 . . . . . . . . . . . . . .  64
+     B.11. Since draft-ietf-quic-http-16 . . . . . . . . . . . . . .  64
      B.12. Since draft-ietf-quic-http-15 . . . . . . . . . . . . . .  64
      B.13. Since draft-ietf-quic-http-14 . . . . . . . . . . . . . .  64
-     B.14. Since draft-ietf-quic-http-13 . . . . . . . . . . . . . .  64
-     B.15. Since draft-ietf-quic-http-12 . . . . . . . . . . . . . .  64
+     B.14. Since draft-ietf-quic-http-13 . . . . . . . . . . . . . .  65
+     B.15. Since draft-ietf-quic-http-12 . . . . . . . . . . . . . .  65
      B.16. Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  65
      B.17. Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  65
-     B.18. Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  65
-     B.19. Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  65
-     B.20. Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  65
-     B.21. Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  65
-     B.22. Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  65
-     B.23. Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  65
-     B.24. Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  66
-     B.25. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  66
-     B.26. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  66
+     B.18. Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  66
+     B.19. Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  66
+     B.20. Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  66
+     B.21. Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  66
+     B.22. Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  66
+     B.23. Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  66
+     B.24. Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  67
+     B.25. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  67
+     B.26. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  67
      B.27. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  67
-     B.28. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  67
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  67
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  68
+     B.28. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  68
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  68
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  69
 
 1.  Introduction
 
@@ -207,6 +208,23 @@ Internet-Draft                   HTTP/3                         May 2020
    the Internet.  These semantics have most commonly been used with two
    different TCP mappings, HTTP/1.1 and HTTP/2.  HTTP/3 supports the
    same semantics over a new transport protocol, QUIC.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bishop                   Expires 6 November 2020                [Page 4]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
 1.1.  Prior versions of HTTP
 
@@ -218,13 +236,6 @@ Internet-Draft                   HTTP/3                         May 2020
    response at a time in each direction, multiple parallel TCP
    connections are often used, reducing the ability of the congestion
    controller to effectively manage traffic between endpoints.
-
-
-
-Bishop                   Expires 6 November 2020                [Page 4]
-
-Internet-Draft                   HTTP/3                         May 2020
-
 
    HTTP/2 [HTTP2] introduced a binary framing and multiplexing layer to
    improve latency without modifying the transport layer.  However,
@@ -263,6 +274,14 @@ Internet-Draft                   HTTP/3                         May 2020
    negotiation, stream-based multiplexing, and flow control.  Discovery
    of an HTTP/3 endpoint is described in Section 3.2.
 
+
+
+
+Bishop                   Expires 6 November 2020                [Page 5]
+
+Internet-Draft                   HTTP/3                         May 2020
+
+
    Within each stream, the basic unit of HTTP/3 communication is a frame
    (Section 7.2).  Each frame type serves a different purpose.  For
    example, HEADERS and DATA frames form the basis of HTTP requests and
@@ -273,14 +292,6 @@ Internet-Draft                   HTTP/3                         May 2020
    request-response pair consumes a single QUIC stream.  Streams are
    independent of each other, so one stream that is blocked or suffers
    packet loss does not prevent progress on other streams.
-
-
-
-
-Bishop                   Expires 6 November 2020                [Page 5]
-
-Internet-Draft                   HTTP/3                         May 2020
-
 
    Server push is an interaction mode introduced in HTTP/2 [HTTP2] which
    permits a server to push a request-response exchange to a client in
@@ -320,6 +331,13 @@ Internet-Draft                   HTTP/3                         May 2020
    *  HTTP Framing Layer (Section 7) describes the frames used on most
       streams.
 
+
+
+Bishop                   Expires 6 November 2020                [Page 6]
+
+Internet-Draft                   HTTP/3                         May 2020
+
+
    *  Error Handling (Section 8) describes how error conditions are
       handled and expressed, either on a particular stream or for the
       connection as a whole.
@@ -328,15 +346,6 @@ Internet-Draft                   HTTP/3                         May 2020
 
    *  Extensions to HTTP/3 (Section 9) describes how new capabilities
       can be added in future documents.
-
-
-
-
-
-Bishop                   Expires 6 November 2020                [Page 6]
-
-Internet-Draft                   HTTP/3                         May 2020
-
 
    *  A more detailed comparison between HTTP/2 and HTTP/3 can be found
       in Appendix A.
@@ -377,6 +386,14 @@ Internet-Draft                   HTTP/3                         May 2020
       "frames" exist in both this document and [QUIC-TRANSPORT].  Where
       frames from [QUIC-TRANSPORT] are referenced, the frame name will
       be prefaced with "QUIC."  For example, "QUIC CONNECTION_CLOSE
+
+
+
+Bishop                   Expires 6 November 2020                [Page 7]
+
+Internet-Draft                   HTTP/3                         May 2020
+
+
       frames."  References without this preface refer to frames defined
       in Section 7.2.
 
@@ -385,14 +402,6 @@ Internet-Draft                   HTTP/3                         May 2020
       discussion.
 
    receiver:  An endpoint that is receiving frames.
-
-
-
-
-Bishop                   Expires 6 November 2020                [Page 7]
-
-Internet-Draft                   HTTP/3                         May 2020
-
 
    sender:  An endpoint that is transmitting frames.
 
@@ -432,6 +441,15 @@ Internet-Draft                   HTTP/3                         May 2020
    draft-ietf-quic-http-25 uses the transport defined in draft-ietf-
    quic-transport-25.
 
+
+
+
+
+Bishop                   Expires 6 November 2020                [Page 8]
+
+Internet-Draft                   HTTP/3                         May 2020
+
+
    Non-compatible experiments that are based on these draft versions
    MUST append the string "-" and an experiment name to the identifier.
    For example, an experimental implementation based on draft-ietf-quic-
@@ -441,14 +459,6 @@ Internet-Draft                   HTTP/3                         May 2020
    Section 4.4.1.1 of [SEMANTICS].  Experimenters are encouraged to
    coordinate their experiments on the quic@ietf.org
    (mailto:quic@ietf.org) mailing list.
-
-
-
-
-Bishop                   Expires 6 November 2020                [Page 8]
-
-Internet-Draft                   HTTP/3                         May 2020
-
 
 3.2.  Discovering an HTTP/3 Endpoint
 
@@ -487,6 +497,15 @@ Internet-Draft                   HTTP/3                         May 2020
    endpoint via the Alt-Svc HTTP response header field or the HTTP/2
    ALTSVC frame ([ALTSVC]), using the ALPN token defined in Section 3.3.
 
+
+
+
+
+Bishop                   Expires 6 November 2020                [Page 9]
+
+Internet-Draft                   HTTP/3                         May 2020
+
+
    For example, an origin could indicate in an HTTP response that HTTP/3
    was available on UDP port 50781 at the same hostname by including the
    following header field:
@@ -497,14 +516,6 @@ Internet-Draft                   HTTP/3                         May 2020
    MAY attempt to establish a QUIC connection to the indicated host and
    port and, if successful, send HTTP requests using the mapping
    described in this document.
-
-
-
-
-Bishop                   Expires 6 November 2020                [Page 9]
-
-Internet-Draft                   HTTP/3                         May 2020
-
 
 3.2.2.  Other Schemes
 
@@ -544,23 +555,19 @@ Internet-Draft                   HTTP/3                         May 2020
    other application-layer protocols MAY be offered in the same
    handshake.
 
-   While connection-level options pertaining to the core QUIC protocol
-   are set in the initial crypto handshake, HTTP/3-specific settings are
-   conveyed in the SETTINGS frame.  After the QUIC connection is
-   established, a SETTINGS frame (Section 7.2.4) MUST be sent by each
-   endpoint as the initial frame of their respective HTTP control
-   stream; see Section 6.2.1.
-
-
-
-
-
 
 
 Bishop                   Expires 6 November 2020               [Page 10]
 
 Internet-Draft                   HTTP/3                         May 2020
 
+
+   While connection-level options pertaining to the core QUIC protocol
+   are set in the initial crypto handshake, HTTP/3-specific settings are
+   conveyed in the SETTINGS frame.  After the QUIC connection is
+   established, a SETTINGS frame (Section 7.2.4) MUST be sent by each
+   endpoint as the initial frame of their respective HTTP control
+   stream; see Section 6.2.1.
 
 3.4.  Connection Reuse
 
@@ -604,19 +611,14 @@ Internet-Draft                   HTTP/3                         May 2020
    request by sending a 421 (Misdirected Request) status code in
    response to the request; see Section 9.1.2 of [HTTP2].
 
-4.  HTTP Request Lifecycle
-
-
-
-
-
-
 
 
 Bishop                   Expires 6 November 2020               [Page 11]
 
 Internet-Draft                   HTTP/3                         May 2020
 
+
+4.  HTTP Request Lifecycle
 
 4.1.  HTTP Message Exchanges
 
@@ -664,8 +666,6 @@ Internet-Draft                   HTTP/3                         May 2020
    Frames of unknown types (Section 9), including reserved frames
    (Section 7.2.8) MAY be sent on a request or push stream before,
    after, or interleaved with other frames described in this section.
-
-
 
 
 
@@ -3257,9 +3257,8 @@ Internet-Draft                   HTTP/3                         May 2020
 A.4.  HTTP/2 Error Codes
 
    QUIC has the same concepts of "stream" and "connection" errors that
-   HTTP/2 provides.  However, there is no direct portability of HTTP/2
-   error codes to HTTP/3 error codes; the values are shifted in order to
-   prevent accidental or implicit conversion.
+   HTTP/2 provides.  However, the differences between HTTP/2 and HTTP/3
+   mean that error codes are not directly portable between versions.
 
    The HTTP/2 error codes defined in Section 7 of [HTTP2] logically map
    to the HTTP/3 error codes as follows:
@@ -3301,6 +3300,7 @@ A.4.  HTTP/2 Error Codes
 
 
 
+
 Bishop                   Expires 6 November 2020               [Page 59]
 
 Internet-Draft                   HTTP/3                         May 2020
@@ -3314,10 +3314,53 @@ Internet-Draft                   HTTP/3                         May 2020
    Error codes need to be defined for HTTP/2 and HTTP/3 separately.  See
    Section 11.2.3.
 
+A.4.1.  Mapping Between HTTP/2 and HTTP/3 Errors
+
+   An intermediary that converts between HTTP/2 and HTTP/3 may encounter
+   error conditions from either upstream.  It is useful to communicate
+   the occurrence of error to the downstream but error codes largely
+   reflect connection-local problems that generally do not make sense to
+   propagate.
+
+   An intermediary that encounters an error from an upstream origin can
+   indicate this by sending an HTTP status code such as 502, which is
+   suitable for a broad class of errors.
+
+   There are some rare cases where it is beneficial to propagate the
+   error by mapping it to the closest matching error type to the
+   receiver.  For example, an intermediary that receives an HTTP/2
+   stream error of type REFUSED_STREAM from the origin has a clear
+   signal that the request was not processed and that the request is
+   safe to retry.  Propagating this error condition to the client as an
+   HTTP/3 stream error of type H3_REQUEST_REJECTED allows the client to
+   take the action it deems most appropriate.  In the reverse direction
+   the intermediary might deem it beneficial to pass on client request
+   cancellations that are indicated by terminating a stream with
+   H3_REQUEST_CANCELLED.
+
+   Conversion between errors is described in the logical mapping.  The
+   error codes are defined in non-overlapping spaces in order to protect
+   against accidental conversion that could result in the use of
+   inappropriate or unknown error codes for the target version.  An
+   intermediary is permitted to promote stream errors to connection
+   errors but they should be aware of the cost to the connection for
+   what might be a temporary or intermittent error.
+
 Appendix B.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
+
+
+
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 60]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
 B.1.  Since draft-ietf-quic-http-26
 
@@ -3354,14 +3397,6 @@ B.5.  Since draft-ietf-quic-http-22
 
    *  Removed priority signaling (#2922,#2924)
 
-
-
-
-Bishop                   Expires 6 November 2020               [Page 60]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
    *  Further changes to error codes (#2662,#2551):
 
       -  Error codes renumbered
@@ -3374,6 +3409,14 @@ Internet-Draft                   HTTP/3                         May 2020
 
    *  Describe interactions with the transport in terms of defined
       interface terms (#2857,#2805)
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 61]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
    *  Require the use of the "http-opportunistic" resource (RFC 8164)
       when scheme is "http" (#2439,#2973)
@@ -3410,14 +3453,6 @@ B.7.  Since draft-ietf-quic-http-20
 
    *  Change default priority to use an orphan node (#2502, #2690)
 
-
-
-
-Bishop                   Expires 6 November 2020               [Page 61]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
    *  Exclusive priorities are restored (#2754, #2781)
 
    *  Restrict use of frames when using CONNECT (#2229, #2702)
@@ -3430,6 +3465,14 @@ Internet-Draft                   HTTP/3                         May 2020
 
    *  Allow extensions to use server-initiated bidirectional streams
       (#2711, #2773)
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 62]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
    *  Clarify use of maximum header list size setting (#2516, #2774)
 
@@ -3467,13 +3510,6 @@ B.9.  Since draft-ietf-quic-http-18
    *  Resetting streams following a GOAWAY is recommended, but not
       required (#2256,#2457)
 
-
-
-Bishop                   Expires 6 November 2020               [Page 62]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
    *  Use variable-length integers throughout (#2437,#2233,#2253,#2275)
 
       -  Variable-length frame types, stream types, and settings
@@ -3485,6 +3521,14 @@ Internet-Draft                   HTTP/3                         May 2020
 
    *  Frame layout switched from Length-Type-Value to Type-Length-Value
       (#2395,#2235)
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 63]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
    *  Specified error code for servers receiving DUPLICATE_PUSH (#2497)
 
@@ -3523,13 +3567,6 @@ B.11.  Since draft-ietf-quic-http-16
 
    *  Removed prohibition of zero-length DATA frames (#2098)
 
-
-
-Bishop                   Expires 6 November 2020               [Page 63]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
 B.12.  Since draft-ietf-quic-http-15
 
    Substantial editorial reorganization; no technical changes.
@@ -3540,6 +3577,14 @@ B.13.  Since draft-ietf-quic-http-14
       (#1720,#1806)
 
    *  Define error for missing SETTINGS frame (#1697,#1808)
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 64]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
    *  Setting values are variable-length integers (#1556,#1807) and do
       not have separate maximum values (#1820)
@@ -3578,14 +3623,6 @@ B.15.  Since draft-ietf-quic-http-12
    *  Priority mechanism now uses explicit placeholders to enable
       persistent structure in the tree (#441,#1421,#1422)
 
-
-
-
-Bishop                   Expires 6 November 2020               [Page 64]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
 B.16.  Since draft-ietf-quic-http-11
 
    *  Moved QPACK table updates and acknowledgments to dedicated streams
@@ -3595,6 +3632,15 @@ B.17.  Since draft-ietf-quic-http-10
 
    *  Settings need to be remembered when attempting and accepting 0-RTT
       (#1157, #1207)
+
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 65]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
 B.18.  Since draft-ietf-quic-http-09
 
@@ -3634,14 +3680,6 @@ B.22.  Since draft-ietf-quic-http-05
 
 B.23.  Since draft-ietf-quic-http-04
 
-
-
-
-Bishop                   Expires 6 November 2020               [Page 65]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
    *  Cite RFC 5234 (#404)
 
    *  Return to a single stream per request (#245,#557)
@@ -3651,6 +3689,14 @@ Internet-Draft                   HTTP/3                         May 2020
    *  SETTINGS_ENABLE_PUSH instead of SETTINGS_DISABLE_PUSH (#477)
 
    *  Restored GOAWAY (#696)
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 66]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
    *  Identify server push using Push ID rather than a stream ID
       (#702,#281)
@@ -3691,13 +3737,6 @@ B.26.  Since draft-ietf-quic-http-01
    *  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
 
-
-
-Bishop                   Expires 6 November 2020               [Page 66]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
 B.27.  Since draft-ietf-quic-http-00
 
    *  Changed "HTTP/2-over-QUIC" to "HTTP/QUIC" throughout (#11,#29)
@@ -3707,6 +3746,13 @@ B.27.  Since draft-ietf-quic-http-00
 
    *  Adopted SETTINGS format from draft-bishop-httpbis-extended-
       settings-01
+
+
+
+Bishop                   Expires 6 November 2020               [Page 67]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
    *  Reworked SETTINGS_ACK to account for indeterminate inter-stream
       order (#75)
@@ -3746,14 +3792,6 @@ Acknowledgements
 
    *  Nick Harper
 
-
-
-
-Bishop                   Expires 6 November 2020               [Page 67]
-
-Internet-Draft                   HTTP/3                         May 2020
-
-
    *  Ryan Hamilton
 
    *  Christian Huitema
@@ -3763,6 +3801,14 @@ Internet-Draft                   HTTP/3                         May 2020
    *  Robin Marx
 
    *  Patrick McManus
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 68]
+
+Internet-Draft                   HTTP/3                         May 2020
+
 
    *  奥 一穂 (Kazuho Oku)
 
@@ -3805,4 +3851,14 @@ Author's Address
 
 
 
-Bishop                   Expires 6 November 2020               [Page 68]
+
+
+
+
+
+
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 69]
