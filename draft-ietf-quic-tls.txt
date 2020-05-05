@@ -89,16 +89,16 @@ Table of Contents
      4.8.  Validating 0-RTT Configuration  . . . . . . . . . . . . .  17
      4.9.  HelloRetryRequest . . . . . . . . . . . . . . . . . . . .  18
      4.10. TLS Errors  . . . . . . . . . . . . . . . . . . . . . . .  18
-     4.11. Discarding Unused Keys  . . . . . . . . . . . . . . . . .  19
+     4.11. Discarding Unused Keys  . . . . . . . . . . . . . . . . .  18
        4.11.1.  Discarding Initial Keys  . . . . . . . . . . . . . .  19
-       4.11.2.  Discarding Handshake Keys  . . . . . . . . . . . . .  20
+       4.11.2.  Discarding Handshake Keys  . . . . . . . . . . . . .  19
        4.11.3.  Discarding 0-RTT Keys  . . . . . . . . . . . . . . .  20
    5.  Packet Protection . . . . . . . . . . . . . . . . . . . . . .  20
      5.1.  Packet Protection Keys  . . . . . . . . . . . . . . . . .  20
      5.2.  Initial Secrets . . . . . . . . . . . . . . . . . . . . .  21
      5.3.  AEAD Usage  . . . . . . . . . . . . . . . . . . . . . . .  22
      5.4.  Header Protection . . . . . . . . . . . . . . . . . . . .  23
-       5.4.1.  Header Protection Application . . . . . . . . . . . .  24
+       5.4.1.  Header Protection Application . . . . . . . . . . . .  23
        5.4.2.  Header Protection Sample  . . . . . . . . . . . . . .  25
        5.4.3.  AES-Based Header Protection . . . . . . . . . . . . .  27
        5.4.4.  ChaCha20-Based Header Protection  . . . . . . . . . .  27
@@ -986,7 +986,8 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    If TLS experiences an error, it generates an appropriate alert as
    defined in Section 6 of [TLS13].
 
-   A TLS alert is converted into a QUIC connection error.  The alert
+   A TLS alert is turned into a QUIC connection error by converting the
+   one-byte alert description into a QUIC error code.  The alert
    description is added to 0x100 to produce a QUIC error code from the
    range reserved for CRYPTO_ERROR.  The resulting value is sent in a
    QUIC CONNECTION_CLOSE frame of type 0x1c.
@@ -994,13 +995,12 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    The alert level of all TLS alerts is "fatal"; a TLS stack MUST NOT
    generate alerts at the "warning" level.
 
-   QUIC permits the use of a generic code in place of a specific error
-   code; see Section 11 of [QUIC-TRANSPORT].  For TLS alerts, this
-   includes replacing any alert with a generic alert, such as
-   handshake_failure (0x128 in QUIC).  Endpoints MAY use a generic error
-   code to avoid possibly exposing confidential information.
+4.11.  Discarding Unused Keys
 
-
+   After QUIC moves to a new encryption level, packet protection keys
+   for previous encryption levels can be discarded.  This occurs several
+   times during the handshake, as well as when keys are updated; see
+   Section 6.
 
 
 
@@ -1009,13 +1009,6 @@ Thomson & Turner         Expires 6 November 2020               [Page 18]
 
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
-
-4.11.  Discarding Unused Keys
-
-   After QUIC moves to a new encryption level, packet protection keys
-   for previous encryption levels can be discarded.  This occurs several
-   times during the handshake, as well as when keys are updated; see
-   Section 6.
 
    Packet protection keys are not discarded immediately when new keys
    are available.  If packets from a lower encryption level contain
@@ -1058,6 +1051,13 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    This results in abandoning loss recovery state for the Initial
    encryption level and ignoring any outstanding Initial packets.
 
+4.11.2.  Discarding Handshake Keys
+
+   An endpoint MUST discard its handshake keys when the TLS handshake is
+   confirmed (Section 4.1.2).  The server MUST send a HANDSHAKE_DONE
+   frame as soon as it completes the handshake.
+
+
 
 
 
@@ -1065,12 +1065,6 @@ Thomson & Turner         Expires 6 November 2020               [Page 19]
 
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
-
-4.11.2.  Discarding Handshake Keys
-
-   An endpoint MUST discard its handshake keys when the TLS handshake is
-   confirmed (Section 4.1.2).  The server MUST send a HANDSHAKE_DONE
-   frame as soon as it completes the handshake.
 
 4.11.3.  Discarding 0-RTT Keys
 
@@ -1115,18 +1109,18 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    function from the negotiated cipher suite.  Other versions of TLS
    MUST provide a similar function in order to be used with QUIC.
 
+   The current encryption level secret and the label "quic key" are
+   input to the KDF to produce the AEAD key; the label "quic iv" is used
+   to derive the IV; see Section 5.3.  The header protection key uses
+   the "quic hp" label; see Section 5.4.  Using these labels provides
+   key separation between QUIC and TLS; see Section 9.6.
+
 
 
 Thomson & Turner         Expires 6 November 2020               [Page 20]
 
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
-
-   The current encryption level secret and the label "quic key" are
-   input to the KDF to produce the AEAD key; the label "quic iv" is used
-   to derive the IV; see Section 5.3.  The header protection key uses
-   the "quic hp" label; see Section 5.4.  Using these labels provides
-   key separation between QUIC and TLS; see Section 9.6.
 
    The KDF used for initial secrets is always the HKDF-Expand-Label
    function from TLS 1.3 (see Section 5.2).
@@ -1170,6 +1164,12 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
 
    The secrets used for protecting Initial packets change when a server
    sends a Retry packet to use the connection ID value selected by the
+   server.  The secrets do not change when a client changes the
+   Destination Connection ID it uses in response to an Initial packet
+   from the server.
+
+   Note:  The Destination Connection ID is of arbitrary length, and it
+      could be zero length if the server sends a Retry packet with a
 
 
 
@@ -1178,12 +1178,6 @@ Thomson & Turner         Expires 6 November 2020               [Page 21]
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
 
-   server.  The secrets do not change when a client changes the
-   Destination Connection ID it uses in response to an Initial packet
-   from the server.
-
-   Note:  The Destination Connection ID is of arbitrary length, and it
-      could be zero length if the server sends a Retry packet with a
       zero-length Source Connection ID field.  In this case, the Initial
       keys provide no assurance to the client that the server received
       its packet; the client has to rely on the exchange that included
@@ -1226,6 +1220,12 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
       deploy a new ciphersuite.  This also applies to
       TLS_AES_128_CCM_8_SHA256.
 
+   The key and IV for the packet are computed as described in
+   Section 5.1.  The nonce, N, is formed by combining the packet
+   protection IV with the packet number.  The 62 bits of the
+   reconstructed QUIC packet number in network byte order are left-
+   padded with zeros to the size of the IV.  The exclusive OR of the
+   padded packet number and the IV forms the AEAD nonce.
 
 
 
@@ -1233,13 +1233,6 @@ Thomson & Turner         Expires 6 November 2020               [Page 22]
 
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
-
-   The key and IV for the packet are computed as described in
-   Section 5.1.  The nonce, N, is formed by combining the packet
-   protection IV with the packet number.  The 62 bits of the
-   reconstructed QUIC packet number in network byte order are left-
-   padded with zeros to the size of the IV.  The exclusive OR of the
-   padded packet number and the IV forms the AEAD nonce.
 
    The associated data, A, for the AEAD is the contents of the QUIC
    header, starting from the flags byte in either the short or long
@@ -1281,6 +1274,13 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    which do not contain a protected payload or any of the fields that
    are protected by this process.
 
+5.4.1.  Header Protection Application
+
+   Header protection is applied after packet protection is applied (see
+   Section 5.3).  The ciphertext of the packet is sampled and used as
+   input to an encryption algorithm.  The algorithm used depends on the
+   negotiated AEAD.
+
 
 
 
@@ -1289,13 +1289,6 @@ Thomson & Turner         Expires 6 November 2020               [Page 23]
 
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
-
-5.4.1.  Header Protection Application
-
-   Header protection is applied after packet protection is applied (see
-   Section 5.3).  The ciphertext of the packet is sampled and used as
-   input to an encryption algorithm.  The algorithm used depends on the
-   negotiated AEAD.
 
    The output of this algorithm is a 5 byte mask which is applied to the
    protected header fields using exclusive OR.  The least significant
@@ -1327,6 +1320,13 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    header packet.  Figure 7 shows the fields in each header that are
    covered by header protection and the portion of the protected packet
    payload that is sampled.
+
+
+
+
+
+
+
 
 
 
@@ -1998,18 +1998,18 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    protocol negotiation.  TLS uses Application Layer Protocol
    Negotiation (ALPN) [ALPN] to select an application protocol.  Unless
    another mechanism is used for agreeing on an application protocol,
-   endpoints MUST use ALPN for this purpose.
-
-   When using ALPN, endpoints MUST immediately close a connection (see
-   Section 10.3 of [QUIC-TRANSPORT]) with a no_application_protocol TLS
-   alert (QUIC error code 0x178; see Section 4.10) if an application
-   protocol is not negotiated.  While [ALPN] only specifies that servers
-   use this alert, QUIC clients MUST use error 0x178 to terminate a
-   connection when ALPN negotiation fails.
+   endpoints MUST use ALPN for this purpose.  When using ALPN, endpoints
+   MUST immediately close a connection (see Section 10.3 in
+   [QUIC-TRANSPORT]) if an application protocol is not negotiated with a
+   no_application_protocol TLS alert (QUIC error code 0x178, see
+   Section 4.10).  While [ALPN] only specifies that servers use this
+   alert, QUIC clients MUST also use it to terminate a connection when
+   ALPN negotiation fails.
 
    An application protocol MAY restrict the QUIC versions that it can
    operate over.  Servers MUST select an application protocol compatible
    with the QUIC version that the client has selected.  The server MUST
+   treat the inability to select a compatible application protocol as a
 
 
 
@@ -2018,7 +2018,6 @@ Thomson & Turner         Expires 6 November 2020               [Page 36]
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
 
-   treat the inability to select a compatible application protocol as a
    connection error of type 0x178 (no_application_protocol).  Similarly,
    a client MUST treat the selection of an incompatible application
    protocol by a server as a connection error of type 0x178.
@@ -2065,6 +2064,7 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    The TLS EndOfEarlyData message is not used with QUIC.  QUIC does not
    rely on this message to mark the end of 0-RTT data or to signal the
    change to Handshake keys.
+
 
 
 
