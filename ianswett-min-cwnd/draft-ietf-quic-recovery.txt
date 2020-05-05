@@ -80,7 +80,7 @@ Table of Contents
        3.1.5.  More ACK Ranges . . . . . . . . . . . . . . . . . . .   7
        3.1.6.  Explicit Correction For Delayed Acknowledgements  . .   7
        3.1.7.  Probe Timeout Replaces RTO and TLP  . . . . . . . . .   7
-       3.1.8.  The Minimum Congestion Window is 2 Packets  . . . . .   8
+       3.1.8.  The Minimum Congestion Window is Two Packets  . . . .   8
    4.  Estimating the Round-Trip Time  . . . . . . . . . . . . . . .   8
      4.1.  Generating RTT samples  . . . . . . . . . . . . . . . . .   8
      4.2.  Estimating min_rtt  . . . . . . . . . . . . . . . . . . .   9
@@ -394,7 +394,7 @@ Iyengar & Swett          Expires 6 November 2020                [Page 7]
 Internet-Draft             QUIC Loss Detection                  May 2020
 
 
-3.1.8.  The Minimum Congestion Window is 2 Packets
+3.1.8.  The Minimum Congestion Window is Two Packets
 
    QUIC recommends that the minimum congestion window be 2 packets
    instead of the 1 packet minimum in TCP.  A 2 packet minimum
