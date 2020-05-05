@@ -2035,7 +2035,7 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
          quic_transport_parameters(0xffa5), (65535)
       } ExtensionType;
 
-   The "extension_data" field of the quic_transport_parameters extension
+   The extension_data field of the quic_transport_parameters extension
    contains a value that is defined by the version of QUIC that is in
    use.
 

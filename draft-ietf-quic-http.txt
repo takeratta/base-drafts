@@ -900,7 +900,7 @@ Internet-Draft                   HTTP/3                         May 2020
 
    If an implementation wishes to advise its peer of this limit, it can
    be conveyed as a number of bytes in the
-   "SETTINGS_MAX_FIELD_SECTION_SIZE" parameter.  An implementation which
+   SETTINGS_MAX_FIELD_SECTION_SIZE parameter.  An implementation which
    has received this parameter SHOULD NOT send an HTTP message header
    which exceeds the indicated size, as the peer will likely refuse to
    process it.  However, because this limit is applied at each hop,
@@ -969,12 +969,12 @@ Internet-Draft                   HTTP/3                         May 2020
    *  the inclusion of invalid characters in field names or values
 
    A request or response that includes a payload body can include a
-   "content-length" header field.  A request or response is also
-   malformed if the value of a content-length header field does not
-   equal the sum of the DATA frame payload lengths that form the body.
-   A response that is defined to have no payload, as described in
-   Section 6.3.3 of [SEMANTICS] can have a non-zero content-length
-   field, even though no content is included in DATA frames.
+   Content-Length header field.  A request or response is also malformed
+   if the value of a content-length header field does not equal the sum
+   of the DATA frame payload lengths that form the body.  A response
+   that is defined to have no payload, as described in Section 6.3.3 of
+   [SEMANTICS] can have a non-zero content-length field, even though no
+   content is included in DATA frames.
 
    Intermediaries that process HTTP requests or responses (i.e., any
    intermediary not acting as a tunnel) MUST NOT forward a malformed
@@ -1477,8 +1477,8 @@ Internet-Draft                   HTTP/3                         May 2020
 
 6.2.1.  Control Streams
 
-   A control stream is indicated by a stream type of "0x00".  Data on
-   this stream consists of HTTP/3 frames, as defined in Section 7.2.
+   A control stream is indicated by a stream type of 0x00.  Data on this
+   stream consists of HTTP/3 frames, as defined in Section 7.2.
 
    Each side MUST initiate a single control stream at the beginning of
    the connection and send its SETTINGS frame as the first frame on this
@@ -1504,8 +1504,8 @@ Internet-Draft                   HTTP/3                         May 2020
    server to initiate a response before a request has been made.  See
    Section 4.4 for more details.
 
-   A push stream is indicated by a stream type of "0x01", followed by
-   the Push ID of the promise that it fulfills, encoded as a variable-
+   A push stream is indicated by a stream type of 0x01, followed by the
+   Push ID of the promise that it fulfills, encoded as a variable-length
 
 
 
@@ -1514,7 +1514,7 @@ Bishop                   Expires 6 November 2020               [Page 27]
 Internet-Draft                   HTTP/3                         May 2020
 
 
-   length integer.  The remaining data on this stream consists of HTTP/3
+   integer.  The remaining data on this stream consists of HTTP/3
    frames, as defined in Section 7.2, and fulfills a promised server
    push by zero or more interim HTTP responses followed by a single
    final HTTP response, as defined in Section 4.1.  Server push and Push
@@ -2613,8 +2613,8 @@ Internet-Draft                   HTTP/3                         May 2020
                    Table 2: Initial HTTP/3 Frame Types
 
    Additionally, each code of the format "0x1f * N + 0x21" for non-
-   negative integer values of N (that is, "0x21", "0x40", ..., through
-   "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
+   negative integer values of N (that is, 0x21, 0x40, ..., through
+   0x3FFFFFFFFFFFFFFE) MUST NOT be assigned by IANA.
 
 11.2.2.  Settings Parameters
 
@@ -2668,8 +2668,8 @@ Internet-Draft                   HTTP/3                         May 2020
                      Table 3: Initial HTTP/3 Settings
 
    Additionally, each code of the format "0x1f * N + 0x21" for non-
-   negative integer values of N (that is, "0x21", "0x40", ..., through
-   "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
+   negative integer values of N (that is, 0x21, 0x40, ..., through
+   0x3FFFFFFFFFFFFFFE) MUST NOT be assigned by IANA.
 
 11.2.3.  Error Codes
 
@@ -2787,8 +2787,8 @@ Internet-Draft                   HTTP/3                         May 2020
                     Table 4: Initial HTTP/3 Error Codes
 
    Additionally, each code of the format "0x1f * N + 0x21" for non-
-   negative integer values of N (that is, "0x21", "0x40", ..., through
-   "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
+   negative integer values of N (that is, 0x21, 0x40, ..., through
+   0x3FFFFFFFFFFFFFFE) MUST NOT be assigned by IANA.
 
 
 
@@ -2838,8 +2838,8 @@ Internet-Draft                   HTTP/3                         May 2020
                                   Table 5
 
    Additionally, each code of the format "0x1f * N + 0x21" for non-
-   negative integer values of N (that is, "0x21", "0x40", ..., through
-   "0x3FFFFFFFFFFFFFFE") MUST NOT be assigned by IANA.
+   negative integer values of N (that is, 0x21, 0x40, ..., through
+   0x3FFFFFFFFFFFFFFE) MUST NOT be assigned by IANA.
 
 12.  References
 

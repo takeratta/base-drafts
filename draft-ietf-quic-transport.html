@@ -3752,7 +3752,7 @@ which an endpoint migrates to a new address.<a href="#section-9-1" class="pilcro
 duration of the handshake.  An endpoint MUST NOT initiate connection migration
 before the handshake is confirmed, as defined in section 4.1.2 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-9-2" class="pilcrow">¶</a></p>
 <p id="section-9-3">An endpoint also MUST NOT send packets from a different local address, actively
-initiating migration, if the peer sent the <code>disable_active_migration</code> transport
+initiating migration, if the peer sent the disable_active_migration transport
 parameter during the handshake. An endpoint which has sent this transport
 parameter, but detects that a peer has nonetheless migrated to a different
 network MUST either drop the incoming packets on that path without generating a
@@ -5109,7 +5109,7 @@ contract: an endpoint promises to never intentionally delay acknowledgments
 of an ack-eliciting packet by more than the indicated value. If it does,
 any excess accrues to the RTT estimate and could result in spurious or
 delayed retransmissions from the peer. For Initial and Handshake packets,
-a max_ack_delay of 0 is used. The sender uses the receiver's <code>max_ack_delay</code>
+a max_ack_delay of 0 is used. The sender uses the receiver's max_ack_delay
 value in determining timeouts for timer-based retransmission, as detailed in
 Section 5.2.1 of <span>[<a href="#QUIC-RECOVERY" class="xref">QUIC-RECOVERY</a>]</span>.<a href="#section-13.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-13.2.1-2">An ACK frame SHOULD be generated for at least every second ack-eliciting packet.
@@ -6533,7 +6533,7 @@ connection.<a href="#section-17.3.1-9" class="pilcrow">¶</a></p>
       <h2 id="name-transport-parameter-encodin">
 <a href="#section-18" class="section-number selfRef">18. </a><a href="#name-transport-parameter-encodin" class="section-name selfRef">Transport Parameter Encoding</a>
       </h2>
-<p id="section-18-1">The <code>extension_data</code> field of the quic_transport_parameters extension defined in
+<p id="section-18-1">The extension_data field of the quic_transport_parameters extension defined in
 <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span> contains the QUIC transport parameters. They are encoded as a
 sequence of transport parameters, as shown in <a href="#transport-parameter-sequence" class="xref">Figure 17</a>:<a href="#section-18-1" class="pilcrow">¶</a></p>
 <span id="name-sequence-of-transport-param"></span><div id="transport-parameter-sequence">
@@ -6883,7 +6883,7 @@ QUIC long or short header, the value in an ACK frame is not truncated.<a href="#
 when this ACK was sent and when the largest acknowledged packet, as indicated
 in the Largest Acknowledged field, was received by this peer.  The value of
 the ACK Delay field is scaled by multiplying the encoded value by 2 to the
-power of the value of the <code>ack_delay_exponent</code> transport parameter set by the
+power of the value of the ack_delay_exponent transport parameter set by the
 sender of the ACK frame; see <a href="#transport-parameter-definitions" class="xref">Section 18.2</a>.  Scaling in
 this fashion allows for a larger range of values with a shorter encoding at
 the cost of lower resolution.  Because the receiver doesn't use the ACK Delay
@@ -8850,7 +8850,7 @@ this registry MUST include the following fields:<a href="#section-22.2-3" class=
         </table>
 </div>
 <p id="section-22.2-7">Additionally, each value of the format <code>31 * N + 27</code> for integer values of N
-(that is, <code>27</code>, <code>58</code>, <code>89</code>, ...) are reserved and MUST NOT be assigned by IANA.<a href="#section-22.2-7" class="pilcrow">¶</a></p>
+(that is, 27, 58, 89, ...) are reserved and MUST NOT be assigned by IANA.<a href="#section-22.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-frames">
