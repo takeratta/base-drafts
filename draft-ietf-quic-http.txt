@@ -199,7 +199,7 @@ Internet-Draft                   HTTP/3                         May 2020
      B.27. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  67
      B.28. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  67
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  67
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  67
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  68
 
 1.  Introduction
 
@@ -3728,8 +3728,64 @@ Acknowledgements
    The original authors of this specification were Robbie Shade and Mike
    Warres.
 
-   A substantial portion of Mike's contribution was supported by
-   Microsoft during his employment there.
+   The IETF QUIC Working Group received an enormous amount of support
+   from many people.  Among others, the following people provided
+   substantial contributions to this document:
+
+   *  Bence Beky
+
+   *  Daan De Meyer
+
+   *  Martin Duke
+
+   *  Roy Fielding
+
+   *  Alan Frindell
+
+   *  Alessandro Ghedini
+
+   *  Nick Harper
+
+
+
+
+Bishop                   Expires 6 November 2020               [Page 67]
+
+Internet-Draft                   HTTP/3                         May 2020
+
+
+   *  Ryan Hamilton
+
+   *  Christian Huitema
+
+   *  Subodh Iyengar
+
+   *  Robin Marx
+
+   *  Patrick McManus
+
+   *  奥 一穂 (Kazuho Oku)
+
+   *  Lucas Pardue
+
+   *  Roberto Peon
+
+   *  Julian Reschke
+
+   *  Ben Schwartz
+
+   *  Ian Swett
+
+   *  Willy Taureau
+
+   *  Martin Thomson
+
+   *  Dmitri Tikhonov
+
+   *  Tatsuhiro Tsujikawa
+
+   A portion of Mike's contribution was supported by Microsoft during
+   his employment there.
 
 Author's Address
 
@@ -3749,4 +3805,4 @@ Author's Address
 
 
 
-Bishop                   Expires 6 November 2020               [Page 67]
+Bishop                   Expires 6 November 2020               [Page 68]
