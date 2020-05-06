@@ -12,7 +12,7 @@
 documents describe QUIC's loss detection and congestion control and the use of
 TLS for key negotiation. 
     " name="description">
-<meta content="xml2rfc 2.42.0" name="generator">
+<meta content="xml2rfc 2.44.0" name="generator">
 <meta content="draft-ietf-quic-transport-latest" name="ietf.draft">
 <link href="draft-ietf-quic-transport.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -830,7 +830,7 @@ table.left {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Iyengar &amp; Thomson</td>
-<td class="center">Expires 2 November 2020</td>
+<td class="center">Expires 7 November 2020</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -843,12 +843,12 @@ table.left {
 <dd class="internet-draft">draft-ietf-quic-transport-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-05-01" class="published">1 May 2020</time>
+<time datetime="2020-05-06" class="published">6 May 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-11-02">2 November 2020</time></dd>
+<dd class="expires"><time datetime="2020-11-07">7 November 2020</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -901,7 +901,7 @@ code and issues list for this draft can be found at
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -931,7 +931,7 @@ code and issues list for this draft can be found at
         </h2>
 <nav class="toc"><ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.1.1"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.1.2.1">
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-document-structure" class="xref">Document Structure</a><a href="#section-toc.1-1.1.2.1.1" class="pilcrow">¶</a></p>
@@ -945,683 +945,683 @@ code and issues list for this draft can be found at
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-streams" class="xref">Streams</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-streams" class="xref">Streams</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-stream-types-and-identifier" class="xref">Stream Types and Identifiers</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-stream-types-and-identifier" class="xref">Stream Types and Identifiers</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-sending-and-receiving-data" class="xref">Sending and Receiving Data</a><a href="#section-toc.1-1.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-sending-and-receiving-data" class="xref">Sending and Receiving Data</a><a href="#section-toc.1-1.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.2.2.3">
-                <p id="section-toc.1-1.2.2.3.1" class="keepWithNext"><a href="#section-2.3" class="xref">2.3</a>.  <a href="#name-stream-prioritization" class="xref">Stream Prioritization</a><a href="#section-toc.1-1.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="xref">2.3</a>.  <a href="#name-stream-prioritization" class="xref">Stream Prioritization</a><a href="#section-toc.1-1.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.2.2.4">
-                <p id="section-toc.1-1.2.2.4.1" class="keepWithNext"><a href="#section-2.4" class="xref">2.4</a>.  <a href="#name-required-operations-on-stre" class="xref">Required Operations on Streams</a><a href="#section-toc.1-1.2.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="xref">2.4</a>.  <a href="#name-required-operations-on-stre" class="xref">Required Operations on Streams</a><a href="#section-toc.1-1.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-stream-states" class="xref">Stream States</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-stream-states" class="xref">Stream States</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-sending-stream-states" class="xref">Sending Stream States</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-sending-stream-states" class="xref">Sending Stream States</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1" class="keepWithNext"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-receiving-stream-states" class="xref">Receiving Stream States</a><a href="#section-toc.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-receiving-stream-states" class="xref">Receiving Stream States</a><a href="#section-toc.1-1.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1" class="keepWithNext"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-permitted-frame-types" class="xref">Permitted Frame Types</a><a href="#section-toc.1-1.3.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-permitted-frame-types" class="xref">Permitted Frame Types</a><a href="#section-toc.1-1.3.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1" class="keepWithNext"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-bidirectional-stream-states" class="xref">Bidirectional Stream States</a><a href="#section-toc.1-1.3.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-bidirectional-stream-states" class="xref">Bidirectional Stream States</a><a href="#section-toc.1-1.3.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1" class="keepWithNext"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-solicited-state-transitions" class="xref">Solicited State Transitions</a><a href="#section-toc.1-1.3.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-solicited-state-transitions" class="xref">Solicited State Transitions</a><a href="#section-toc.1-1.3.2.5.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1" class="keepWithNext"><a href="#section-4" class="xref">4</a>.  <a href="#name-flow-control" class="xref">Flow Control</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-flow-control" class="xref">Flow Control</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1" class="keepWithNext"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-data-flow-control" class="xref">Data Flow Control</a><a href="#section-toc.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-data-flow-control" class="xref">Data Flow Control</a><a href="#section-toc.1-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1" class="keepWithNext"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-flow-credit-increments" class="xref">Flow Credit Increments</a><a href="#section-toc.1-1.4.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-flow-credit-increments" class="xref">Flow Credit Increments</a><a href="#section-toc.1-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1" class="keepWithNext"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-handling-stream-cancellatio" class="xref">Handling Stream Cancellation</a><a href="#section-toc.1-1.4.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-handling-stream-cancellatio" class="xref">Handling Stream Cancellation</a><a href="#section-toc.1-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1" class="keepWithNext"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-stream-final-size" class="xref">Stream Final Size</a><a href="#section-toc.1-1.4.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-stream-final-size" class="xref">Stream Final Size</a><a href="#section-toc.1-1.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1" class="keepWithNext"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-controlling-concurrency" class="xref">Controlling Concurrency</a><a href="#section-toc.1-1.4.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-controlling-concurrency" class="xref">Controlling Concurrency</a><a href="#section-toc.1-1.4.2.5.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1" class="keepWithNext"><a href="#section-5" class="xref">5</a>.  <a href="#name-connections" class="xref">Connections</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-connections" class="xref">Connections</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1" class="keepWithNext"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-connection-id" class="xref">Connection ID</a><a href="#section-toc.1-1.5.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-connection-id" class="xref">Connection ID</a><a href="#section-toc.1-1.5.2.1.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.1.2.1">
-                    <p id="section-toc.1-1.5.2.1.2.1.1" class="keepWithNext"><a href="#section-5.1.1" class="xref">5.1.1</a>.  <a href="#name-issuing-connection-ids" class="xref">Issuing Connection IDs</a><a href="#section-toc.1-1.5.2.1.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="xref">5.1.1</a>.  <a href="#name-issuing-connection-ids" class="xref">Issuing Connection IDs</a><a href="#section-toc.1-1.5.2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.1.2.2">
-                    <p id="section-toc.1-1.5.2.1.2.2.1" class="keepWithNext"><a href="#section-5.1.2" class="xref">5.1.2</a>.  <a href="#name-consuming-and-retiring-conn" class="xref">Consuming and Retiring Connection IDs</a><a href="#section-toc.1-1.5.2.1.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="xref">5.1.2</a>.  <a href="#name-consuming-and-retiring-conn" class="xref">Consuming and Retiring Connection IDs</a><a href="#section-toc.1-1.5.2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1" class="keepWithNext"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-matching-packets-to-connect" class="xref">Matching Packets to Connections</a><a href="#section-toc.1-1.5.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-matching-packets-to-connect" class="xref">Matching Packets to Connections</a><a href="#section-toc.1-1.5.2.2.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.2.2.1">
-                    <p id="section-toc.1-1.5.2.2.2.1.1" class="keepWithNext"><a href="#section-5.2.1" class="xref">5.2.1</a>.  <a href="#name-client-packet-handling" class="xref">Client Packet Handling</a><a href="#section-toc.1-1.5.2.2.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="xref">5.2.1</a>.  <a href="#name-client-packet-handling" class="xref">Client Packet Handling</a><a href="#section-toc.1-1.5.2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.2.2.2">
-                    <p id="section-toc.1-1.5.2.2.2.2.1" class="keepWithNext"><a href="#section-5.2.2" class="xref">5.2.2</a>.  <a href="#name-server-packet-handling" class="xref">Server Packet Handling</a><a href="#section-toc.1-1.5.2.2.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="xref">5.2.2</a>.  <a href="#name-server-packet-handling" class="xref">Server Packet Handling</a><a href="#section-toc.1-1.5.2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.2.2.3">
-                    <p id="section-toc.1-1.5.2.2.2.3.1" class="keepWithNext"><a href="#section-5.2.3" class="xref">5.2.3</a>.  <a href="#name-considerations-for-simple-l" class="xref">Considerations for Simple Load Balancers</a><a href="#section-toc.1-1.5.2.2.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.3.1"><a href="#section-5.2.3" class="xref">5.2.3</a>.  <a href="#name-considerations-for-simple-l" class="xref">Considerations for Simple Load Balancers</a><a href="#section-toc.1-1.5.2.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1" class="keepWithNext"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-life-of-a-quic-connection" class="xref">Life of a QUIC Connection</a><a href="#section-toc.1-1.5.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-life-of-a-quic-connection" class="xref">Life of a QUIC Connection</a><a href="#section-toc.1-1.5.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1" class="keepWithNext"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-required-operations-on-conn" class="xref">Required Operations on Connections</a><a href="#section-toc.1-1.5.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-required-operations-on-conn" class="xref">Required Operations on Connections</a><a href="#section-toc.1-1.5.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1" class="keepWithNext"><a href="#section-6" class="xref">6</a>.  <a href="#name-version-negotiation" class="xref">Version Negotiation</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-version-negotiation" class="xref">Version Negotiation</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1" class="keepWithNext"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-sending-version-negotiation" class="xref">Sending Version Negotiation Packets</a><a href="#section-toc.1-1.6.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-sending-version-negotiation" class="xref">Sending Version Negotiation Packets</a><a href="#section-toc.1-1.6.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1" class="keepWithNext"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-handling-version-negotiatio" class="xref">Handling Version Negotiation Packets</a><a href="#section-toc.1-1.6.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-handling-version-negotiatio" class="xref">Handling Version Negotiation Packets</a><a href="#section-toc.1-1.6.2.2.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.6.2.2.2.1">
-                    <p id="section-toc.1-1.6.2.2.2.1.1" class="keepWithNext"><a href="#section-6.2.1" class="xref">6.2.1</a>.  <a href="#name-version-negotiation-between" class="xref">Version Negotiation Between Draft Versions</a><a href="#section-toc.1-1.6.2.2.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.6.2.2.2.1.1"><a href="#section-6.2.1" class="xref">6.2.1</a>.  <a href="#name-version-negotiation-between" class="xref">Version Negotiation Between Draft Versions</a><a href="#section-toc.1-1.6.2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.6.2.3">
-                <p id="section-toc.1-1.6.2.3.1" class="keepWithNext"><a href="#section-6.3" class="xref">6.3</a>.  <a href="#name-using-reserved-versions" class="xref">Using Reserved Versions</a><a href="#section-toc.1-1.6.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="xref">6.3</a>.  <a href="#name-using-reserved-versions" class="xref">Using Reserved Versions</a><a href="#section-toc.1-1.6.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1" class="keepWithNext"><a href="#section-7" class="xref">7</a>.  <a href="#name-cryptographic-and-transport" class="xref">Cryptographic and Transport Handshake</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-cryptographic-and-transport" class="xref">Cryptographic and Transport Handshake</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1" class="keepWithNext"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-example-handshake-flows" class="xref">Example Handshake Flows</a><a href="#section-toc.1-1.7.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-example-handshake-flows" class="xref">Example Handshake Flows</a><a href="#section-toc.1-1.7.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1" class="keepWithNext"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-negotiating-connection-ids" class="xref">Negotiating Connection IDs</a><a href="#section-toc.1-1.7.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-negotiating-connection-ids" class="xref">Negotiating Connection IDs</a><a href="#section-toc.1-1.7.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1" class="keepWithNext"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-transport-parameters" class="xref">Transport Parameters</a><a href="#section-toc.1-1.7.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-transport-parameters" class="xref">Transport Parameters</a><a href="#section-toc.1-1.7.2.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.7.2.3.2.1">
-                    <p id="section-toc.1-1.7.2.3.2.1.1" class="keepWithNext"><a href="#section-7.3.1" class="xref">7.3.1</a>.  <a href="#name-values-of-transport-paramet" class="xref">Values of Transport Parameters for 0-RTT</a><a href="#section-toc.1-1.7.2.3.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.7.2.3.2.1.1"><a href="#section-7.3.1" class="xref">7.3.1</a>.  <a href="#name-values-of-transport-paramet" class="xref">Values of Transport Parameters for 0-RTT</a><a href="#section-toc.1-1.7.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.7.2.3.2.2">
-                    <p id="section-toc.1-1.7.2.3.2.2.1" class="keepWithNext"><a href="#section-7.3.2" class="xref">7.3.2</a>.  <a href="#name-new-transport-parameters" class="xref">New Transport Parameters</a><a href="#section-toc.1-1.7.2.3.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.7.2.3.2.2.1"><a href="#section-7.3.2" class="xref">7.3.2</a>.  <a href="#name-new-transport-parameters" class="xref">New Transport Parameters</a><a href="#section-toc.1-1.7.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.7.2.4">
-                <p id="section-toc.1-1.7.2.4.1" class="keepWithNext"><a href="#section-7.4" class="xref">7.4</a>.  <a href="#name-cryptographic-message-buffe" class="xref">Cryptographic Message Buffering</a><a href="#section-toc.1-1.7.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="xref">7.4</a>.  <a href="#name-cryptographic-message-buffe" class="xref">Cryptographic Message Buffering</a><a href="#section-toc.1-1.7.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1" class="keepWithNext"><a href="#section-8" class="xref">8</a>.  <a href="#name-address-validation" class="xref">Address Validation</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-address-validation" class="xref">Address Validation</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1" class="keepWithNext"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-address-validation-during-c" class="xref">Address Validation During Connection Establishment</a><a href="#section-toc.1-1.8.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-address-validation-during-c" class="xref">Address Validation During Connection Establishment</a><a href="#section-toc.1-1.8.2.1.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.1.2.1">
-                    <p id="section-toc.1-1.8.2.1.2.1.1" class="keepWithNext"><a href="#section-8.1.1" class="xref">8.1.1</a>.  <a href="#name-token-construction" class="xref">Token Construction</a><a href="#section-toc.1-1.8.2.1.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.8.2.1.2.1.1"><a href="#section-8.1.1" class="xref">8.1.1</a>.  <a href="#name-token-construction" class="xref">Token Construction</a><a href="#section-toc.1-1.8.2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.1.2.2">
-                    <p id="section-toc.1-1.8.2.1.2.2.1" class="keepWithNext"><a href="#section-8.1.2" class="xref">8.1.2</a>.  <a href="#name-address-validation-using-re" class="xref">Address Validation using Retry Packets</a><a href="#section-toc.1-1.8.2.1.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.8.2.1.2.2.1"><a href="#section-8.1.2" class="xref">8.1.2</a>.  <a href="#name-address-validation-using-re" class="xref">Address Validation using Retry Packets</a><a href="#section-toc.1-1.8.2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.1.2.3">
-                    <p id="section-toc.1-1.8.2.1.2.3.1" class="keepWithNext"><a href="#section-8.1.3" class="xref">8.1.3</a>.  <a href="#name-address-validation-for-futu" class="xref">Address Validation for Future Connections</a><a href="#section-toc.1-1.8.2.1.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.8.2.1.2.3.1"><a href="#section-8.1.3" class="xref">8.1.3</a>.  <a href="#name-address-validation-for-futu" class="xref">Address Validation for Future Connections</a><a href="#section-toc.1-1.8.2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.1.2.4">
-                    <p id="section-toc.1-1.8.2.1.2.4.1" class="keepWithNext"><a href="#section-8.1.4" class="xref">8.1.4</a>.  <a href="#name-address-validation-token-in" class="xref">Address Validation Token Integrity</a><a href="#section-toc.1-1.8.2.1.2.4.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.8.2.1.2.4.1"><a href="#section-8.1.4" class="xref">8.1.4</a>.  <a href="#name-address-validation-token-in" class="xref">Address Validation Token Integrity</a><a href="#section-toc.1-1.8.2.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1" class="keepWithNext"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-path-validation" class="xref">Path Validation</a><a href="#section-toc.1-1.8.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-path-validation" class="xref">Path Validation</a><a href="#section-toc.1-1.8.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1" class="keepWithNext"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-initiating-path-validation" class="xref">Initiating Path Validation</a><a href="#section-toc.1-1.8.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-initiating-path-validation" class="xref">Initiating Path Validation</a><a href="#section-toc.1-1.8.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.4">
-                <p id="section-toc.1-1.8.2.4.1" class="keepWithNext"><a href="#section-8.4" class="xref">8.4</a>.  <a href="#name-path-validation-responses" class="xref">Path Validation Responses</a><a href="#section-toc.1-1.8.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="xref">8.4</a>.  <a href="#name-path-validation-responses" class="xref">Path Validation Responses</a><a href="#section-toc.1-1.8.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.5">
-                <p id="section-toc.1-1.8.2.5.1" class="keepWithNext"><a href="#section-8.5" class="xref">8.5</a>.  <a href="#name-successful-path-validation" class="xref">Successful Path Validation</a><a href="#section-toc.1-1.8.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.8.2.5.1"><a href="#section-8.5" class="xref">8.5</a>.  <a href="#name-successful-path-validation" class="xref">Successful Path Validation</a><a href="#section-toc.1-1.8.2.5.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.8.2.6">
-                <p id="section-toc.1-1.8.2.6.1" class="keepWithNext"><a href="#section-8.6" class="xref">8.6</a>.  <a href="#name-failed-path-validation" class="xref">Failed Path Validation</a><a href="#section-toc.1-1.8.2.6.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.8.2.6.1"><a href="#section-8.6" class="xref">8.6</a>.  <a href="#name-failed-path-validation" class="xref">Failed Path Validation</a><a href="#section-toc.1-1.8.2.6.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1" class="keepWithNext"><a href="#section-9" class="xref">9</a>.  <a href="#name-connection-migration" class="xref">Connection Migration</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-connection-migration" class="xref">Connection Migration</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1" class="keepWithNext"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-probing-a-new-path" class="xref">Probing a New Path</a><a href="#section-toc.1-1.9.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-probing-a-new-path" class="xref">Probing a New Path</a><a href="#section-toc.1-1.9.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1" class="keepWithNext"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-initiating-connection-migra" class="xref">Initiating Connection Migration</a><a href="#section-toc.1-1.9.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-initiating-connection-migra" class="xref">Initiating Connection Migration</a><a href="#section-toc.1-1.9.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.3">
-                <p id="section-toc.1-1.9.2.3.1" class="keepWithNext"><a href="#section-9.3" class="xref">9.3</a>.  <a href="#name-responding-to-connection-mi" class="xref">Responding to Connection Migration</a><a href="#section-toc.1-1.9.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="xref">9.3</a>.  <a href="#name-responding-to-connection-mi" class="xref">Responding to Connection Migration</a><a href="#section-toc.1-1.9.2.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.3.2.1">
-                    <p id="section-toc.1-1.9.2.3.2.1.1" class="keepWithNext"><a href="#section-9.3.1" class="xref">9.3.1</a>.  <a href="#name-peer-address-spoofing" class="xref">Peer Address Spoofing</a><a href="#section-toc.1-1.9.2.3.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.9.2.3.2.1.1"><a href="#section-9.3.1" class="xref">9.3.1</a>.  <a href="#name-peer-address-spoofing" class="xref">Peer Address Spoofing</a><a href="#section-toc.1-1.9.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.3.2.2">
-                    <p id="section-toc.1-1.9.2.3.2.2.1" class="keepWithNext"><a href="#section-9.3.2" class="xref">9.3.2</a>.  <a href="#name-on-path-address-spoofing" class="xref">On-Path Address Spoofing</a><a href="#section-toc.1-1.9.2.3.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.9.2.3.2.2.1"><a href="#section-9.3.2" class="xref">9.3.2</a>.  <a href="#name-on-path-address-spoofing" class="xref">On-Path Address Spoofing</a><a href="#section-toc.1-1.9.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.3.2.3">
-                    <p id="section-toc.1-1.9.2.3.2.3.1" class="keepWithNext"><a href="#section-9.3.3" class="xref">9.3.3</a>.  <a href="#name-off-path-packet-forwarding" class="xref">Off-Path Packet Forwarding</a><a href="#section-toc.1-1.9.2.3.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.9.2.3.2.3.1"><a href="#section-9.3.3" class="xref">9.3.3</a>.  <a href="#name-off-path-packet-forwarding" class="xref">Off-Path Packet Forwarding</a><a href="#section-toc.1-1.9.2.3.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.4">
-                <p id="section-toc.1-1.9.2.4.1" class="keepWithNext"><a href="#section-9.4" class="xref">9.4</a>.  <a href="#name-loss-detection-and-congesti" class="xref">Loss Detection and Congestion Control</a><a href="#section-toc.1-1.9.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="xref">9.4</a>.  <a href="#name-loss-detection-and-congesti" class="xref">Loss Detection and Congestion Control</a><a href="#section-toc.1-1.9.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.5">
-                <p id="section-toc.1-1.9.2.5.1" class="keepWithNext"><a href="#section-9.5" class="xref">9.5</a>.  <a href="#name-privacy-implications-of-con" class="xref">Privacy Implications of Connection Migration</a><a href="#section-toc.1-1.9.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="xref">9.5</a>.  <a href="#name-privacy-implications-of-con" class="xref">Privacy Implications of Connection Migration</a><a href="#section-toc.1-1.9.2.5.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.6">
-                <p id="section-toc.1-1.9.2.6.1" class="keepWithNext"><a href="#section-9.6" class="xref">9.6</a>.  <a href="#name-servers-preferred-address" class="xref">Server's Preferred Address</a><a href="#section-toc.1-1.9.2.6.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.9.2.6.1"><a href="#section-9.6" class="xref">9.6</a>.  <a href="#name-servers-preferred-address" class="xref">Server's Preferred Address</a><a href="#section-toc.1-1.9.2.6.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.6.2.1">
-                    <p id="section-toc.1-1.9.2.6.2.1.1" class="keepWithNext"><a href="#section-9.6.1" class="xref">9.6.1</a>.  <a href="#name-communicating-a-preferred-a" class="xref">Communicating a Preferred Address</a><a href="#section-toc.1-1.9.2.6.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.9.2.6.2.1.1"><a href="#section-9.6.1" class="xref">9.6.1</a>.  <a href="#name-communicating-a-preferred-a" class="xref">Communicating a Preferred Address</a><a href="#section-toc.1-1.9.2.6.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.6.2.2">
-                    <p id="section-toc.1-1.9.2.6.2.2.1" class="keepWithNext"><a href="#section-9.6.2" class="xref">9.6.2</a>.  <a href="#name-responding-to-connection-mig" class="xref">Responding to Connection Migration</a><a href="#section-toc.1-1.9.2.6.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.9.2.6.2.2.1"><a href="#section-9.6.2" class="xref">9.6.2</a>.  <a href="#name-responding-to-connection-mig" class="xref">Responding to Connection Migration</a><a href="#section-toc.1-1.9.2.6.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.6.2.3">
-                    <p id="section-toc.1-1.9.2.6.2.3.1" class="keepWithNext"><a href="#section-9.6.3" class="xref">9.6.3</a>.  <a href="#name-interaction-of-client-migra" class="xref">Interaction of Client Migration and Preferred Address</a><a href="#section-toc.1-1.9.2.6.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.9.2.6.2.3.1"><a href="#section-9.6.3" class="xref">9.6.3</a>.  <a href="#name-interaction-of-client-migra" class="xref">Interaction of Client Migration and Preferred Address</a><a href="#section-toc.1-1.9.2.6.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.9.2.7">
-                <p id="section-toc.1-1.9.2.7.1" class="keepWithNext"><a href="#section-9.7" class="xref">9.7</a>.  <a href="#name-use-of-ipv6-flow-label-and-" class="xref">Use of IPv6 Flow-Label and Migration</a><a href="#section-toc.1-1.9.2.7.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.9.2.7.1"><a href="#section-9.7" class="xref">9.7</a>.  <a href="#name-use-of-ipv6-flow-label-and-" class="xref">Use of IPv6 Flow-Label and Migration</a><a href="#section-toc.1-1.9.2.7.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1" class="keepWithNext"><a href="#section-10" class="xref">10</a>. <a href="#name-connection-termination" class="xref">Connection Termination</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-connection-termination" class="xref">Connection Termination</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1" class="keepWithNext"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-closing-and-draining-connec" class="xref">Closing and Draining Connection States</a><a href="#section-toc.1-1.10.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-closing-and-draining-connec" class="xref">Closing and Draining Connection States</a><a href="#section-toc.1-1.10.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1" class="keepWithNext"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-idle-timeout" class="xref">Idle Timeout</a><a href="#section-toc.1-1.10.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-idle-timeout" class="xref">Idle Timeout</a><a href="#section-toc.1-1.10.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.3">
-                <p id="section-toc.1-1.10.2.3.1" class="keepWithNext"><a href="#section-10.3" class="xref">10.3</a>.  <a href="#name-immediate-close" class="xref">Immediate Close</a><a href="#section-toc.1-1.10.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.10.2.3.1"><a href="#section-10.3" class="xref">10.3</a>.  <a href="#name-immediate-close" class="xref">Immediate Close</a><a href="#section-toc.1-1.10.2.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.3.2.1">
-                    <p id="section-toc.1-1.10.2.3.2.1.1" class="keepWithNext"><a href="#section-10.3.1" class="xref">10.3.1</a>.  <a href="#name-immediate-close-during-the-" class="xref">Immediate Close During the Handshake</a><a href="#section-toc.1-1.10.2.3.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.10.2.3.2.1.1"><a href="#section-10.3.1" class="xref">10.3.1</a>.  <a href="#name-immediate-close-during-the-" class="xref">Immediate Close During the Handshake</a><a href="#section-toc.1-1.10.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.4">
-                <p id="section-toc.1-1.10.2.4.1" class="keepWithNext"><a href="#section-10.4" class="xref">10.4</a>.  <a href="#name-stateless-reset" class="xref">Stateless Reset</a><a href="#section-toc.1-1.10.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.10.2.4.1"><a href="#section-10.4" class="xref">10.4</a>.  <a href="#name-stateless-reset" class="xref">Stateless Reset</a><a href="#section-toc.1-1.10.2.4.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.4.2.1">
-                    <p id="section-toc.1-1.10.2.4.2.1.1" class="keepWithNext"><a href="#section-10.4.1" class="xref">10.4.1</a>.  <a href="#name-detecting-a-stateless-reset" class="xref">Detecting a Stateless Reset</a><a href="#section-toc.1-1.10.2.4.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.10.2.4.2.1.1"><a href="#section-10.4.1" class="xref">10.4.1</a>.  <a href="#name-detecting-a-stateless-reset" class="xref">Detecting a Stateless Reset</a><a href="#section-toc.1-1.10.2.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.4.2.2">
-                    <p id="section-toc.1-1.10.2.4.2.2.1" class="keepWithNext"><a href="#section-10.4.2" class="xref">10.4.2</a>.  <a href="#name-calculating-a-stateless-res" class="xref">Calculating a Stateless Reset Token</a><a href="#section-toc.1-1.10.2.4.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.10.2.4.2.2.1"><a href="#section-10.4.2" class="xref">10.4.2</a>.  <a href="#name-calculating-a-stateless-res" class="xref">Calculating a Stateless Reset Token</a><a href="#section-toc.1-1.10.2.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.10.2.4.2.3">
-                    <p id="section-toc.1-1.10.2.4.2.3.1" class="keepWithNext"><a href="#section-10.4.3" class="xref">10.4.3</a>.  <a href="#name-looping" class="xref">Looping</a><a href="#section-toc.1-1.10.2.4.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.10.2.4.2.3.1"><a href="#section-10.4.3" class="xref">10.4.3</a>.  <a href="#name-looping" class="xref">Looping</a><a href="#section-toc.1-1.10.2.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1" class="keepWithNext"><a href="#section-11" class="xref">11</a>. <a href="#name-error-handling" class="xref">Error Handling</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-error-handling" class="xref">Error Handling</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1" class="keepWithNext"><a href="#section-11.1" class="xref">11.1</a>.  <a href="#name-connection-errors" class="xref">Connection Errors</a><a href="#section-toc.1-1.11.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="xref">11.1</a>.  <a href="#name-connection-errors" class="xref">Connection Errors</a><a href="#section-toc.1-1.11.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1" class="keepWithNext"><a href="#section-11.2" class="xref">11.2</a>.  <a href="#name-stream-errors" class="xref">Stream Errors</a><a href="#section-toc.1-1.11.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="xref">11.2</a>.  <a href="#name-stream-errors" class="xref">Stream Errors</a><a href="#section-toc.1-1.11.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1" class="keepWithNext"><a href="#section-12" class="xref">12</a>. <a href="#name-packets-and-frames" class="xref">Packets and Frames</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="xref">12</a>. <a href="#name-packets-and-frames" class="xref">Packets and Frames</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1" class="keepWithNext"><a href="#section-12.1" class="xref">12.1</a>.  <a href="#name-protected-packets" class="xref">Protected Packets</a><a href="#section-toc.1-1.12.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#section-12.1" class="xref">12.1</a>.  <a href="#name-protected-packets" class="xref">Protected Packets</a><a href="#section-toc.1-1.12.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1" class="keepWithNext"><a href="#section-12.2" class="xref">12.2</a>.  <a href="#name-coalescing-packets" class="xref">Coalescing Packets</a><a href="#section-toc.1-1.12.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.12.2.2.1"><a href="#section-12.2" class="xref">12.2</a>.  <a href="#name-coalescing-packets" class="xref">Coalescing Packets</a><a href="#section-toc.1-1.12.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.12.2.3">
-                <p id="section-toc.1-1.12.2.3.1" class="keepWithNext"><a href="#section-12.3" class="xref">12.3</a>.  <a href="#name-packet-numbers" class="xref">Packet Numbers</a><a href="#section-toc.1-1.12.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.12.2.3.1"><a href="#section-12.3" class="xref">12.3</a>.  <a href="#name-packet-numbers" class="xref">Packet Numbers</a><a href="#section-toc.1-1.12.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.12.2.4">
-                <p id="section-toc.1-1.12.2.4.1" class="keepWithNext"><a href="#section-12.4" class="xref">12.4</a>.  <a href="#name-frames-and-frame-types" class="xref">Frames and Frame Types</a><a href="#section-toc.1-1.12.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.12.2.4.1"><a href="#section-12.4" class="xref">12.4</a>.  <a href="#name-frames-and-frame-types" class="xref">Frames and Frame Types</a><a href="#section-toc.1-1.12.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1" class="keepWithNext"><a href="#section-13" class="xref">13</a>. <a href="#name-packetization-and-reliabili" class="xref">Packetization and Reliability</a><a href="#section-toc.1-1.13.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#section-13" class="xref">13</a>. <a href="#name-packetization-and-reliabili" class="xref">Packetization and Reliability</a><a href="#section-toc.1-1.13.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.1">
-                <p id="section-toc.1-1.13.2.1.1" class="keepWithNext"><a href="#section-13.1" class="xref">13.1</a>.  <a href="#name-packet-processing" class="xref">Packet Processing</a><a href="#section-toc.1-1.13.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.13.2.1.1"><a href="#section-13.1" class="xref">13.1</a>.  <a href="#name-packet-processing" class="xref">Packet Processing</a><a href="#section-toc.1-1.13.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.2">
-                <p id="section-toc.1-1.13.2.2.1" class="keepWithNext"><a href="#section-13.2" class="xref">13.2</a>.  <a href="#name-generating-acknowledgements" class="xref">Generating Acknowledgements</a><a href="#section-toc.1-1.13.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.13.2.2.1"><a href="#section-13.2" class="xref">13.2</a>.  <a href="#name-generating-acknowledgements" class="xref">Generating Acknowledgements</a><a href="#section-toc.1-1.13.2.2.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.2.2.1">
-                    <p id="section-toc.1-1.13.2.2.2.1.1" class="keepWithNext"><a href="#section-13.2.1" class="xref">13.2.1</a>.  <a href="#name-sending-ack-frames" class="xref">Sending ACK Frames</a><a href="#section-toc.1-1.13.2.2.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.1.1"><a href="#section-13.2.1" class="xref">13.2.1</a>.  <a href="#name-sending-ack-frames" class="xref">Sending ACK Frames</a><a href="#section-toc.1-1.13.2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.2.2.2">
-                    <p id="section-toc.1-1.13.2.2.2.2.1" class="keepWithNext"><a href="#section-13.2.2" class="xref">13.2.2</a>.  <a href="#name-managing-ack-ranges" class="xref">Managing ACK Ranges</a><a href="#section-toc.1-1.13.2.2.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.2.1"><a href="#section-13.2.2" class="xref">13.2.2</a>.  <a href="#name-managing-ack-ranges" class="xref">Managing ACK Ranges</a><a href="#section-toc.1-1.13.2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.2.2.3">
-                    <p id="section-toc.1-1.13.2.2.2.3.1" class="keepWithNext"><a href="#section-13.2.3" class="xref">13.2.3</a>.  <a href="#name-receiver-tracking-of-ack-fr" class="xref">Receiver Tracking of ACK Frames</a><a href="#section-toc.1-1.13.2.2.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.3.1"><a href="#section-13.2.3" class="xref">13.2.3</a>.  <a href="#name-receiver-tracking-of-ack-fr" class="xref">Receiver Tracking of ACK Frames</a><a href="#section-toc.1-1.13.2.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.2.2.4">
-                    <p id="section-toc.1-1.13.2.2.2.4.1" class="keepWithNext"><a href="#section-13.2.4" class="xref">13.2.4</a>.  <a href="#name-limiting-ack-ranges" class="xref">Limiting ACK Ranges</a><a href="#section-toc.1-1.13.2.2.2.4.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.4.1"><a href="#section-13.2.4" class="xref">13.2.4</a>.  <a href="#name-limiting-ack-ranges" class="xref">Limiting ACK Ranges</a><a href="#section-toc.1-1.13.2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.2.2.5">
-                    <p id="section-toc.1-1.13.2.2.2.5.1" class="keepWithNext"><a href="#section-13.2.5" class="xref">13.2.5</a>.  <a href="#name-measuring-and-reporting-hos" class="xref">Measuring and Reporting Host Delay</a><a href="#section-toc.1-1.13.2.2.2.5.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.5.1"><a href="#section-13.2.5" class="xref">13.2.5</a>.  <a href="#name-measuring-and-reporting-hos" class="xref">Measuring and Reporting Host Delay</a><a href="#section-toc.1-1.13.2.2.2.5.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.2.2.6">
-                    <p id="section-toc.1-1.13.2.2.2.6.1" class="keepWithNext"><a href="#section-13.2.6" class="xref">13.2.6</a>.  <a href="#name-ack-frames-and-packet-prote" class="xref">ACK Frames and Packet Protection</a><a href="#section-toc.1-1.13.2.2.2.6.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.6.1"><a href="#section-13.2.6" class="xref">13.2.6</a>.  <a href="#name-ack-frames-and-packet-prote" class="xref">ACK Frames and Packet Protection</a><a href="#section-toc.1-1.13.2.2.2.6.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.3">
-                <p id="section-toc.1-1.13.2.3.1" class="keepWithNext"><a href="#section-13.3" class="xref">13.3</a>.  <a href="#name-retransmission-of-informati" class="xref">Retransmission of Information</a><a href="#section-toc.1-1.13.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.13.2.3.1"><a href="#section-13.3" class="xref">13.3</a>.  <a href="#name-retransmission-of-informati" class="xref">Retransmission of Information</a><a href="#section-toc.1-1.13.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.4">
-                <p id="section-toc.1-1.13.2.4.1" class="keepWithNext"><a href="#section-13.4" class="xref">13.4</a>.  <a href="#name-explicit-congestion-notific" class="xref">Explicit Congestion Notification</a><a href="#section-toc.1-1.13.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.13.2.4.1"><a href="#section-13.4" class="xref">13.4</a>.  <a href="#name-explicit-congestion-notific" class="xref">Explicit Congestion Notification</a><a href="#section-toc.1-1.13.2.4.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.4.2.1">
-                    <p id="section-toc.1-1.13.2.4.2.1.1" class="keepWithNext"><a href="#section-13.4.1" class="xref">13.4.1</a>.  <a href="#name-ecn-counts" class="xref">ECN Counts</a><a href="#section-toc.1-1.13.2.4.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.4.2.1.1"><a href="#section-13.4.1" class="xref">13.4.1</a>.  <a href="#name-ecn-counts" class="xref">ECN Counts</a><a href="#section-toc.1-1.13.2.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.13.2.4.2.2">
-                    <p id="section-toc.1-1.13.2.4.2.2.1" class="keepWithNext"><a href="#section-13.4.2" class="xref">13.4.2</a>.  <a href="#name-ecn-validation" class="xref">ECN Validation</a><a href="#section-toc.1-1.13.2.4.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.13.2.4.2.2.1"><a href="#section-13.4.2" class="xref">13.4.2</a>.  <a href="#name-ecn-validation" class="xref">ECN Validation</a><a href="#section-toc.1-1.13.2.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1" class="keepWithNext"><a href="#section-14" class="xref">14</a>. <a href="#name-packet-size" class="xref">Packet Size</a><a href="#section-toc.1-1.14.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#section-14" class="xref">14</a>. <a href="#name-packet-size" class="xref">Packet Size</a><a href="#section-toc.1-1.14.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.1">
-                <p id="section-toc.1-1.14.2.1.1" class="keepWithNext"><a href="#section-14.1" class="xref">14.1</a>.  <a href="#name-path-maximum-transmission-u" class="xref">Path Maximum Transmission Unit (PMTU)</a><a href="#section-toc.1-1.14.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.14.2.1.1"><a href="#section-14.1" class="xref">14.1</a>.  <a href="#name-path-maximum-transmission-u" class="xref">Path Maximum Transmission Unit (PMTU)</a><a href="#section-toc.1-1.14.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.2">
-                <p id="section-toc.1-1.14.2.2.1" class="keepWithNext"><a href="#section-14.2" class="xref">14.2</a>.  <a href="#name-icmp-packet-too-big-message" class="xref">ICMP Packet Too Big Messages</a><a href="#section-toc.1-1.14.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.14.2.2.1"><a href="#section-14.2" class="xref">14.2</a>.  <a href="#name-icmp-packet-too-big-message" class="xref">ICMP Packet Too Big Messages</a><a href="#section-toc.1-1.14.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.3">
-                <p id="section-toc.1-1.14.2.3.1" class="keepWithNext"><a href="#section-14.3" class="xref">14.3</a>.  <a href="#name-datagram-packetization-laye" class="xref">Datagram Packetization Layer PMTU Discovery</a><a href="#section-toc.1-1.14.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.14.2.3.1"><a href="#section-14.3" class="xref">14.3</a>.  <a href="#name-datagram-packetization-laye" class="xref">Datagram Packetization Layer PMTU Discovery</a><a href="#section-toc.1-1.14.2.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.3.2.1">
-                    <p id="section-toc.1-1.14.2.3.2.1.1" class="keepWithNext"><a href="#section-14.3.1" class="xref">14.3.1</a>.  <a href="#name-pmtu-probes-containing-sour" class="xref">PMTU Probes Containing Source Connection ID</a><a href="#section-toc.1-1.14.2.3.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.14.2.3.2.1.1"><a href="#section-14.3.1" class="xref">14.3.1</a>.  <a href="#name-pmtu-probes-containing-sour" class="xref">PMTU Probes Containing Source Connection ID</a><a href="#section-toc.1-1.14.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1" class="keepWithNext"><a href="#section-15" class="xref">15</a>. <a href="#name-versions" class="xref">Versions</a><a href="#section-toc.1-1.15.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#section-15" class="xref">15</a>. <a href="#name-versions" class="xref">Versions</a><a href="#section-toc.1-1.15.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1" class="keepWithNext"><a href="#section-16" class="xref">16</a>. <a href="#name-variable-length-integer-enc" class="xref">Variable-Length Integer Encoding</a><a href="#section-toc.1-1.16.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#section-16" class="xref">16</a>. <a href="#name-variable-length-integer-enc" class="xref">Variable-Length Integer Encoding</a><a href="#section-toc.1-1.16.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1" class="keepWithNext"><a href="#section-17" class="xref">17</a>. <a href="#name-packet-formats" class="xref">Packet Formats</a><a href="#section-toc.1-1.17.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#section-17" class="xref">17</a>. <a href="#name-packet-formats" class="xref">Packet Formats</a><a href="#section-toc.1-1.17.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.1">
-                <p id="section-toc.1-1.17.2.1.1" class="keepWithNext"><a href="#section-17.1" class="xref">17.1</a>.  <a href="#name-packet-number-encoding-and-" class="xref">Packet Number Encoding and Decoding</a><a href="#section-toc.1-1.17.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.17.2.1.1"><a href="#section-17.1" class="xref">17.1</a>.  <a href="#name-packet-number-encoding-and-" class="xref">Packet Number Encoding and Decoding</a><a href="#section-toc.1-1.17.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.2">
-                <p id="section-toc.1-1.17.2.2.1" class="keepWithNext"><a href="#section-17.2" class="xref">17.2</a>.  <a href="#name-long-header-packets" class="xref">Long Header Packets</a><a href="#section-toc.1-1.17.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.17.2.2.1"><a href="#section-17.2" class="xref">17.2</a>.  <a href="#name-long-header-packets" class="xref">Long Header Packets</a><a href="#section-toc.1-1.17.2.2.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.2.2.1">
-                    <p id="section-toc.1-1.17.2.2.2.1.1" class="keepWithNext"><a href="#section-17.2.1" class="xref">17.2.1</a>.  <a href="#name-version-negotiation-packet" class="xref">Version Negotiation Packet</a><a href="#section-toc.1-1.17.2.2.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.17.2.2.2.1.1"><a href="#section-17.2.1" class="xref">17.2.1</a>.  <a href="#name-version-negotiation-packet" class="xref">Version Negotiation Packet</a><a href="#section-toc.1-1.17.2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.2.2.2">
-                    <p id="section-toc.1-1.17.2.2.2.2.1" class="keepWithNext"><a href="#section-17.2.2" class="xref">17.2.2</a>.  <a href="#name-initial-packet" class="xref">Initial Packet</a><a href="#section-toc.1-1.17.2.2.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.17.2.2.2.2.1"><a href="#section-17.2.2" class="xref">17.2.2</a>.  <a href="#name-initial-packet" class="xref">Initial Packet</a><a href="#section-toc.1-1.17.2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.2.2.3">
-                    <p id="section-toc.1-1.17.2.2.2.3.1" class="keepWithNext"><a href="#section-17.2.3" class="xref">17.2.3</a>.  <a href="#name-0-rtt" class="xref">0-RTT</a><a href="#section-toc.1-1.17.2.2.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.17.2.2.2.3.1"><a href="#section-17.2.3" class="xref">17.2.3</a>.  <a href="#name-0-rtt" class="xref">0-RTT</a><a href="#section-toc.1-1.17.2.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.2.2.4">
-                    <p id="section-toc.1-1.17.2.2.2.4.1" class="keepWithNext"><a href="#section-17.2.4" class="xref">17.2.4</a>.  <a href="#name-handshake-packet" class="xref">Handshake Packet</a><a href="#section-toc.1-1.17.2.2.2.4.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.17.2.2.2.4.1"><a href="#section-17.2.4" class="xref">17.2.4</a>.  <a href="#name-handshake-packet" class="xref">Handshake Packet</a><a href="#section-toc.1-1.17.2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.2.2.5">
-                    <p id="section-toc.1-1.17.2.2.2.5.1" class="keepWithNext"><a href="#section-17.2.5" class="xref">17.2.5</a>.  <a href="#name-retry-packet" class="xref">Retry Packet</a><a href="#section-toc.1-1.17.2.2.2.5.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.17.2.2.2.5.1"><a href="#section-17.2.5" class="xref">17.2.5</a>.  <a href="#name-retry-packet" class="xref">Retry Packet</a><a href="#section-toc.1-1.17.2.2.2.5.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.3">
-                <p id="section-toc.1-1.17.2.3.1" class="keepWithNext"><a href="#section-17.3" class="xref">17.3</a>.  <a href="#name-short-header-packets" class="xref">Short Header Packets</a><a href="#section-toc.1-1.17.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.17.2.3.1"><a href="#section-17.3" class="xref">17.3</a>.  <a href="#name-short-header-packets" class="xref">Short Header Packets</a><a href="#section-toc.1-1.17.2.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.17.2.3.2.1">
-                    <p id="section-toc.1-1.17.2.3.2.1.1" class="keepWithNext"><a href="#section-17.3.1" class="xref">17.3.1</a>.  <a href="#name-latency-spin-bit" class="xref">Latency Spin Bit</a><a href="#section-toc.1-1.17.2.3.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.17.2.3.2.1.1"><a href="#section-17.3.1" class="xref">17.3.1</a>.  <a href="#name-latency-spin-bit" class="xref">Latency Spin Bit</a><a href="#section-toc.1-1.17.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.18">
-            <p id="section-toc.1-1.18.1" class="keepWithNext"><a href="#section-18" class="xref">18</a>. <a href="#name-transport-parameter-encodin" class="xref">Transport Parameter Encoding</a><a href="#section-toc.1-1.18.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.18.1"><a href="#section-18" class="xref">18</a>. <a href="#name-transport-parameter-encodin" class="xref">Transport Parameter Encoding</a><a href="#section-toc.1-1.18.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.18.2.1">
-                <p id="section-toc.1-1.18.2.1.1" class="keepWithNext"><a href="#section-18.1" class="xref">18.1</a>.  <a href="#name-reserved-transport-paramete" class="xref">Reserved Transport Parameters</a><a href="#section-toc.1-1.18.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.18.2.1.1"><a href="#section-18.1" class="xref">18.1</a>.  <a href="#name-reserved-transport-paramete" class="xref">Reserved Transport Parameters</a><a href="#section-toc.1-1.18.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.18.2.2">
-                <p id="section-toc.1-1.18.2.2.1" class="keepWithNext"><a href="#section-18.2" class="xref">18.2</a>.  <a href="#name-transport-parameter-definit" class="xref">Transport Parameter Definitions</a><a href="#section-toc.1-1.18.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.18.2.2.1"><a href="#section-18.2" class="xref">18.2</a>.  <a href="#name-transport-parameter-definit" class="xref">Transport Parameter Definitions</a><a href="#section-toc.1-1.18.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19">
-            <p id="section-toc.1-1.19.1" class="keepWithNext"><a href="#section-19" class="xref">19</a>. <a href="#name-frame-types-and-formats" class="xref">Frame Types and Formats</a><a href="#section-toc.1-1.19.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.19.1"><a href="#section-19" class="xref">19</a>. <a href="#name-frame-types-and-formats" class="xref">Frame Types and Formats</a><a href="#section-toc.1-1.19.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.1">
-                <p id="section-toc.1-1.19.2.1.1" class="keepWithNext"><a href="#section-19.1" class="xref">19.1</a>.  <a href="#name-padding-frame" class="xref">PADDING Frame</a><a href="#section-toc.1-1.19.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.1.1"><a href="#section-19.1" class="xref">19.1</a>.  <a href="#name-padding-frame" class="xref">PADDING Frame</a><a href="#section-toc.1-1.19.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.2">
-                <p id="section-toc.1-1.19.2.2.1" class="keepWithNext"><a href="#section-19.2" class="xref">19.2</a>.  <a href="#name-ping-frame" class="xref">PING Frame</a><a href="#section-toc.1-1.19.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.2.1"><a href="#section-19.2" class="xref">19.2</a>.  <a href="#name-ping-frame" class="xref">PING Frame</a><a href="#section-toc.1-1.19.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.3">
-                <p id="section-toc.1-1.19.2.3.1" class="keepWithNext"><a href="#section-19.3" class="xref">19.3</a>.  <a href="#name-ack-frames" class="xref">ACK Frames</a><a href="#section-toc.1-1.19.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.3.1"><a href="#section-19.3" class="xref">19.3</a>.  <a href="#name-ack-frames" class="xref">ACK Frames</a><a href="#section-toc.1-1.19.2.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.3.2.1">
-                    <p id="section-toc.1-1.19.2.3.2.1.1" class="keepWithNext"><a href="#section-19.3.1" class="xref">19.3.1</a>.  <a href="#name-ack-ranges" class="xref">ACK Ranges</a><a href="#section-toc.1-1.19.2.3.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.19.2.3.2.1.1"><a href="#section-19.3.1" class="xref">19.3.1</a>.  <a href="#name-ack-ranges" class="xref">ACK Ranges</a><a href="#section-toc.1-1.19.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.3.2.2">
-                    <p id="section-toc.1-1.19.2.3.2.2.1" class="keepWithNext"><a href="#section-19.3.2" class="xref">19.3.2</a>.  <a href="#name-ecn-counts-2" class="xref">ECN Counts</a><a href="#section-toc.1-1.19.2.3.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.19.2.3.2.2.1"><a href="#section-19.3.2" class="xref">19.3.2</a>.  <a href="#name-ecn-counts-2" class="xref">ECN Counts</a><a href="#section-toc.1-1.19.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.4">
-                <p id="section-toc.1-1.19.2.4.1" class="keepWithNext"><a href="#section-19.4" class="xref">19.4</a>.  <a href="#name-reset_stream-frame" class="xref">RESET_STREAM Frame</a><a href="#section-toc.1-1.19.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.4.1"><a href="#section-19.4" class="xref">19.4</a>.  <a href="#name-reset_stream-frame" class="xref">RESET_STREAM Frame</a><a href="#section-toc.1-1.19.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.5">
-                <p id="section-toc.1-1.19.2.5.1" class="keepWithNext"><a href="#section-19.5" class="xref">19.5</a>.  <a href="#name-stop_sending-frame" class="xref">STOP_SENDING Frame</a><a href="#section-toc.1-1.19.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.5.1"><a href="#section-19.5" class="xref">19.5</a>.  <a href="#name-stop_sending-frame" class="xref">STOP_SENDING Frame</a><a href="#section-toc.1-1.19.2.5.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.6">
-                <p id="section-toc.1-1.19.2.6.1" class="keepWithNext"><a href="#section-19.6" class="xref">19.6</a>.  <a href="#name-crypto-frame" class="xref">CRYPTO Frame</a><a href="#section-toc.1-1.19.2.6.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.6.1"><a href="#section-19.6" class="xref">19.6</a>.  <a href="#name-crypto-frame" class="xref">CRYPTO Frame</a><a href="#section-toc.1-1.19.2.6.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.7">
-                <p id="section-toc.1-1.19.2.7.1" class="keepWithNext"><a href="#section-19.7" class="xref">19.7</a>.  <a href="#name-new_token-frame" class="xref">NEW_TOKEN Frame</a><a href="#section-toc.1-1.19.2.7.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.7.1"><a href="#section-19.7" class="xref">19.7</a>.  <a href="#name-new_token-frame" class="xref">NEW_TOKEN Frame</a><a href="#section-toc.1-1.19.2.7.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.8">
-                <p id="section-toc.1-1.19.2.8.1" class="keepWithNext"><a href="#section-19.8" class="xref">19.8</a>.  <a href="#name-stream-frames" class="xref">STREAM Frames</a><a href="#section-toc.1-1.19.2.8.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.8.1"><a href="#section-19.8" class="xref">19.8</a>.  <a href="#name-stream-frames" class="xref">STREAM Frames</a><a href="#section-toc.1-1.19.2.8.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.9">
-                <p id="section-toc.1-1.19.2.9.1" class="keepWithNext"><a href="#section-19.9" class="xref">19.9</a>.  <a href="#name-max_data-frame" class="xref">MAX_DATA Frame</a><a href="#section-toc.1-1.19.2.9.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.9.1"><a href="#section-19.9" class="xref">19.9</a>.  <a href="#name-max_data-frame" class="xref">MAX_DATA Frame</a><a href="#section-toc.1-1.19.2.9.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.10">
-                <p id="section-toc.1-1.19.2.10.1" class="keepWithNext"><a href="#section-19.10" class="xref">19.10</a>. <a href="#name-max_stream_data-frame" class="xref">MAX_STREAM_DATA Frame</a><a href="#section-toc.1-1.19.2.10.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.10.1"><a href="#section-19.10" class="xref">19.10</a>. <a href="#name-max_stream_data-frame" class="xref">MAX_STREAM_DATA Frame</a><a href="#section-toc.1-1.19.2.10.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.11">
-                <p id="section-toc.1-1.19.2.11.1" class="keepWithNext"><a href="#section-19.11" class="xref">19.11</a>. <a href="#name-max_streams-frames" class="xref">MAX_STREAMS Frames</a><a href="#section-toc.1-1.19.2.11.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.11.1"><a href="#section-19.11" class="xref">19.11</a>. <a href="#name-max_streams-frames" class="xref">MAX_STREAMS Frames</a><a href="#section-toc.1-1.19.2.11.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.12">
-                <p id="section-toc.1-1.19.2.12.1" class="keepWithNext"><a href="#section-19.12" class="xref">19.12</a>. <a href="#name-data_blocked-frame" class="xref">DATA_BLOCKED Frame</a><a href="#section-toc.1-1.19.2.12.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.12.1"><a href="#section-19.12" class="xref">19.12</a>. <a href="#name-data_blocked-frame" class="xref">DATA_BLOCKED Frame</a><a href="#section-toc.1-1.19.2.12.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.13">
-                <p id="section-toc.1-1.19.2.13.1" class="keepWithNext"><a href="#section-19.13" class="xref">19.13</a>. <a href="#name-stream_data_blocked-frame" class="xref">STREAM_DATA_BLOCKED Frame</a><a href="#section-toc.1-1.19.2.13.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.13.1"><a href="#section-19.13" class="xref">19.13</a>. <a href="#name-stream_data_blocked-frame" class="xref">STREAM_DATA_BLOCKED Frame</a><a href="#section-toc.1-1.19.2.13.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.14">
-                <p id="section-toc.1-1.19.2.14.1" class="keepWithNext"><a href="#section-19.14" class="xref">19.14</a>. <a href="#name-streams_blocked-frames" class="xref">STREAMS_BLOCKED Frames</a><a href="#section-toc.1-1.19.2.14.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.14.1"><a href="#section-19.14" class="xref">19.14</a>. <a href="#name-streams_blocked-frames" class="xref">STREAMS_BLOCKED Frames</a><a href="#section-toc.1-1.19.2.14.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.15">
-                <p id="section-toc.1-1.19.2.15.1" class="keepWithNext"><a href="#section-19.15" class="xref">19.15</a>. <a href="#name-new_connection_id-frame" class="xref">NEW_CONNECTION_ID Frame</a><a href="#section-toc.1-1.19.2.15.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.15.1"><a href="#section-19.15" class="xref">19.15</a>. <a href="#name-new_connection_id-frame" class="xref">NEW_CONNECTION_ID Frame</a><a href="#section-toc.1-1.19.2.15.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.16">
-                <p id="section-toc.1-1.19.2.16.1" class="keepWithNext"><a href="#section-19.16" class="xref">19.16</a>. <a href="#name-retire_connection_id-frame" class="xref">RETIRE_CONNECTION_ID Frame</a><a href="#section-toc.1-1.19.2.16.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.16.1"><a href="#section-19.16" class="xref">19.16</a>. <a href="#name-retire_connection_id-frame" class="xref">RETIRE_CONNECTION_ID Frame</a><a href="#section-toc.1-1.19.2.16.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.17">
-                <p id="section-toc.1-1.19.2.17.1" class="keepWithNext"><a href="#section-19.17" class="xref">19.17</a>. <a href="#name-path_challenge-frame" class="xref">PATH_CHALLENGE Frame</a><a href="#section-toc.1-1.19.2.17.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.17.1"><a href="#section-19.17" class="xref">19.17</a>. <a href="#name-path_challenge-frame" class="xref">PATH_CHALLENGE Frame</a><a href="#section-toc.1-1.19.2.17.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.18">
-                <p id="section-toc.1-1.19.2.18.1" class="keepWithNext"><a href="#section-19.18" class="xref">19.18</a>. <a href="#name-path_response-frame" class="xref">PATH_RESPONSE Frame</a><a href="#section-toc.1-1.19.2.18.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.18.1"><a href="#section-19.18" class="xref">19.18</a>. <a href="#name-path_response-frame" class="xref">PATH_RESPONSE Frame</a><a href="#section-toc.1-1.19.2.18.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.19">
-                <p id="section-toc.1-1.19.2.19.1" class="keepWithNext"><a href="#section-19.19" class="xref">19.19</a>. <a href="#name-connection_close-frames" class="xref">CONNECTION_CLOSE Frames</a><a href="#section-toc.1-1.19.2.19.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.19.1"><a href="#section-19.19" class="xref">19.19</a>. <a href="#name-connection_close-frames" class="xref">CONNECTION_CLOSE Frames</a><a href="#section-toc.1-1.19.2.19.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.20">
-                <p id="section-toc.1-1.19.2.20.1" class="keepWithNext"><a href="#section-19.20" class="xref">19.20</a>. <a href="#name-handshake_done-frame" class="xref">HANDSHAKE_DONE frame</a><a href="#section-toc.1-1.19.2.20.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.20.1"><a href="#section-19.20" class="xref">19.20</a>. <a href="#name-handshake_done-frame" class="xref">HANDSHAKE_DONE frame</a><a href="#section-toc.1-1.19.2.20.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.19.2.21">
-                <p id="section-toc.1-1.19.2.21.1" class="keepWithNext"><a href="#section-19.21" class="xref">19.21</a>. <a href="#name-extension-frames" class="xref">Extension Frames</a><a href="#section-toc.1-1.19.2.21.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.19.2.21.1"><a href="#section-19.21" class="xref">19.21</a>. <a href="#name-extension-frames" class="xref">Extension Frames</a><a href="#section-toc.1-1.19.2.21.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.20">
-            <p id="section-toc.1-1.20.1" class="keepWithNext"><a href="#section-20" class="xref">20</a>. <a href="#name-transport-error-codes" class="xref">Transport Error Codes</a><a href="#section-toc.1-1.20.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.20.1"><a href="#section-20" class="xref">20</a>. <a href="#name-transport-error-codes" class="xref">Transport Error Codes</a><a href="#section-toc.1-1.20.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.20.2.1">
-                <p id="section-toc.1-1.20.2.1.1" class="keepWithNext"><a href="#section-20.1" class="xref">20.1</a>.  <a href="#name-application-protocol-error-" class="xref">Application Protocol Error Codes</a><a href="#section-toc.1-1.20.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.20.2.1.1"><a href="#section-20.1" class="xref">20.1</a>.  <a href="#name-application-protocol-error-" class="xref">Application Protocol Error Codes</a><a href="#section-toc.1-1.20.2.1.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21">
-            <p id="section-toc.1-1.21.1" class="keepWithNext"><a href="#section-21" class="xref">21</a>. <a href="#name-security-considerations" class="xref">Security Considerations</a><a href="#section-toc.1-1.21.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.21.1"><a href="#section-21" class="xref">21</a>. <a href="#name-security-considerations" class="xref">Security Considerations</a><a href="#section-toc.1-1.21.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.1">
-                <p id="section-toc.1-1.21.2.1.1" class="keepWithNext"><a href="#section-21.1" class="xref">21.1</a>.  <a href="#name-handshake-denial-of-service" class="xref">Handshake Denial of Service</a><a href="#section-toc.1-1.21.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.1.1"><a href="#section-21.1" class="xref">21.1</a>.  <a href="#name-handshake-denial-of-service" class="xref">Handshake Denial of Service</a><a href="#section-toc.1-1.21.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.2">
-                <p id="section-toc.1-1.21.2.2.1" class="keepWithNext"><a href="#section-21.2" class="xref">21.2</a>.  <a href="#name-amplification-attack" class="xref">Amplification Attack</a><a href="#section-toc.1-1.21.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.2.1"><a href="#section-21.2" class="xref">21.2</a>.  <a href="#name-amplification-attack" class="xref">Amplification Attack</a><a href="#section-toc.1-1.21.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.3">
-                <p id="section-toc.1-1.21.2.3.1" class="keepWithNext"><a href="#section-21.3" class="xref">21.3</a>.  <a href="#name-optimistic-ack-attack" class="xref">Optimistic ACK Attack</a><a href="#section-toc.1-1.21.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.3.1"><a href="#section-21.3" class="xref">21.3</a>.  <a href="#name-optimistic-ack-attack" class="xref">Optimistic ACK Attack</a><a href="#section-toc.1-1.21.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.4">
-                <p id="section-toc.1-1.21.2.4.1" class="keepWithNext"><a href="#section-21.4" class="xref">21.4</a>.  <a href="#name-slowloris-attacks" class="xref">Slowloris Attacks</a><a href="#section-toc.1-1.21.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.4.1"><a href="#section-21.4" class="xref">21.4</a>.  <a href="#name-slowloris-attacks" class="xref">Slowloris Attacks</a><a href="#section-toc.1-1.21.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.5">
-                <p id="section-toc.1-1.21.2.5.1" class="keepWithNext"><a href="#section-21.5" class="xref">21.5</a>.  <a href="#name-stream-fragmentation-and-re" class="xref">Stream Fragmentation and Reassembly Attacks</a><a href="#section-toc.1-1.21.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.5.1"><a href="#section-21.5" class="xref">21.5</a>.  <a href="#name-stream-fragmentation-and-re" class="xref">Stream Fragmentation and Reassembly Attacks</a><a href="#section-toc.1-1.21.2.5.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.6">
-                <p id="section-toc.1-1.21.2.6.1" class="keepWithNext"><a href="#section-21.6" class="xref">21.6</a>.  <a href="#name-stream-commitment-attack" class="xref">Stream Commitment Attack</a><a href="#section-toc.1-1.21.2.6.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.6.1"><a href="#section-21.6" class="xref">21.6</a>.  <a href="#name-stream-commitment-attack" class="xref">Stream Commitment Attack</a><a href="#section-toc.1-1.21.2.6.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.7">
-                <p id="section-toc.1-1.21.2.7.1" class="keepWithNext"><a href="#section-21.7" class="xref">21.7</a>.  <a href="#name-peer-denial-of-service" class="xref">Peer Denial of Service</a><a href="#section-toc.1-1.21.2.7.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.7.1"><a href="#section-21.7" class="xref">21.7</a>.  <a href="#name-peer-denial-of-service" class="xref">Peer Denial of Service</a><a href="#section-toc.1-1.21.2.7.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.8">
-                <p id="section-toc.1-1.21.2.8.1" class="keepWithNext"><a href="#section-21.8" class="xref">21.8</a>.  <a href="#name-explicit-congestion-notifica" class="xref">Explicit Congestion Notification Attacks</a><a href="#section-toc.1-1.21.2.8.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.8.1"><a href="#section-21.8" class="xref">21.8</a>.  <a href="#name-explicit-congestion-notifica" class="xref">Explicit Congestion Notification Attacks</a><a href="#section-toc.1-1.21.2.8.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.9">
-                <p id="section-toc.1-1.21.2.9.1" class="keepWithNext"><a href="#section-21.9" class="xref">21.9</a>.  <a href="#name-stateless-reset-oracle" class="xref">Stateless Reset Oracle</a><a href="#section-toc.1-1.21.2.9.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.9.1"><a href="#section-21.9" class="xref">21.9</a>.  <a href="#name-stateless-reset-oracle" class="xref">Stateless Reset Oracle</a><a href="#section-toc.1-1.21.2.9.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.10">
-                <p id="section-toc.1-1.21.2.10.1" class="keepWithNext"><a href="#section-21.10" class="xref">21.10</a>. <a href="#name-version-downgrade" class="xref">Version Downgrade</a><a href="#section-toc.1-1.21.2.10.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.10.1"><a href="#section-21.10" class="xref">21.10</a>. <a href="#name-version-downgrade" class="xref">Version Downgrade</a><a href="#section-toc.1-1.21.2.10.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.11">
-                <p id="section-toc.1-1.21.2.11.1" class="keepWithNext"><a href="#section-21.11" class="xref">21.11</a>. <a href="#name-targeted-attacks-by-routing" class="xref">Targeted Attacks by Routing</a><a href="#section-toc.1-1.21.2.11.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.11.1"><a href="#section-21.11" class="xref">21.11</a>. <a href="#name-targeted-attacks-by-routing" class="xref">Targeted Attacks by Routing</a><a href="#section-toc.1-1.21.2.11.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.12">
-                <p id="section-toc.1-1.21.2.12.1" class="keepWithNext"><a href="#section-21.12" class="xref">21.12</a>. <a href="#name-overview-of-security-proper" class="xref">Overview of Security Properties</a><a href="#section-toc.1-1.21.2.12.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.21.2.12.1"><a href="#section-21.12" class="xref">21.12</a>. <a href="#name-overview-of-security-proper" class="xref">Overview of Security Properties</a><a href="#section-toc.1-1.21.2.12.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.12.2.1">
-                    <p id="section-toc.1-1.21.2.12.2.1.1" class="keepWithNext"><a href="#section-21.12.1" class="xref">21.12.1</a>.  <a href="#name-handshake" class="xref">Handshake</a><a href="#section-toc.1-1.21.2.12.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.21.2.12.2.1.1"><a href="#section-21.12.1" class="xref">21.12.1</a>.  <a href="#name-handshake" class="xref">Handshake</a><a href="#section-toc.1-1.21.2.12.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.12.2.2">
-                    <p id="section-toc.1-1.21.2.12.2.2.1" class="keepWithNext"><a href="#section-21.12.2" class="xref">21.12.2</a>.  <a href="#name-protected-packets-2" class="xref">Protected Packets</a><a href="#section-toc.1-1.21.2.12.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.21.2.12.2.2.1"><a href="#section-21.12.2" class="xref">21.12.2</a>.  <a href="#name-protected-packets-2" class="xref">Protected Packets</a><a href="#section-toc.1-1.21.2.12.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.21.2.12.2.3">
-                    <p id="section-toc.1-1.21.2.12.2.3.1" class="keepWithNext"><a href="#section-21.12.3" class="xref">21.12.3</a>.  <a href="#name-connection-migration-2" class="xref">Connection Migration</a><a href="#section-toc.1-1.21.2.12.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.21.2.12.2.3.1"><a href="#section-21.12.3" class="xref">21.12.3</a>.  <a href="#name-connection-migration-2" class="xref">Connection Migration</a><a href="#section-toc.1-1.21.2.12.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.22">
-            <p id="section-toc.1-1.22.1" class="keepWithNext"><a href="#section-22" class="xref">22</a>. <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.22.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.22.1"><a href="#section-22" class="xref">22</a>. <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.22.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.1">
-                <p id="section-toc.1-1.22.2.1.1" class="keepWithNext"><a href="#section-22.1" class="xref">22.1</a>.  <a href="#name-registration-policies-for-q" class="xref">Registration Policies for QUIC Registries</a><a href="#section-toc.1-1.22.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.22.2.1.1"><a href="#section-22.1" class="xref">22.1</a>.  <a href="#name-registration-policies-for-q" class="xref">Registration Policies for QUIC Registries</a><a href="#section-toc.1-1.22.2.1.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.1.2.1">
-                    <p id="section-toc.1-1.22.2.1.2.1.1" class="keepWithNext"><a href="#section-22.1.1" class="xref">22.1.1</a>.  <a href="#name-provisional-registrations" class="xref">Provisional Registrations</a><a href="#section-toc.1-1.22.2.1.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.22.2.1.2.1.1"><a href="#section-22.1.1" class="xref">22.1.1</a>.  <a href="#name-provisional-registrations" class="xref">Provisional Registrations</a><a href="#section-toc.1-1.22.2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.1.2.2">
-                    <p id="section-toc.1-1.22.2.1.2.2.1" class="keepWithNext"><a href="#section-22.1.2" class="xref">22.1.2</a>.  <a href="#name-selecting-codepoints" class="xref">Selecting Codepoints</a><a href="#section-toc.1-1.22.2.1.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.22.2.1.2.2.1"><a href="#section-22.1.2" class="xref">22.1.2</a>.  <a href="#name-selecting-codepoints" class="xref">Selecting Codepoints</a><a href="#section-toc.1-1.22.2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.1.2.3">
-                    <p id="section-toc.1-1.22.2.1.2.3.1" class="keepWithNext"><a href="#section-22.1.3" class="xref">22.1.3</a>.  <a href="#name-reclaiming-provisional-code" class="xref">Reclaiming Provisional Codepoints</a><a href="#section-toc.1-1.22.2.1.2.3.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.22.2.1.2.3.1"><a href="#section-22.1.3" class="xref">22.1.3</a>.  <a href="#name-reclaiming-provisional-code" class="xref">Reclaiming Provisional Codepoints</a><a href="#section-toc.1-1.22.2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.1.2.4">
-                    <p id="section-toc.1-1.22.2.1.2.4.1" class="keepWithNext"><a href="#section-22.1.4" class="xref">22.1.4</a>.  <a href="#name-permanent-registrations" class="xref">Permanent Registrations</a><a href="#section-toc.1-1.22.2.1.2.4.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.22.2.1.2.4.1"><a href="#section-22.1.4" class="xref">22.1.4</a>.  <a href="#name-permanent-registrations" class="xref">Permanent Registrations</a><a href="#section-toc.1-1.22.2.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.2">
-                <p id="section-toc.1-1.22.2.2.1" class="keepWithNext"><a href="#section-22.2" class="xref">22.2</a>.  <a href="#name-quic-transport-parameter-re" class="xref">QUIC Transport Parameter Registry</a><a href="#section-toc.1-1.22.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.22.2.2.1"><a href="#section-22.2" class="xref">22.2</a>.  <a href="#name-quic-transport-parameter-re" class="xref">QUIC Transport Parameter Registry</a><a href="#section-toc.1-1.22.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.3">
-                <p id="section-toc.1-1.22.2.3.1" class="keepWithNext"><a href="#section-22.3" class="xref">22.3</a>.  <a href="#name-quic-frame-type-registry" class="xref">QUIC Frame Type Registry</a><a href="#section-toc.1-1.22.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.22.2.3.1"><a href="#section-22.3" class="xref">22.3</a>.  <a href="#name-quic-frame-type-registry" class="xref">QUIC Frame Type Registry</a><a href="#section-toc.1-1.22.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.22.2.4">
-                <p id="section-toc.1-1.22.2.4.1" class="keepWithNext"><a href="#section-22.4" class="xref">22.4</a>.  <a href="#name-quic-transport-error-codes-" class="xref">QUIC Transport Error Codes Registry</a><a href="#section-toc.1-1.22.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.22.2.4.1"><a href="#section-22.4" class="xref">22.4</a>.  <a href="#name-quic-transport-error-codes-" class="xref">QUIC Transport Error Codes Registry</a><a href="#section-toc.1-1.22.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.23">
-            <p id="section-toc.1-1.23.1" class="keepWithNext"><a href="#section-23" class="xref">23</a>. <a href="#name-references" class="xref">References</a><a href="#section-toc.1-1.23.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.23.1"><a href="#section-23" class="xref">23</a>. <a href="#name-references" class="xref">References</a><a href="#section-toc.1-1.23.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.23.2.1">
-                <p id="section-toc.1-1.23.2.1.1" class="keepWithNext"><a href="#section-23.1" class="xref">23.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.23.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.23.2.1.1"><a href="#section-23.1" class="xref">23.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.23.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.23.2.2">
-                <p id="section-toc.1-1.23.2.2.1" class="keepWithNext"><a href="#section-23.2" class="xref">23.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.23.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.23.2.2.1"><a href="#section-23.2" class="xref">23.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.23.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.24">
-            <p id="section-toc.1-1.24.1" class="keepWithNext"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-sample-packet-number-decodi" class="xref">Sample Packet Number Decoding Algorithm</a><a href="#section-toc.1-1.24.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.24.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-sample-packet-number-decodi" class="xref">Sample Packet Number Decoding Algorithm</a><a href="#section-toc.1-1.24.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.25">
-            <p id="section-toc.1-1.25.1" class="keepWithNext"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-sample-ecn-validation-algor" class="xref">Sample ECN Validation Algorithm</a><a href="#section-toc.1-1.25.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.25.1"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-sample-ecn-validation-algor" class="xref">Sample ECN Validation Algorithm</a><a href="#section-toc.1-1.25.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26">
-            <p id="section-toc.1-1.26.1" class="keepWithNext"><a href="#section-appendix.c" class="xref">Appendix C</a>.  <a href="#name-change-log" class="xref">Change Log</a><a href="#section-toc.1-1.26.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.26.1"><a href="#section-appendix.c" class="xref">Appendix C</a>.  <a href="#name-change-log" class="xref">Change Log</a><a href="#section-toc.1-1.26.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.1">
-                <p id="section-toc.1-1.26.2.1.1" class="keepWithNext"><a href="#section-c.1" class="xref">C.1</a>.  <a href="#name-since-draft-ietf-quic-trans" class="xref">Since draft-ietf-quic-transport-26</a><a href="#section-toc.1-1.26.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.1.1"><a href="#section-c.1" class="xref">C.1</a>.  <a href="#name-since-draft-ietf-quic-trans" class="xref">Since draft-ietf-quic-transport-26</a><a href="#section-toc.1-1.26.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.2">
-                <p id="section-toc.1-1.26.2.2.1" class="keepWithNext"><a href="#section-c.2" class="xref">C.2</a>.  <a href="#name-since-draft-ietf-quic-transp" class="xref">Since draft-ietf-quic-transport-25</a><a href="#section-toc.1-1.26.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.2.1"><a href="#section-c.2" class="xref">C.2</a>.  <a href="#name-since-draft-ietf-quic-transp" class="xref">Since draft-ietf-quic-transport-25</a><a href="#section-toc.1-1.26.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.3">
-                <p id="section-toc.1-1.26.2.3.1" class="keepWithNext"><a href="#section-c.3" class="xref">C.3</a>.  <a href="#name-since-draft-ietf-quic-transpo" class="xref">Since draft-ietf-quic-transport-24</a><a href="#section-toc.1-1.26.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.3.1"><a href="#section-c.3" class="xref">C.3</a>.  <a href="#name-since-draft-ietf-quic-transpo" class="xref">Since draft-ietf-quic-transport-24</a><a href="#section-toc.1-1.26.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.4">
-                <p id="section-toc.1-1.26.2.4.1" class="keepWithNext"><a href="#section-c.4" class="xref">C.4</a>.  <a href="#name-since-draft-ietf-quic-transpor" class="xref">Since draft-ietf-quic-transport-23</a><a href="#section-toc.1-1.26.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.4.1"><a href="#section-c.4" class="xref">C.4</a>.  <a href="#name-since-draft-ietf-quic-transpor" class="xref">Since draft-ietf-quic-transport-23</a><a href="#section-toc.1-1.26.2.4.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.5">
-                <p id="section-toc.1-1.26.2.5.1" class="keepWithNext"><a href="#section-c.5" class="xref">C.5</a>.  <a href="#name-since-draft-ietf-quic-transport" class="xref">Since draft-ietf-quic-transport-22</a><a href="#section-toc.1-1.26.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.5.1"><a href="#section-c.5" class="xref">C.5</a>.  <a href="#name-since-draft-ietf-quic-transport" class="xref">Since draft-ietf-quic-transport-22</a><a href="#section-toc.1-1.26.2.5.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.6">
-                <p id="section-toc.1-1.26.2.6.1" class="keepWithNext"><a href="#section-c.6" class="xref">C.6</a>.  <a href="#name-since-draft-ietf-quic-transport-" class="xref">Since draft-ietf-quic-transport-21</a><a href="#section-toc.1-1.26.2.6.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.6.1"><a href="#section-c.6" class="xref">C.6</a>.  <a href="#name-since-draft-ietf-quic-transport-" class="xref">Since draft-ietf-quic-transport-21</a><a href="#section-toc.1-1.26.2.6.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.7">
-                <p id="section-toc.1-1.26.2.7.1" class="keepWithNext"><a href="#section-c.7" class="xref">C.7</a>.  <a href="#name-since-draft-ietf-quic-transport-2" class="xref">Since draft-ietf-quic-transport-20</a><a href="#section-toc.1-1.26.2.7.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.7.1"><a href="#section-c.7" class="xref">C.7</a>.  <a href="#name-since-draft-ietf-quic-transport-2" class="xref">Since draft-ietf-quic-transport-20</a><a href="#section-toc.1-1.26.2.7.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.8">
-                <p id="section-toc.1-1.26.2.8.1" class="keepWithNext"><a href="#section-c.8" class="xref">C.8</a>.  <a href="#name-since-draft-ietf-quic-transport-1" class="xref">Since draft-ietf-quic-transport-19</a><a href="#section-toc.1-1.26.2.8.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.8.1"><a href="#section-c.8" class="xref">C.8</a>.  <a href="#name-since-draft-ietf-quic-transport-1" class="xref">Since draft-ietf-quic-transport-19</a><a href="#section-toc.1-1.26.2.8.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.9">
-                <p id="section-toc.1-1.26.2.9.1" class="keepWithNext"><a href="#section-c.9" class="xref">C.9</a>.  <a href="#name-since-draft-ietf-quic-transport-18" class="xref">Since draft-ietf-quic-transport-18</a><a href="#section-toc.1-1.26.2.9.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.9.1"><a href="#section-c.9" class="xref">C.9</a>.  <a href="#name-since-draft-ietf-quic-transport-18" class="xref">Since draft-ietf-quic-transport-18</a><a href="#section-toc.1-1.26.2.9.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.10">
-                <p id="section-toc.1-1.26.2.10.1" class="keepWithNext"><a href="#section-c.10" class="xref">C.10</a>. <a href="#name-since-draft-ietf-quic-transport-17" class="xref">Since draft-ietf-quic-transport-17</a><a href="#section-toc.1-1.26.2.10.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.10.1"><a href="#section-c.10" class="xref">C.10</a>. <a href="#name-since-draft-ietf-quic-transport-17" class="xref">Since draft-ietf-quic-transport-17</a><a href="#section-toc.1-1.26.2.10.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.11">
-                <p id="section-toc.1-1.26.2.11.1" class="keepWithNext"><a href="#section-c.11" class="xref">C.11</a>. <a href="#name-since-draft-ietf-quic-transport-16" class="xref">Since draft-ietf-quic-transport-16</a><a href="#section-toc.1-1.26.2.11.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.11.1"><a href="#section-c.11" class="xref">C.11</a>. <a href="#name-since-draft-ietf-quic-transport-16" class="xref">Since draft-ietf-quic-transport-16</a><a href="#section-toc.1-1.26.2.11.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.12">
-                <p id="section-toc.1-1.26.2.12.1" class="keepWithNext"><a href="#section-c.12" class="xref">C.12</a>. <a href="#name-since-draft-ietf-quic-transport-15" class="xref">Since draft-ietf-quic-transport-15</a><a href="#section-toc.1-1.26.2.12.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.12.1"><a href="#section-c.12" class="xref">C.12</a>. <a href="#name-since-draft-ietf-quic-transport-15" class="xref">Since draft-ietf-quic-transport-15</a><a href="#section-toc.1-1.26.2.12.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.13">
-                <p id="section-toc.1-1.26.2.13.1" class="keepWithNext"><a href="#section-c.13" class="xref">C.13</a>. <a href="#name-since-draft-ietf-quic-transport-14" class="xref">Since draft-ietf-quic-transport-14</a><a href="#section-toc.1-1.26.2.13.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.13.1"><a href="#section-c.13" class="xref">C.13</a>. <a href="#name-since-draft-ietf-quic-transport-14" class="xref">Since draft-ietf-quic-transport-14</a><a href="#section-toc.1-1.26.2.13.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.14">
-                <p id="section-toc.1-1.26.2.14.1" class="keepWithNext"><a href="#section-c.14" class="xref">C.14</a>. <a href="#name-since-draft-ietf-quic-transport-13" class="xref">Since draft-ietf-quic-transport-13</a><a href="#section-toc.1-1.26.2.14.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.14.1"><a href="#section-c.14" class="xref">C.14</a>. <a href="#name-since-draft-ietf-quic-transport-13" class="xref">Since draft-ietf-quic-transport-13</a><a href="#section-toc.1-1.26.2.14.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.15">
-                <p id="section-toc.1-1.26.2.15.1" class="keepWithNext"><a href="#section-c.15" class="xref">C.15</a>. <a href="#name-since-draft-ietf-quic-transport-12" class="xref">Since draft-ietf-quic-transport-12</a><a href="#section-toc.1-1.26.2.15.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.15.1"><a href="#section-c.15" class="xref">C.15</a>. <a href="#name-since-draft-ietf-quic-transport-12" class="xref">Since draft-ietf-quic-transport-12</a><a href="#section-toc.1-1.26.2.15.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.16">
-                <p id="section-toc.1-1.26.2.16.1" class="keepWithNext"><a href="#section-c.16" class="xref">C.16</a>. <a href="#name-since-draft-ietf-quic-transport-11" class="xref">Since draft-ietf-quic-transport-11</a><a href="#section-toc.1-1.26.2.16.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.16.1"><a href="#section-c.16" class="xref">C.16</a>. <a href="#name-since-draft-ietf-quic-transport-11" class="xref">Since draft-ietf-quic-transport-11</a><a href="#section-toc.1-1.26.2.16.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.17">
-                <p id="section-toc.1-1.26.2.17.1" class="keepWithNext"><a href="#section-c.17" class="xref">C.17</a>. <a href="#name-since-draft-ietf-quic-transport-10" class="xref">Since draft-ietf-quic-transport-10</a><a href="#section-toc.1-1.26.2.17.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.17.1"><a href="#section-c.17" class="xref">C.17</a>. <a href="#name-since-draft-ietf-quic-transport-10" class="xref">Since draft-ietf-quic-transport-10</a><a href="#section-toc.1-1.26.2.17.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.18">
-                <p id="section-toc.1-1.26.2.18.1" class="keepWithNext"><a href="#section-c.18" class="xref">C.18</a>. <a href="#name-since-draft-ietf-quic-transport-0" class="xref">Since draft-ietf-quic-transport-09</a><a href="#section-toc.1-1.26.2.18.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.18.1"><a href="#section-c.18" class="xref">C.18</a>. <a href="#name-since-draft-ietf-quic-transport-0" class="xref">Since draft-ietf-quic-transport-09</a><a href="#section-toc.1-1.26.2.18.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.19">
-                <p id="section-toc.1-1.26.2.19.1" class="keepWithNext"><a href="#section-c.19" class="xref">C.19</a>. <a href="#name-since-draft-ietf-quic-transport-08" class="xref">Since draft-ietf-quic-transport-08</a><a href="#section-toc.1-1.26.2.19.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.19.1"><a href="#section-c.19" class="xref">C.19</a>. <a href="#name-since-draft-ietf-quic-transport-08" class="xref">Since draft-ietf-quic-transport-08</a><a href="#section-toc.1-1.26.2.19.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.20">
-                <p id="section-toc.1-1.26.2.20.1" class="keepWithNext"><a href="#section-c.20" class="xref">C.20</a>. <a href="#name-since-draft-ietf-quic-transport-07" class="xref">Since draft-ietf-quic-transport-07</a><a href="#section-toc.1-1.26.2.20.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.20.1"><a href="#section-c.20" class="xref">C.20</a>. <a href="#name-since-draft-ietf-quic-transport-07" class="xref">Since draft-ietf-quic-transport-07</a><a href="#section-toc.1-1.26.2.20.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.21">
-                <p id="section-toc.1-1.26.2.21.1" class="keepWithNext"><a href="#section-c.21" class="xref">C.21</a>. <a href="#name-since-draft-ietf-quic-transport-06" class="xref">Since draft-ietf-quic-transport-06</a><a href="#section-toc.1-1.26.2.21.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.21.1"><a href="#section-c.21" class="xref">C.21</a>. <a href="#name-since-draft-ietf-quic-transport-06" class="xref">Since draft-ietf-quic-transport-06</a><a href="#section-toc.1-1.26.2.21.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.22">
-                <p id="section-toc.1-1.26.2.22.1" class="keepWithNext"><a href="#section-c.22" class="xref">C.22</a>. <a href="#name-since-draft-ietf-quic-transport-05" class="xref">Since draft-ietf-quic-transport-05</a><a href="#section-toc.1-1.26.2.22.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.22.1"><a href="#section-c.22" class="xref">C.22</a>. <a href="#name-since-draft-ietf-quic-transport-05" class="xref">Since draft-ietf-quic-transport-05</a><a href="#section-toc.1-1.26.2.22.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.23">
-                <p id="section-toc.1-1.26.2.23.1" class="keepWithNext"><a href="#section-c.23" class="xref">C.23</a>. <a href="#name-since-draft-ietf-quic-transport-04" class="xref">Since draft-ietf-quic-transport-04</a><a href="#section-toc.1-1.26.2.23.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.23.1"><a href="#section-c.23" class="xref">C.23</a>. <a href="#name-since-draft-ietf-quic-transport-04" class="xref">Since draft-ietf-quic-transport-04</a><a href="#section-toc.1-1.26.2.23.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.24">
-                <p id="section-toc.1-1.26.2.24.1" class="keepWithNext"><a href="#section-c.24" class="xref">C.24</a>. <a href="#name-since-draft-ietf-quic-transport-03" class="xref">Since draft-ietf-quic-transport-03</a><a href="#section-toc.1-1.26.2.24.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.24.1"><a href="#section-c.24" class="xref">C.24</a>. <a href="#name-since-draft-ietf-quic-transport-03" class="xref">Since draft-ietf-quic-transport-03</a><a href="#section-toc.1-1.26.2.24.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.25">
-                <p id="section-toc.1-1.26.2.25.1" class="keepWithNext"><a href="#section-c.25" class="xref">C.25</a>. <a href="#name-since-draft-ietf-quic-transport-02" class="xref">Since draft-ietf-quic-transport-02</a><a href="#section-toc.1-1.26.2.25.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.25.1"><a href="#section-c.25" class="xref">C.25</a>. <a href="#name-since-draft-ietf-quic-transport-02" class="xref">Since draft-ietf-quic-transport-02</a><a href="#section-toc.1-1.26.2.25.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.26">
-                <p id="section-toc.1-1.26.2.26.1" class="keepWithNext"><a href="#section-c.26" class="xref">C.26</a>. <a href="#name-since-draft-ietf-quic-transport-01" class="xref">Since draft-ietf-quic-transport-01</a><a href="#section-toc.1-1.26.2.26.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.26.1"><a href="#section-c.26" class="xref">C.26</a>. <a href="#name-since-draft-ietf-quic-transport-01" class="xref">Since draft-ietf-quic-transport-01</a><a href="#section-toc.1-1.26.2.26.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.27">
-                <p id="section-toc.1-1.26.2.27.1" class="keepWithNext"><a href="#section-c.27" class="xref">C.27</a>. <a href="#name-since-draft-ietf-quic-transport-00" class="xref">Since draft-ietf-quic-transport-00</a><a href="#section-toc.1-1.26.2.27.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.27.1"><a href="#section-c.27" class="xref">C.27</a>. <a href="#name-since-draft-ietf-quic-transport-00" class="xref">Since draft-ietf-quic-transport-00</a><a href="#section-toc.1-1.26.2.27.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.26.2.28">
-                <p id="section-toc.1-1.26.2.28.1" class="keepWithNext"><a href="#section-c.28" class="xref">C.28</a>. <a href="#name-since-draft-hamilton-quic-t" class="xref">Since draft-hamilton-quic-transport-protocol-01</a><a href="#section-toc.1-1.26.2.28.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.26.2.28.1"><a href="#section-c.28" class="xref">C.28</a>. <a href="#name-since-draft-hamilton-quic-t" class="xref">Since draft-hamilton-quic-transport-protocol-01</a><a href="#section-toc.1-1.26.2.28.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.27">
-            <p id="section-toc.1-1.27.1" class="keepWithNext"><a href="#section-appendix.d" class="xref"></a><a href="#name-contributors" class="xref">Contributors</a><a href="#section-toc.1-1.27.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.27.1"><a href="#section-appendix.d" class="xref"></a><a href="#name-contributors" class="xref">Contributors</a><a href="#section-toc.1-1.27.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.28">
-            <p id="section-toc.1-1.28.1" class="keepWithNext"><a href="#section-appendix.e" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.28.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.28.1"><a href="#section-appendix.e" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.28.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </nav>
@@ -1761,17 +1761,20 @@ appear in all capitals, as shown here.<a href="#section-1.2-1" class="pilcrow">�
   The transport protocol described by this document. QUIC is a name, not an
 acronym.<a href="#section-1.2-3.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.3">QUIC packet:</dt>
 <dd id="section-1.2-3.4">
   A complete processable unit of QUIC that can be encapsulated in a UDP
 datagram.  Multiple QUIC packets can be encapsulated in a single UDP datagram.<a href="#section-1.2-3.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.5">Ack-eliciting Packet:</dt>
 <dd id="section-1.2-3.6">
   A QUIC packet that contains frames other than ACK, PADDING, and
 CONNECTION_CLOSE. These cause a recipient to send an acknowledgment; see
 <a href="#sending-acknowledgements" class="xref">Section 13.2.1</a>.<a href="#section-1.2-3.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.7">Out-of-order packet:</dt>
 <dd id="section-1.2-3.8">
   A packet that does not increase the largest received packet number for its
@@ -1779,40 +1782,48 @@ packet number space (<a href="#packet-numbers" class="xref">Section 12.3</a>) by
 out of order if it is delayed, if earlier packets are lost or delayed, or if
 the sender intentionally skips a packet number.<a href="#section-1.2-3.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.9">Endpoint:</dt>
 <dd id="section-1.2-3.10">
   An entity that can participate in a QUIC connection by generating,
 receiving, and processing QUIC packets. There are only two types of endpoint
 in QUIC: client and server.<a href="#section-1.2-3.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.11">Client:</dt>
 <dd id="section-1.2-3.12">
   The endpoint initiating a QUIC connection.<a href="#section-1.2-3.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.13">Server:</dt>
 <dd id="section-1.2-3.14">
   The endpoint accepting incoming QUIC connections.<a href="#section-1.2-3.14" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.15">Address:</dt>
 <dd id="section-1.2-3.16">
   When used without qualification, the tuple of IP version, IP address, UDP
 protocol, and UDP port number that represents one end of a network path.<a href="#section-1.2-3.16" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.17">Connection ID:</dt>
 <dd id="section-1.2-3.18">
   An opaque identifier that is used to identify a QUIC connection at an
 endpoint.  Each endpoint sets a value for its peer to include in packets sent
 towards the endpoint.<a href="#section-1.2-3.18" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.19">Stream:</dt>
 <dd id="section-1.2-3.20">
   A unidirectional or bidirectional channel of ordered bytes within a QUIC
 connection. A QUIC connection can carry multiple simultaneous streams.<a href="#section-1.2-3.20" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.2-3.21">Application:</dt>
 <dd id="section-1.2-3.22">
   An entity that uses QUIC to send and receive data.<a href="#section-1.2-3.22" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -1834,33 +1845,40 @@ notational conventions, with all lengths in bits:<a href="#section-1.3-3" class=
 <dd id="section-1.3-4.2">
   Indicates that x is A bits long<a href="#section-1.3-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.3-4.3">x (i):</dt>
 <dd id="section-1.3-4.4">
   Indicates that x uses the variable-length encoding in <a href="#integer-encoding" class="xref">Section 16</a><a href="#section-1.3-4.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.3-4.5">x (A..B):</dt>
 <dd id="section-1.3-4.6">
   Indicates that x can be any length from A to B; A can be omitted to indicate
 a mimumum of zero bits and B can be omitted to indicate no set upper limit;
 values in this format always end on an octet boundary<a href="#section-1.3-4.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.3-4.7">x (?) = C:</dt>
 <dd id="section-1.3-4.8">
   Indicates that x has a fixed value of C<a href="#section-1.3-4.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.3-4.9">x (?) = C..D:</dt>
 <dd id="section-1.3-4.10">
   Indicates that x has a value in the range from C to D, inclusive<a href="#section-1.3-4.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.3-4.11">[x (E)]:</dt>
 <dd id="section-1.3-4.12">
   Indicates that x is optional (and has length of E)<a href="#section-1.3-4.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-1.3-4.13">x (E) ...:</dt>
 <dd id="section-1.3-4.14">
   Indicates that x is repeated zero or more times (and that each instance is
 length E)<a href="#section-1.3-4.14" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-1.3-5">By convention, individual fields reference a complex field by using the name of
 the complex field.<a href="#section-1.3-5" class="pilcrow">¶</a></p>
@@ -2078,6 +2096,7 @@ these states aren't intended to constrain implementations.  An implementation
 can define a different state machine as long as its behavior is consistent
 with an implementation that implements these states.<a href="#section-3-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <div id="stream-send-states">
 <section id="section-3.1">
@@ -2392,6 +2411,7 @@ acknowledged before the transition to a "closed" or "half-closed" state.<a href=
 receiving part of the stream is in the "Recv" state without yet having
 received any frames.<a href="#section-3.4-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -3573,6 +3593,7 @@ the packet is discarded.  A server SHOULD encode tokens provided with
 NEW_TOKEN frames and Retry packets differently, and validate the latter more
 strictly.<a href="#section-8.1.3-11.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-8.1.3-12">In a stateless design, a server can use encrypted and authenticated tokens to
 pass information to clients that the server can later recover and use to
@@ -4271,6 +4292,7 @@ Sending new packet numbers is primarily of advantage to loss recovery and
 congestion control, which are not expected to be relevant for a closed
 connection.  Retransmitting the final packet requires less state.<a href="#section-10.3-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-10.3-6">New packets from unverified addresses could be used to create an amplification
 attack; see <a href="#address-validation" class="xref">Section 8</a>.  To avoid this, endpoints MUST either limit
@@ -4999,23 +5021,28 @@ type could appear in, indicated by the following characters:<a href="#section-12
 <dd id="section-12.4-9.2">
   Initial (<a href="#packet-initial" class="xref">Section 17.2.2</a>)<a href="#section-12.4-9.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-12.4-9.3">H:</dt>
 <dd id="section-12.4-9.4">
   Handshake (<a href="#packet-handshake" class="xref">Section 17.2.4</a>)<a href="#section-12.4-9.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-12.4-9.5">0:</dt>
 <dd id="section-12.4-9.6">
   0-RTT (<a href="#packet-0rtt" class="xref">Section 17.2.3</a>)<a href="#section-12.4-9.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-12.4-9.7">1:</dt>
 <dd id="section-12.4-9.8">
   1-RTT (<a href="#short-header" class="xref">Section 17.3</a>)<a href="#section-12.4-9.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-12.4-9.9">ih:</dt>
 <dd id="section-12.4-9.10">
   A CONNECTION_CLOSE frame of type 0x1d cannot appear in Initial or Handshake
 packets.<a href="#section-12.4-9.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-12.4-10">Section 4 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span> provides more detail about these restrictions.  Note
 that all frames can appear in 1-RTT packets.<a href="#section-12.4-10" class="pilcrow">¶</a></p>
@@ -5852,26 +5879,31 @@ packet format. Packets that use the long header contain the following fields:<a 
   The most significant bit (0x80) of byte 0 (the first byte) is set to 1 for
 long headers.<a href="#section-17.2-3.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.3">Fixed Bit:</dt>
 <dd id="section-17.2-3.4">
   The next bit (0x40) of byte 0 is set to 1.  Packets containing a zero value
 for this bit are not valid packets in this version and MUST be discarded.<a href="#section-17.2-3.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.5">Long Packet Type:</dt>
 <dd id="section-17.2-3.6">
   The next two bits (those with a mask of 0x30) of byte 0 contain a packet type.
 Packet types are listed in <a href="#long-packet-types" class="xref">Table 5</a>.<a href="#section-17.2-3.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.7">Type-Specific Bits:</dt>
 <dd id="section-17.2-3.8">
   The lower four bits (those with a mask of 0x0f) of byte 0 are type-specific.<a href="#section-17.2-3.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.9">Version:</dt>
 <dd id="section-17.2-3.10">
   The QUIC Version is a 32-bit field that follows the first byte.  This field
 indicates which version of QUIC is in use and determines how the rest of the
 protocol fields are interpreted.<a href="#section-17.2-3.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.11">DCID Length:</dt>
 <dd id="section-17.2-3.12">
   The byte following the version contains the length in bytes of the Destination
@@ -5882,12 +5914,14 @@ Endpoints that receive a version 1 long header with a value larger than
 from other QUIC versions in order to properly form a version negotiation
 packet.<a href="#section-17.2-3.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.13">Destination Connection ID:</dt>
 <dd id="section-17.2-3.14">
   The Destination Connection ID field follows the DCID Length field and is
 between 0 and 20 bytes in length. <a href="#negotiating-connection-ids" class="xref">Section 7.2</a> describes
 the use of this field in more detail.<a href="#section-17.2-3.14" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.15">SCID Length:</dt>
 <dd id="section-17.2-3.16">
   The byte following the Destination Connection ID contains the length in bytes
@@ -5898,12 +5932,14 @@ bytes. Endpoints that receive a version 1 long header with a value larger than
 from other QUIC versions in order to properly form a version negotiation
 packet.<a href="#section-17.2-3.16" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-3.17">Source Connection ID:</dt>
 <dd id="section-17.2-3.18">
   The Source Connection ID field follows the SCID Length field and is between 0
 and 20 bytes in length. <a href="#negotiating-connection-ids" class="xref">Section 7.2</a> describes the use of
 this field in more detail.<a href="#section-17.2-3.18" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-17.2-4">In this version of QUIC, the following packet types with the long header are
 defined:<a href="#section-17.2-4" class="pilcrow">¶</a></p>
@@ -5973,6 +6009,7 @@ of type PROTOCOL_VIOLATION. Discarding such a packet after only removing
 header protection can expose the endpoint to attacks; see Section 9.3 of
 <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-17.2-8.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-8.3">Packet Number Length:</dt>
 <dd id="section-17.2-8.4">
   In packet types which contain a Packet Number field, the least significant two
@@ -5982,12 +6019,14 @@ length of the packet number field in bytes.  That is, the length of the packet
 number field is the value of this field, plus one.  These bits are protected
 using header protection; see Section 5.4 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-17.2-8.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-8.5">Length:</dt>
 <dd id="section-17.2-8.6">
   The length of the remainder of the packet (that is, the Packet Number and
 Payload fields) in bytes, encoded as a variable-length integer
 (<a href="#integer-encoding" class="xref">Section 16</a>).<a href="#section-17.2-8.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2-8.7">Packet Number:</dt>
 <dd id="section-17.2-8.8">
   The packet number field is 1 to 4 bytes long. The packet number has
@@ -5995,6 +6034,7 @@ confidentiality protection separate from packet protection, as described in
 Section 5.4 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>. The length of the packet number field is encoded
 in the Packet Number Length bits of byte 0; see above.<a href="#section-17.2-8.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <div id="packet-version">
 <section id="section-17.2.1">
@@ -6103,15 +6143,18 @@ MUST set the Token Length field to zero; clients that receive an Initial
 packet with a non-zero Token Length field MUST either discard the packet or
 generate a connection error of type PROTOCOL_VIOLATION.<a href="#section-17.2.2-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2.2-4.3">Token:</dt>
 <dd id="section-17.2.2-4.4">
   The value of the token that was previously provided in a Retry packet or
 NEW_TOKEN frame.<a href="#section-17.2.2-4.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2.2-4.5">Packet Payload:</dt>
 <dd id="section-17.2.2-4.6">
   The payload of the packet.<a href="#section-17.2.2-4.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-17.2.2-5">In order to prevent tampering by version-unaware middleboxes, Initial packets
 are protected with connection- and version-specific keys (Initial keys) as
@@ -6308,10 +6351,12 @@ fields:<a href="#section-17.2.5-3" class="pilcrow">¶</a></p>
 <dd id="section-17.2.5-4.2">
   An opaque token that the server can use to validate the client's address.<a href="#section-17.2.5-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.2.5-4.3">Retry Integrity Tag:</dt>
 <dd id="section-17.2.5-4.4">
   See the Retry Packet Integrity section of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-17.2.5-4.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <div id="sending-a-retry-packet">
 <section id="section-17.2.5.1">
@@ -6427,16 +6472,19 @@ Packets that use the short header contain the following fields:<a href="#section
 <dd id="section-17.3-4.2">
   The most significant bit (0x80) of byte 0 is set to 0 for the short header.<a href="#section-17.3-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.3">Fixed Bit:</dt>
 <dd id="section-17.3-4.4">
   The next bit (0x40) of byte 0 is set to 1.  Packets containing a zero value
 for this bit are not valid packets in this version and MUST be discarded.<a href="#section-17.3-4.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.5">Spin Bit:</dt>
 <dd id="section-17.3-4.6">
   The third most significant bit (0x20) of byte 0 is the latency spin bit, set
 as described in <a href="#spin-bit" class="xref">Section 17.3.1</a>.<a href="#section-17.3-4.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.7">Reserved Bits:</dt>
 <dd id="section-17.3-4.8">
   The next two bits (those with a mask of 0x18) of byte 0 are reserved.  These
@@ -6448,6 +6496,7 @@ of type PROTOCOL_VIOLATION. Discarding such a packet after only removing
 header protection can expose the endpoint to attacks; see Section 9.3 of
 <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-17.3-4.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.9">Key Phase:</dt>
 <dd id="section-17.3-4.10">
   The next bit (0x04) of byte 0 indicates the key phase, which allows a
@@ -6455,6 +6504,7 @@ recipient of a packet to identify the packet protection keys that are used to
 protect the packet.  See <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span> for details.  This bit is protected
 using header protection; see Section 5.4 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-17.3-4.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.11">Packet Number Length:</dt>
 <dd id="section-17.3-4.12">
   The least significant two bits (those with a mask of 0x03) of byte 0 contain
@@ -6463,11 +6513,13 @@ is one less than the length of the packet number field in bytes.  That is, the
 length of the packet number field is the value of this field, plus one.  These
 bits are protected using header protection; see Section 5.4 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-17.3-4.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.13">Destination Connection ID:</dt>
 <dd id="section-17.3-4.14">
   The Destination Connection ID is a connection ID that is chosen by the
 intended recipient of the packet.  See <a href="#connection-id" class="xref">Section 5.1</a> for more details.<a href="#section-17.3-4.14" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.15">Packet Number:</dt>
 <dd id="section-17.3-4.16">
   The packet number field is 1 to 4 bytes long. The packet number has
@@ -6475,10 +6527,12 @@ confidentiality protection separate from packet protection, as described in
 Section 5.4 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>. The length of the packet number field is encoded
 in Packet Number Length field. See <a href="#packet-encoding" class="xref">Section 17.1</a> for details.<a href="#section-17.3-4.16" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-17.3-4.17">Packet Payload:</dt>
 <dd id="section-17.3-4.18">
   Packets with a short header always include a 1-RTT protected payload.<a href="#section-17.3-4.18" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-17.3-5">The header form bit and the connection ID field of a short header packet are
 version-independent.  The remaining fields are specific to the selected QUIC
@@ -6608,12 +6662,14 @@ is the same value sent in the "Original Destination Connection ID" field of a
 Retry packet; see <a href="#packet-retry" class="xref">Section 17.2.5</a>.  A server MUST include the
 original_connection_id transport parameter if it sent a Retry packet.<a href="#section-18.2-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.3">max_idle_timeout (0x01):</dt>
 <dd id="section-18.2-4.4">
   The max idle timeout is a value in milliseconds that is encoded as an integer;
 see (<a href="#idle-timeout" class="xref">Section 10.2</a>).  Idle timeout is disabled when both endpoints omit
 this transport parameter or specify a value of 0.<a href="#section-18.2-4.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.5">stateless_reset_token (0x02):</dt>
 <dd id="section-18.2-4.6">
   A stateless reset token is used in verifying a stateless reset; see
@@ -6623,6 +6679,7 @@ A server that does not send this transport parameter cannot use stateless
 reset (<a href="#stateless-reset" class="xref">Section 10.4</a>) for the connection ID negotiated during the
 handshake.<a href="#section-18.2-4.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.7">max_udp_payload_size (0x03):</dt>
 <dd id="section-18.2-4.8">
   The maximum UDP payload size parameter is an integer value that limits the
@@ -6630,16 +6687,19 @@ size of UDP payloads that the endpoint is willing to receive.  UDP packets
 with payloads larger than this limit are not likely to be processed by the
 receiver.<a href="#section-18.2-4.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.9"></dt>
 <dd id="section-18.2-4.10">The default for this parameter is the maximum permitted UDP payload of 65527.
 Values below 1200 are invalid.<a href="#section-18.2-4.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.11"></dt>
 <dd id="section-18.2-4.12">This limit does act as an additional constraint on datagram size in the same
 way as the path MTU, but it is a property of the endpoint and not the path. It
 is expected that this is the space an endpoint dedicates to holding incoming
 packets.<a href="#section-18.2-4.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.13">initial_max_data (0x04):</dt>
 <dd id="section-18.2-4.14">
   The initial maximum data parameter is an integer value that contains the
@@ -6647,6 +6707,7 @@ initial value for the maximum amount of data that can be sent on the
 connection.  This is equivalent to sending a MAX_DATA (<a href="#frame-max-data" class="xref">Section 19.9</a>) for
 the connection immediately after completing the handshake.<a href="#section-18.2-4.14" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.15">initial_max_stream_data_bidi_local (0x05):</dt>
 <dd id="section-18.2-4.16">
   This parameter is an integer value specifying the initial flow control limit
@@ -6657,6 +6718,7 @@ identifier with the least significant two bits set to 0x0; in server transport
 parameters, this applies to streams with the least significant two bits set to
 0x1.<a href="#section-18.2-4.16" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.17">initial_max_stream_data_bidi_remote (0x06):</dt>
 <dd id="section-18.2-4.18">
   This parameter is an integer value specifying the initial flow control limit
@@ -6667,6 +6729,7 @@ identifier with the least significant two bits set to 0x1; in server transport
 parameters, this applies to streams with the least significant two bits set to
 0x0.<a href="#section-18.2-4.18" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.19">initial_max_stream_data_uni (0x07):</dt>
 <dd id="section-18.2-4.20">
   This parameter is an integer value specifying the initial flow control limit
@@ -6677,6 +6740,7 @@ identifier with the least significant two bits set to 0x3; in server transport
 parameters, this applies to streams with the least significant two bits set to
 0x2.<a href="#section-18.2-4.20" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.21">initial_max_streams_bidi (0x08):</dt>
 <dd id="section-18.2-4.22">
   The initial maximum bidirectional streams parameter is an integer value that
@@ -6686,6 +6750,7 @@ bidirectional streams until a MAX_STREAMS frame is sent.  Setting this
 parameter is equivalent to sending a MAX_STREAMS (<a href="#frame-max-streams" class="xref">Section 19.11</a>) of
 the corresponding type with the same value.<a href="#section-18.2-4.22" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.23">initial_max_streams_uni (0x09):</dt>
 <dd id="section-18.2-4.24">
   The initial maximum unidirectional streams parameter is an integer value that
@@ -6695,6 +6760,7 @@ unidirectional streams until a MAX_STREAMS frame is sent.  Setting this
 parameter is equivalent to sending a MAX_STREAMS (<a href="#frame-max-streams" class="xref">Section 19.11</a>) of
 the corresponding type with the same value.<a href="#section-18.2-4.24" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.25">ack_delay_exponent (0x0a):</dt>
 <dd id="section-18.2-4.26">
   The ACK delay exponent is an integer value indicating an
@@ -6702,6 +6768,7 @@ exponent used to decode the ACK Delay field in the ACK frame (<a href="#frame-ac
 If this value is absent, a default value of 3 is assumed (indicating a
 multiplier of 8). Values above 20 are invalid.<a href="#section-18.2-4.26" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.27">max_ack_delay (0x0b):</dt>
 <dd id="section-18.2-4.28">
   The maximum ACK delay is an integer value indicating the
@@ -6712,6 +6779,7 @@ and alarms commonly fire up to 1ms late, then it should send a max_ack_delay
 of 6ms.  If this value is absent, a default of 25 milliseconds is assumed.
 Values of 2^14 or greater are invalid.<a href="#section-18.2-4.28" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.29">disable_active_migration (0x0c):</dt>
 <dd id="section-18.2-4.30">
   The disable active migration transport parameter is included if the endpoint
@@ -6721,6 +6789,7 @@ including probing packets (<a href="#probing" class="xref">Section 9.1</a>), fro
 than that used to perform the handshake.  This parameter is a zero-length
 value.<a href="#section-18.2-4.30" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.31">preferred_address (0x0d):</dt>
 <dd id="section-18.2-4.32">
   The server's preferred address is used to effect a change in server address at
@@ -6731,6 +6800,7 @@ a preferred address of one address family by sending an all-zero address and
 port (0.0.0.0:0 or ::.0) for the other family. IP addresses are encoded in
 network byte order.<a href="#section-18.2-4.32" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-18.2-4.33"></dt>
 <dd id="section-18.2-4.34">The Connection ID field and the Stateless Reset Token field contain an
 alternative connection ID that has a sequence number of 1 (<a href="#issue-cid" class="xref">Section 5.1.1</a>).
@@ -6738,6 +6808,7 @@ Having these values bundled with the preferred address ensures that there will
 be at least one unused active connection ID when the client initiates
 migration to the preferred address.<a href="#section-18.2-4.34" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <span id="name-preferred-address-format"></span><div id="fig-preferred-address">
 <figure id="figure-19">
@@ -6772,6 +6843,7 @@ transport parameter is absent, a default of 2 is assumed.
 When a zero-length connection ID is being used, the active_connection_id_limit
 parameter MUST NOT be sent.<a href="#section-18.2-6.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-18.2-7">If present, transport parameters that set initial flow control limits
 (initial_max_stream_data_bidi_local, initial_max_stream_data_bidi_remote, and
@@ -6884,6 +6956,7 @@ acknowledging; this is usually the largest packet number that the peer has
 received prior to generating the ACK frame.  Unlike the packet number in the
 QUIC long or short header, the value in an ACK frame is not truncated.<a href="#section-19.3-8.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3-8.3">ACK Delay:</dt>
 <dd id="section-19.3-8.4">
   A variable-length integer representing the time delta in microseconds between
@@ -6896,11 +6969,13 @@ this fashion allows for a larger range of values with a shorter encoding at
 the cost of lower resolution.  Because the receiver doesn't use the ACK Delay
 for Initial and Handshake packets, a sender SHOULD send a value of 0.<a href="#section-19.3-8.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3-8.5">ACK Range Count:</dt>
 <dd id="section-19.3-8.6">
   A variable-length integer specifying the number of Gap and ACK Range fields in
 the frame.<a href="#section-19.3-8.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3-8.7">First ACK Range:</dt>
 <dd id="section-19.3-8.8">
   A variable-length integer indicating the number of contiguous packets
@@ -6910,15 +6985,18 @@ Largest Acknowledged.  That is, the smallest packet acknowledged in the
 range is determined by subtracting the First ACK Range value from the Largest
 Acknowledged.<a href="#section-19.3-8.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3-8.9">ACK Ranges:</dt>
 <dd id="section-19.3-8.10">
   Contains additional ranges of packets which are alternately not
 acknowledged (Gap) and acknowledged (ACK Range); see <a href="#ack-ranges" class="xref">Section 19.3.1</a>.<a href="#section-19.3-8.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3-8.11">ECN Counts:</dt>
 <dd id="section-19.3-8.12">
   The three ECN Counts; see <a href="#ack-ecn-counts" class="xref">Section 19.3.2</a>.<a href="#section-19.3-8.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <div id="ack-ranges">
 <section id="section-19.3.1">
@@ -6952,12 +7030,14 @@ ACK Range {
 packets preceding the packet number one lower than the smallest in the
 preceding ACK Range.<a href="#section-19.3.1-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3.1-5.3">ACK Range Length:</dt>
 <dd id="section-19.3.1-5.4">
   A variable-length integer indicating the number of contiguous acknowledged
 packets preceding the largest packet number, as determined by the
 preceding Gap.<a href="#section-19.3.1-5.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.3.1-6">Gap and ACK Range value use a relative integer encoding for efficiency.  Though
 each encoded value is positive, the values are subtracted, so that each ACK
@@ -7025,16 +7105,19 @@ ECN Counts {
   A variable-length integer representing the total number of packets received
 with the ECT(0) codepoint in the packet number space of the ACK frame.<a href="#section-19.3.2-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3.2-5.3">ECT1 Count:</dt>
 <dd id="section-19.3.2-5.4">
   A variable-length integer representing the total number of packets received
 with the ECT(1) codepoint in the packet number space of the ACK frame.<a href="#section-19.3.2-5.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.3.2-5.5">CE Count:</dt>
 <dd id="section-19.3.2-5.6">
   A variable-length integer representing the total number of packets received
 with the CE codepoint in the packet number space of the ACK frame.<a href="#section-19.3.2-5.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.3.2-6">ECN counts are maintained separately for each packet number space.<a href="#section-19.3.2-6" class="pilcrow">¶</a></p>
 </section>
@@ -7077,17 +7160,20 @@ RESET_STREAM Frame {
   A variable-length integer encoding of the Stream ID of the stream being
 terminated.<a href="#section-19.4-7.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.4-7.3">Application Protocol Error Code:</dt>
 <dd id="section-19.4-7.4">
   A variable-length integer containing the application protocol error
 code (see <a href="#app-error-codes" class="xref">Section 20.1</a>) which indicates why the stream is being
 closed.<a href="#section-19.4-7.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.4-7.5">Final Size:</dt>
 <dd id="section-19.4-7.6">
   A variable-length integer indicating the final size of the stream by the
 RESET_STREAM sender, in unit of bytes.<a href="#section-19.4-7.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -7127,11 +7213,13 @@ STOP_SENDING Frame {
 <dd id="section-19.5-6.2">
   A variable-length integer carrying the Stream ID of the stream being ignored.<a href="#section-19.5-6.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.5-6.3">Application Protocol Error Code:</dt>
 <dd id="section-19.5-6.4">
   A variable-length integer containing the application-specified reason the
 sender is ignoring the stream; see <a href="#app-error-codes" class="xref">Section 20.1</a>.<a href="#section-19.5-6.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -7170,15 +7258,18 @@ CRYPTO Frame {
   A variable-length integer specifying the byte offset in the stream for the
 data in this CRYPTO frame.<a href="#section-19.6-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.6-5.3">Length:</dt>
 <dd id="section-19.6-5.4">
   A variable-length integer specifying the length of the Crypto Data field in
 this CRYPTO frame.<a href="#section-19.6-5.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.6-5.5">Crypto Data:</dt>
 <dd id="section-19.6-5.6">
   The cryptographic message data.<a href="#section-19.6-5.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.6-6">There is a separate flow of cryptographic handshake data in each encryption
 level, each of which starts at an offset of 0. This implies that each encryption
@@ -7222,12 +7313,14 @@ NEW_TOKEN Frame {
 <dd id="section-19.7-5.2">
   A variable-length integer specifying the length of the token in bytes.<a href="#section-19.7-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.7-5.3">Token:</dt>
 <dd id="section-19.7-5.4">
   An opaque blob that the client may use with a future Initial packet. The token
 MUST NOT be empty.  An endpoint MUST treat receipt of a NEW_TOKEN frame with
 an empty Token field as a connection error of type FRAME_ENCODING_ERROR.<a href="#section-19.7-5.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.7-6">An endpoint might receive multiple NEW_TOKEN frames that contain the same token
 value if packets containing the frame are incorrectly determined to be lost.
@@ -7291,12 +7384,14 @@ STREAM Frame {
   A variable-length integer indicating the stream ID of the stream; see
 <a href="#stream-id" class="xref">Section 2.1</a>.<a href="#section-19.8-7.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.8-7.3">Offset:</dt>
 <dd id="section-19.8-7.4">
   A variable-length integer specifying the byte offset in the stream for the
 data in this STREAM frame.  This field is present when the OFF bit is set to
 1.  When the Offset field is absent, the offset is 0.<a href="#section-19.8-7.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.8-7.5">Length:</dt>
 <dd id="section-19.8-7.6">
   A variable-length integer specifying the length of the Stream Data field in
@@ -7304,10 +7399,12 @@ this STREAM frame.  This field is present when the LEN bit is set to 1.  When
 the LEN bit is set to 0, the Stream Data field consumes all the remaining
 bytes in the packet.<a href="#section-19.8-7.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.8-7.7">Stream Data:</dt>
 <dd id="section-19.8-7.8">
   The bytes from the designated stream to be delivered.<a href="#section-19.8-7.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.8-8">When a Stream Data field has a length of 0, the offset in the STREAM frame is
 the offset of the next byte that would be sent.<a href="#section-19.8-8" class="pilcrow">¶</a></p>
@@ -7347,6 +7444,7 @@ MAX_DATA Frame {
   A variable-length integer indicating the maximum amount of data that can be
 sent on the entire connection, in units of bytes.<a href="#section-19.9-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.9-6">All data sent in STREAM frames counts toward this limit.  The sum of the largest
 received offsets on all streams - including streams in terminal states - MUST
@@ -7392,11 +7490,13 @@ MAX_STREAM_DATA Frame {
   The stream ID of the stream that is affected encoded as a variable-length
 integer.<a href="#section-19.10-6.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.10-6.3">Maximum Stream Data:</dt>
 <dd id="section-19.10-6.4">
   A variable-length integer indicating the maximum amount of data that can be
 sent on the identified stream, in units of bytes.<a href="#section-19.10-6.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.10-7">When counting data toward this limit, an endpoint accounts for the largest
 received offset of data that is sent or received on the stream.  Loss or
@@ -7444,6 +7544,7 @@ can be opened over the lifetime of the connection.  This value cannot exceed
 Receipt of a frame that permits opening of a stream larger than this limit
 MUST be treated as a FRAME_ENCODING_ERROR.<a href="#section-19.11-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.11-6">Loss or reordering can cause a MAX_STREAMS frame to be received which states a
 lower stream limit than an endpoint has previously received.  MAX_STREAMS frames
@@ -7489,6 +7590,7 @@ DATA_BLOCKED Frame {
   A variable-length integer indicating the connection-level limit at which
 blocking occurred.<a href="#section-19.12-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -7524,11 +7626,13 @@ STREAM_DATA_BLOCKED Frame {
 <dd id="section-19.13-6.2">
   A variable-length integer indicating the stream which is flow control blocked.<a href="#section-19.13-6.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.13-6.3">Maximum Stream Data:</dt>
 <dd id="section-19.13-6.4">
   A variable-length integer indicating the offset of the stream at which the
 blocking occurred.<a href="#section-19.13-6.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -7569,6 +7673,7 @@ not possible to encode stream IDs larger than 2^62-1.  Receipt of a frame
 that encodes a larger stream ID MUST be treated as a STREAM_LIMIT_ERROR or a
 FRAME_ENCODING_ERROR.<a href="#section-19.14-6.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -7606,26 +7711,31 @@ NEW_CONNECTION_ID Frame {
   The sequence number assigned to the connection ID by the sender.  See
 <a href="#issue-cid" class="xref">Section 5.1.1</a>.<a href="#section-19.15-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.15-5.3">Retire Prior To:</dt>
 <dd id="section-19.15-5.4">
   A variable-length integer indicating which connection IDs should be retired.
 See <a href="#retiring-cids" class="xref">Section 5.1.2</a>.<a href="#section-19.15-5.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.15-5.5">Length:</dt>
 <dd id="section-19.15-5.6">
   An 8-bit unsigned integer containing the length of the connection ID.  Values
 less than 1 and greater than 20 are invalid and MUST be treated as a
 connection error of type FRAME_ENCODING_ERROR.<a href="#section-19.15-5.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.15-5.7">Connection ID:</dt>
 <dd id="section-19.15-5.8">
   A connection ID of the specified length.<a href="#section-19.15-5.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.15-5.9">Stateless Reset Token:</dt>
 <dd id="section-19.15-5.10">
   A 128-bit value that will be used for a stateless reset when the associated
 connection ID is used; see <a href="#stateless-reset" class="xref">Section 10.4</a>.<a href="#section-19.15-5.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.15-6">An endpoint MUST NOT send this frame if it currently requires that its peer send
 packets with a zero-length Destination Connection ID.  Changing the length of a
@@ -7694,6 +7804,7 @@ RETIRE_CONNECTION_ID Frame {
   The sequence number of the connection ID being retired.  See
 <a href="#retiring-cids" class="xref">Section 5.1.2</a>.<a href="#section-19.16-6.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.16-7">Receipt of a RETIRE_CONNECTION_ID frame containing a sequence number greater
 than any previously sent to the peer MUST be treated as a connection error of
@@ -7736,6 +7847,7 @@ PATH_CHALLENGE Frame {
 <dd id="section-19.17-5.2">
   This 8-byte field contains arbitrary data.<a href="#section-19.17-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.17-6">A PATH_CHALLENGE frame containing 8 bytes that are hard to guess is sufficient
 to ensure that it is easier to receive the packet than it is to guess the value
@@ -7811,6 +7923,7 @@ from the space defined in <a href="#error-codes" class="xref">Section 20</a>.  A
 type 0x1d uses codes from the application protocol error code space;
 see <a href="#app-error-codes" class="xref">Section 20.1</a><a href="#section-19.19-6.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.19-6.3">Frame Type:</dt>
 <dd id="section-19.19-6.4">
   A variable-length integer encoding the type of frame that triggered the error.
@@ -7818,18 +7931,21 @@ A value of 0 (equivalent to the mention of the PADDING frame) is used when the
 frame type is unknown.  The application-specific variant of CONNECTION_CLOSE
 (type 0x1d) does not include this field.<a href="#section-19.19-6.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.19-6.5">Reason Phrase Length:</dt>
 <dd id="section-19.19-6.6">
   A variable-length integer specifying the length of the reason phrase in bytes.
 Because a CONNECTION_CLOSE frame cannot be split between packets, any limits
 on packet size will also limit the space available for a reason phrase.<a href="#section-19.19-6.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-19.19-6.7">Reason Phrase:</dt>
 <dd id="section-19.19-6.8">
   A human-readable explanation for why the connection was closed.  This can be
 zero length if the sender chooses to not give details beyond the Error Code.
 This SHOULD be a UTF-8 encoded string <span>[<a href="#RFC3629" class="xref">RFC3629</a>]</span>.<a href="#section-19.19-6.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-19.19-7">The application-specific variant of CONNECTION_CLOSE (type 0x1d) can only be
 sent using 0-RTT or 1-RTT packets (<span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>, Section 4).  When an
@@ -7894,30 +8010,36 @@ CONNECTION_CLOSE frame.  These errors apply to the entire connection.<a href="#s
   An endpoint uses this with CONNECTION_CLOSE to signal that the connection is
 being closed abruptly in the absence of any error.<a href="#section-20-3.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.3">INTERNAL_ERROR (0x1):</dt>
 <dd id="section-20-3.4">
   The endpoint encountered an internal error and cannot continue with the
 connection.<a href="#section-20-3.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.5">SERVER_BUSY (0x2):</dt>
 <dd id="section-20-3.6">
   The server is currently busy and does not accept any new connections.<a href="#section-20-3.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.7">FLOW_CONTROL_ERROR (0x3):</dt>
 <dd id="section-20-3.8">
   An endpoint received more data than it permitted in its advertised data
 limits; see <a href="#flow-control" class="xref">Section 4</a>.<a href="#section-20-3.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.9">STREAM_LIMIT_ERROR (0x4):</dt>
 <dd id="section-20-3.10">
   An endpoint received a frame for a stream identifier that exceeded its
 advertised stream limit for the corresponding stream type.<a href="#section-20-3.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.11">STREAM_STATE_ERROR (0x5):</dt>
 <dd id="section-20-3.12">
   An endpoint received a frame for a stream that was not in a state that
 permitted that frame; see <a href="#stream-states" class="xref">Section 3</a>.<a href="#section-20-3.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.13">FINAL_SIZE_ERROR (0x6):</dt>
 <dd id="section-20-3.14">
   An endpoint received a STREAM frame containing data that exceeded the
@@ -7927,40 +8049,48 @@ stream data that was already received.  Or an endpoint received a STREAM frame
 or a RESET_STREAM frame containing a different final size to the one already
 established.<a href="#section-20-3.14" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.15">FRAME_ENCODING_ERROR (0x7):</dt>
 <dd id="section-20-3.16">
   An endpoint received a frame that was badly formatted.  For instance, a frame
 of an unknown type, or an ACK frame that has more acknowledgment ranges than
 the remainder of the packet could carry.<a href="#section-20-3.16" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.17">TRANSPORT_PARAMETER_ERROR (0x8):</dt>
 <dd id="section-20-3.18">
   An endpoint received transport parameters that were badly formatted, included
 an invalid value, was absent even though it is mandatory, was present though
 it is forbidden, or is otherwise in error.<a href="#section-20-3.18" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.19">CONNECTION_ID_LIMIT_ERROR (0x9):</dt>
 <dd id="section-20-3.20">
   The number of connection IDs provided by the peer exceeds the advertised
 active_connection_id_limit.<a href="#section-20-3.20" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.21">PROTOCOL_VIOLATION (0xA):</dt>
 <dd id="section-20-3.22">
   An endpoint detected an error with protocol compliance that was not covered by
 more specific error codes.<a href="#section-20-3.22" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.23">INVALID_TOKEN (0xB):</dt>
 <dd id="section-20-3.24">
   A server received a Retry Token in a client Initial that is invalid.<a href="#section-20-3.24" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.25">APPLICATION_ERROR (0xC):</dt>
 <dd id="section-20-3.26">
   The application or application protocol caused the connection to be closed.<a href="#section-20-3.26" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.27">CRYPTO_BUFFER_EXCEEDED (0xD):</dt>
 <dd id="section-20-3.28">
   An endpoint has received more data in CRYPTO frames than it can buffer.<a href="#section-20-3.28" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-20-3.29">CRYPTO_ERROR (0x1XX):</dt>
 <dd id="section-20-3.30">
   The cryptographic handshake failed.  A range of 256 values is reserved for
@@ -7968,6 +8098,7 @@ carrying error codes specific to the cryptographic handshake that is used.
 Codes for errors occurring when TLS is used for the crypto handshake are
 described in Section 4.8 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-20-3.30" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-20-4">See <a href="#iana-error-codes" class="xref">Section 22.4</a> for details of registering new error codes.<a href="#section-20-4" class="pilcrow">¶</a></p>
 <p id="section-20-5">In defining these error codes, several principles are applied.  Error conditions
@@ -8609,26 +8740,32 @@ registration:<a href="#section-22.1.1-4" class="pilcrow">¶</a></p>
 <dd id="section-22.1.1-5.2">
   The assigned codepoint.<a href="#section-22.1.1-5.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-22.1.1-5.3">Status:</dt>
 <dd id="section-22.1.1-5.4">
   "Permanent" or "Provisional".<a href="#section-22.1.1-5.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-22.1.1-5.5">Specification:</dt>
 <dd id="section-22.1.1-5.6">
   A reference to a publicly available specification for the value.<a href="#section-22.1.1-5.6" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-22.1.1-5.7">Date:</dt>
 <dd id="section-22.1.1-5.8">
   The date of last update to the registration.<a href="#section-22.1.1-5.8" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-22.1.1-5.9">Contact:</dt>
 <dd id="section-22.1.1-5.10">
   Contact details for the registrant.<a href="#section-22.1.1-5.10" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-22.1.1-5.11">Notes:</dt>
 <dd id="section-22.1.1-5.12">
   Supplementary notes about the registration.<a href="#section-22.1.1-5.12" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-22.1.1-6">Provisional registrations MAY omit the Specification and Notes fields, plus any
 additional fields that might be required for a permanent registration.  The Date
@@ -8732,6 +8869,7 @@ this registry MUST include the following fields:<a href="#section-22.2-3" class=
 <dd id="section-22.2-4.2">
   A short mnemonic for the parameter.<a href="#section-22.2-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-22.2-5">The initial contents of this registry are shown in <a href="#iana-tp-table" class="xref">Table 6</a>.<a href="#section-22.2-5" class="pilcrow">¶</a></p>
 <span id="name-initial-quic-transport-para"></span><div id="iana-tp-table">
@@ -8880,6 +9018,7 @@ this registry MUST include the following fields:<a href="#section-22.3-3" class=
 <dd id="section-22.3-4.2">
   A short mnemonic for the frame type.<a href="#section-22.3-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-22.3-5">In addition to the advice in <a href="#iana-policy" class="xref">Section 22.1</a>, specifications for new permanent
 registrations SHOULD describe the means by which an endpoint might determine
@@ -8910,11 +9049,13 @@ this registry MUST include the following fields:<a href="#section-22.4-3" class=
 <dd id="section-22.4-4.2">
   A short mnemonic for the parameter.<a href="#section-22.4-4.2" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 <dt id="section-22.4-4.3">Description:</dt>
 <dd id="section-22.4-4.4">
   A brief description of the error code semantics, which MAY be a summary if a
 specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">¶</a>
 </dd>
+<dd class="break"></dd>
 </dl>
 <p id="section-22.4-5">The initial contents of this registry are shown in <a href="#iana-error-table" class="xref">Table 7</a>.<a href="#section-22.4-5" class="pilcrow">¶</a></p>
 <span id="name-initial-quic-transport-erro"></span><div id="iana-error-table">
@@ -9063,54 +9204,71 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dt id="DPLPMTUD">[DPLPMTUD]</dt>
 <dd>
 <span class="refAuthor">Fairhurst, G.</span><span class="refAuthor">, Jones, T.</span><span class="refAuthor">, Tuexen, M.</span><span class="refAuthor">, Ruengeler, I.</span><span class="refAuthor">, and T. Voelker</span>, <span class="refTitle">"Packetization Layer Path MTU Discovery for Datagram Transports"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tsvwg-datagram-plpmtud-19</span>, <time datetime="2020-04-03">3 April 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-datagram-plpmtud-19.txt">http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-datagram-plpmtud-19.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="IPv4">[IPv4]</dt>
 <dd>
 <span class="refAuthor">Postel, J.</span>, <span class="refTitle">"Internet Protocol"</span>, <span class="seriesInfo">STD 5</span>, <span class="seriesInfo">RFC 791</span>, <span class="seriesInfo">DOI 10.17487/RFC0791</span>, <time datetime="1981-09">September 1981</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc791">https://www.rfc-editor.org/info/rfc791</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="QUIC-RECOVERY">[QUIC-RECOVERY]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-05-01">1 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-05-06">6 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="QUIC-TLS">[QUIC-TLS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-01">1 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-06">6 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC1191">[RFC1191]</dt>
 <dd>
 <span class="refAuthor">Mogul, J.C.</span><span class="refAuthor"> and S.E. Deering</span>, <span class="refTitle">"Path MTU discovery"</span>, <span class="seriesInfo">RFC 1191</span>, <span class="seriesInfo">DOI 10.17487/RFC1191</span>, <time datetime="1990-11">November 1990</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1191">https://www.rfc-editor.org/info/rfc1191</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
 <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC3168">[RFC3168]</dt>
 <dd>
 <span class="refAuthor">Ramakrishnan, K.</span><span class="refAuthor">, Floyd, S.</span><span class="refAuthor">, and D. Black</span>, <span class="refTitle">"The Addition of Explicit Congestion Notification (ECN) to IP"</span>, <span class="seriesInfo">RFC 3168</span>, <span class="seriesInfo">DOI 10.17487/RFC3168</span>, <time datetime="2001-09">September 2001</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3168">https://www.rfc-editor.org/info/rfc3168</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC3629">[RFC3629]</dt>
 <dd>
 <span class="refAuthor">Yergeau, F.</span>, <span class="refTitle">"UTF-8, a transformation format of ISO 10646"</span>, <span class="seriesInfo">STD 63</span>, <span class="seriesInfo">RFC 3629</span>, <span class="seriesInfo">DOI 10.17487/RFC3629</span>, <time datetime="2003-11">November 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3629">https://www.rfc-editor.org/info/rfc3629</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC4086">[RFC4086]</dt>
 <dd>
 <span class="refAuthor">Eastlake 3rd, D.</span><span class="refAuthor">, Schiller, J.</span><span class="refAuthor">, and S. Crocker</span>, <span class="refTitle">"Randomness Requirements for Security"</span>, <span class="seriesInfo">BCP 106</span>, <span class="seriesInfo">RFC 4086</span>, <span class="seriesInfo">DOI 10.17487/RFC4086</span>, <time datetime="2005-06">June 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4086">https://www.rfc-editor.org/info/rfc4086</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5116">[RFC5116]</dt>
 <dd>
 <span class="refAuthor">McGrew, D.</span>, <span class="refTitle">"An Interface and Algorithms for Authenticated Encryption"</span>, <span class="seriesInfo">RFC 5116</span>, <span class="seriesInfo">DOI 10.17487/RFC5116</span>, <time datetime="2008-01">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5116">https://www.rfc-editor.org/info/rfc5116</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6437">[RFC6437]</dt>
 <dd>
 <span class="refAuthor">Amante, S.</span><span class="refAuthor">, Carpenter, B.</span><span class="refAuthor">, Jiang, S.</span><span class="refAuthor">, and J. Rajahalme</span>, <span class="refTitle">"IPv6 Flow Label Specification"</span>, <span class="seriesInfo">RFC 6437</span>, <span class="seriesInfo">DOI 10.17487/RFC6437</span>, <time datetime="2011-11">November 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6437">https://www.rfc-editor.org/info/rfc6437</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8085">[RFC8085]</dt>
 <dd>
 <span class="refAuthor">Eggert, L.</span><span class="refAuthor">, Fairhurst, G.</span><span class="refAuthor">, and G. Shepherd</span>, <span class="refTitle">"UDP Usage Guidelines"</span>, <span class="seriesInfo">BCP 145</span>, <span class="seriesInfo">RFC 8085</span>, <span class="seriesInfo">DOI 10.17487/RFC8085</span>, <time datetime="2017-03">March 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8085">https://www.rfc-editor.org/info/rfc8085</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8126">[RFC8126]</dt>
 <dd>
 <span class="refAuthor">Cotton, M.</span><span class="refAuthor">, Leiba, B.</span><span class="refAuthor">, and T. Narten</span>, <span class="refTitle">"Guidelines for Writing an IANA Considerations Section in RFCs"</span>, <span class="seriesInfo">BCP 26</span>, <span class="seriesInfo">RFC 8126</span>, <span class="seriesInfo">DOI 10.17487/RFC8126</span>, <time datetime="2017-06">June 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8126">https://www.rfc-editor.org/info/rfc8126</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
 <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8201">[RFC8201]</dt>
 <dd>
 <span class="refAuthor">McCann, J.</span><span class="refAuthor">, Deering, S.</span><span class="refAuthor">, Mogul, J.</span><span class="refAuthor">, and R. Hinden, Ed.</span>, <span class="refTitle">"Path MTU Discovery for IP version 6"</span>, <span class="seriesInfo">STD 87</span>, <span class="seriesInfo">RFC 8201</span>, <span class="seriesInfo">DOI 10.17487/RFC8201</span>, <time datetime="2017-07">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8201">https://www.rfc-editor.org/info/rfc8201</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8311">[RFC8311]</dt>
 <dd>
 <span class="refAuthor">Black, D.</span>, <span class="refTitle">"Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation"</span>, <span class="seriesInfo">RFC 8311</span>, <span class="seriesInfo">DOI 10.17487/RFC8311</span>, <time datetime="2018-01">January 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8311">https://www.rfc-editor.org/info/rfc8311</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="TLS13">[TLS13]</dt>
 <dd>
 <span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 <section id="section-23.2">
@@ -9121,54 +9279,71 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dt id="EARLY-DESIGN">[EARLY-DESIGN]</dt>
 <dd>
 <span class="refAuthor">Roskind, J.</span>, <span class="refTitle">"QUIC: Multiplexed Transport Over UDP"</span>, <time datetime="2013-12-02">2 December 2013</time>, <span>&lt;<a href="https://goo.gl/dMVtFi">https://goo.gl/dMVtFi</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="HTTP2">[HTTP2]</dt>
 <dd>
 <span class="refAuthor">Belshe, M.</span><span class="refAuthor">, Peon, R.</span><span class="refAuthor">, and M. Thomson, Ed.</span>, <span class="refTitle">"Hypertext Transfer Protocol Version 2 (HTTP/2)"</span>, <span class="seriesInfo">RFC 7540</span>, <span class="seriesInfo">DOI 10.17487/RFC7540</span>, <time datetime="2015-05">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7540">https://www.rfc-editor.org/info/rfc7540</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-05-01">1 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-05-06">6 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="QUIC-MANAGEABILITY">[QUIC-MANAGEABILITY]</dt>
 <dd>
 <span class="refAuthor">Kuehlewind, M.</span><span class="refAuthor"> and B. Trammell</span>, <span class="refTitle">"Manageability of the QUIC Transport Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-manageability-06</span>, <time datetime="2020-01-06">6 January 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-quic-manageability-06.txt">http://www.ietf.org/internet-drafts/draft-ietf-quic-manageability-06.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC1812">[RFC1812]</dt>
 <dd>
 <span class="refAuthor">Baker, F., Ed.</span>, <span class="refTitle">"Requirements for IP Version 4 Routers"</span>, <span class="seriesInfo">RFC 1812</span>, <span class="seriesInfo">DOI 10.17487/RFC1812</span>, <time datetime="1995-06">June 1995</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1812">https://www.rfc-editor.org/info/rfc1812</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2018">[RFC2018]</dt>
 <dd>
 <span class="refAuthor">Mathis, M.</span><span class="refAuthor">, Mahdavi, J.</span><span class="refAuthor">, Floyd, S.</span><span class="refAuthor">, and A. Romanow</span>, <span class="refTitle">"TCP Selective Acknowledgment Options"</span>, <span class="seriesInfo">RFC 2018</span>, <span class="seriesInfo">DOI 10.17487/RFC2018</span>, <time datetime="1996-10">October 1996</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2018">https://www.rfc-editor.org/info/rfc2018</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2104">[RFC2104]</dt>
 <dd>
 <span class="refAuthor">Krawczyk, H.</span><span class="refAuthor">, Bellare, M.</span><span class="refAuthor">, and R. Canetti</span>, <span class="refTitle">"HMAC: Keyed-Hashing for Message Authentication"</span>, <span class="seriesInfo">RFC 2104</span>, <span class="seriesInfo">DOI 10.17487/RFC2104</span>, <time datetime="1997-02">February 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2104">https://www.rfc-editor.org/info/rfc2104</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC4303">[RFC4303]</dt>
 <dd>
 <span class="refAuthor">Kent, S.</span>, <span class="refTitle">"IP Encapsulating Security Payload (ESP)"</span>, <span class="seriesInfo">RFC 4303</span>, <span class="seriesInfo">DOI 10.17487/RFC4303</span>, <time datetime="2005-12">December 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4303">https://www.rfc-editor.org/info/rfc4303</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC4443">[RFC4443]</dt>
 <dd>
 <span class="refAuthor">Conta, A.</span><span class="refAuthor">, Deering, S.</span><span class="refAuthor">, and M. Gupta, Ed.</span>, <span class="refTitle">"Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification"</span>, <span class="seriesInfo">STD 89</span>, <span class="seriesInfo">RFC 4443</span>, <span class="seriesInfo">DOI 10.17487/RFC4443</span>, <time datetime="2006-03">March 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4443">https://www.rfc-editor.org/info/rfc4443</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC4787">[RFC4787]</dt>
 <dd>
 <span class="refAuthor">Audet, F., Ed.</span><span class="refAuthor"> and C. Jennings</span>, <span class="refTitle">"Network Address Translation (NAT) Behavioral Requirements for Unicast UDP"</span>, <span class="seriesInfo">BCP 127</span>, <span class="seriesInfo">RFC 4787</span>, <span class="seriesInfo">DOI 10.17487/RFC4787</span>, <time datetime="2007-01">January 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4787">https://www.rfc-editor.org/info/rfc4787</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5681">[RFC5681]</dt>
 <dd>
 <span class="refAuthor">Allman, M.</span><span class="refAuthor">, Paxson, V.</span><span class="refAuthor">, and E. Blanton</span>, <span class="refTitle">"TCP Congestion Control"</span>, <span class="seriesInfo">RFC 5681</span>, <span class="seriesInfo">DOI 10.17487/RFC5681</span>, <time datetime="2009-09">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5681">https://www.rfc-editor.org/info/rfc5681</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5869">[RFC5869]</dt>
 <dd>
 <span class="refAuthor">Krawczyk, H.</span><span class="refAuthor"> and P. Eronen</span>, <span class="refTitle">"HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"</span>, <span class="seriesInfo">RFC 5869</span>, <span class="seriesInfo">DOI 10.17487/RFC5869</span>, <time datetime="2010-05">May 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5869">https://www.rfc-editor.org/info/rfc5869</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC7301">[RFC7301]</dt>
 <dd>
 <span class="refAuthor">Friedl, S.</span><span class="refAuthor">, Popov, A.</span><span class="refAuthor">, Langley, A.</span><span class="refAuthor">, and E. Stephan</span>, <span class="refTitle">"Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension"</span>, <span class="seriesInfo">RFC 7301</span>, <span class="seriesInfo">DOI 10.17487/RFC7301</span>, <time datetime="2014-07">July 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8200">[RFC8200]</dt>
 <dd>
 <span class="refAuthor">Deering, S.</span><span class="refAuthor"> and R. Hinden</span>, <span class="refTitle">"Internet Protocol, Version 6 (IPv6) Specification"</span>, <span class="seriesInfo">STD 86</span>, <span class="seriesInfo">RFC 8200</span>, <span class="seriesInfo">DOI 10.17487/RFC8200</span>, <time datetime="2017-07">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8200">https://www.rfc-editor.org/info/rfc8200</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="SEC-CONS">[SEC-CONS]</dt>
 <dd>
 <span class="refAuthor">Rescorla, E.</span><span class="refAuthor"> and B. Korver</span>, <span class="refTitle">"Guidelines for Writing RFC Text on Security Considerations"</span>, <span class="seriesInfo">BCP 72</span>, <span class="seriesInfo">RFC 3552</span>, <span class="seriesInfo">DOI 10.17487/RFC3552</span>, <time datetime="2003-07">July 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3552">https://www.rfc-editor.org/info/rfc3552</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="SLOWLORIS">[SLOWLORIS]</dt>
 <dd>
 <span class="refAuthor">RSnake Hansen, R.</span>, <span class="refTitle">"Welcome to Slowloris..."</span>, <time datetime="2009-06">June 2009</time>, <span>&lt;<a href="https://web.archive.org/web/20150315054838/http://ha.ckers.org/slowloris/">https://web.archive.org/web/20150315054838/http://ha.ckers.org/slowloris/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="STD">[STD]</dt>
 <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"The Internet Standards Process -- Revision 3"</span>, <span class="seriesInfo">BCP 9</span>, <span class="seriesInfo">RFC 2026</span>, <span class="seriesInfo">DOI 10.17487/RFC2026</span>, <time datetime="1996-10">October 1996</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2026">https://www.rfc-editor.org/info/rfc2026</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </section>
