@@ -2184,15 +2184,15 @@ congestion window, which is recommended to be the minimum of
 <code>10 * max_datagram_size</code> and <code>max(2 * max_datagram_size, 14720))</code>, where
 max_datagram_size is the current maximum size of a datagram for the connection,
 not including UDP or IP overhead.<a href="#section-6.9-4" class="pilcrow">¶</a></p>
-<p id="section-6.9-5">Endpoints can implement pacing as they choose, as long as the total number of
-bytes sent over any interval, <code>t[n] - t[m]</code>, does not exceed a small multiple,
-<code>N</code>, of maximum value of the congestion window, <code>cwnd</code>, over that same period.
-Allowing for bursts produces the following relation for the total number of
-bytes sent over any interval:<a href="#section-6.9-5" class="pilcrow">¶</a></p>
+<p id="section-6.9-5">Endpoints can implement pacing as they choose, as long as the rate of bytes
+sent over any interval, <code>t[n] - t[m]</code>, does not exceed a small multiple, <code>N</code>,
+of maximum value of the congestion window, <code>congestion_window</code>, averaged over
+the round trip time estimate, <code>smoothed_rtt</code>. Allowing for bursts produces the
+following relation for the total number of bytes sent over any interval:<a href="#section-6.9-5" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-6.9-6">
 <pre>
 sent@t[n] - sent@t[m]
-    &lt;= N * cwnd * (t[m] - t[n]) / RTT
+    &lt;= N * congestion_window * (t[m] - t[n]) / smoothed_rtt
        + min(10 * max_datagram_size,
              max(2 * max_datagram_size, 14720))
 </pre><a href="#section-6.9-6" class="pilcrow">¶</a>
