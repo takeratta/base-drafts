@@ -3773,7 +3773,7 @@ which an endpoint migrates to a new address.<a href="#section-9-1" class="pilcro
 duration of the handshake.  An endpoint MUST NOT initiate connection migration
 before the handshake is confirmed, as defined in section 4.1.2 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>.<a href="#section-9-2" class="pilcrow">¶</a></p>
 <p id="section-9-3">An endpoint also MUST NOT send packets from a different local address, actively
-initiating migration, if the peer sent the <code>disable_active_migration</code> transport
+initiating migration, if the peer sent the disable_active_migration transport
 parameter during the handshake. An endpoint which has sent this transport
 parameter, but detects that a peer has nonetheless migrated to a different
 network MUST either drop the incoming packets on that path without generating a
@@ -5136,7 +5136,7 @@ contract: an endpoint promises to never intentionally delay acknowledgments
 of an ack-eliciting packet by more than the indicated value. If it does,
 any excess accrues to the RTT estimate and could result in spurious or
 delayed retransmissions from the peer. For Initial and Handshake packets,
-a max_ack_delay of 0 is used. The sender uses the receiver's <code>max_ack_delay</code>
+a max_ack_delay of 0 is used. The sender uses the receiver's max_ack_delay
 value in determining timeouts for timer-based retransmission, as detailed in
 Section 5.2.1 of <span>[<a href="#QUIC-RECOVERY" class="xref">QUIC-RECOVERY</a>]</span>.<a href="#section-13.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-13.2.1-2">An ACK frame SHOULD be generated for at least every second ack-eliciting packet.
@@ -5637,20 +5637,11 @@ SHOULD use the quoted packet supplied in the payload of an ICMP message to
 associate the message with a corresponding transport connection <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.<a href="#section-14.2-4" class="pilcrow">¶</a></p>
 <p id="section-14.2-5">ICMP message validation MUST include matching IP addresses and UDP ports
 <span>[<a href="#RFC8085" class="xref">RFC8085</a>]</span> and, when possible, connection IDs to an active QUIC session.<a href="#section-14.2-5" class="pilcrow">¶</a></p>
-<p id="section-14.2-6">Further validation can also be provided:<a href="#section-14.2-6" class="pilcrow">¶</a></p>
-<ul>
-<li id="section-14.2-7.1">An IPv4 endpoint could set the Don't Fragment (DF) bit on a small proportion
-of packets, so that most invalid ICMP messages arrive when there are no DF
-packets outstanding, and can therefore be identified as spurious.<a href="#section-14.2-7.1" class="pilcrow">¶</a>
-</li>
-<li id="section-14.2-7.2">An endpoint could store additional information from the IP or UDP headers to
-use for validation (for example, the IP ID or UDP checksum).<a href="#section-14.2-7.2" class="pilcrow">¶</a>
-</li>
-</ul>
-<p id="section-14.2-8">The endpoint SHOULD ignore all ICMP messages that fail validation.<a href="#section-14.2-8" class="pilcrow">¶</a></p>
-<p id="section-14.2-9">An endpoint MUST NOT increase PMTU based on ICMP messages.  Any reduction in the
-QUIC maximum packet size MAY be provisional until QUIC's loss detection
-algorithm determines that the quoted packet has actually been lost.<a href="#section-14.2-9" class="pilcrow">¶</a></p>
+<p id="section-14.2-6">The endpoint SHOULD ignore all ICMP messages that fail validation.<a href="#section-14.2-6" class="pilcrow">¶</a></p>
+<p id="section-14.2-7">An endpoint MUST NOT increase PMTU based on ICMP messages; see Section 3, clause
+6 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.  Any reduction in the QUIC maximum packet size in response
+to ICMP messages MAY be provisional until QUIC's loss detection algorithm
+determines that the quoted packet has actually been lost.<a href="#section-14.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="datagram-packetization-layer-pmtu-discovery">
@@ -5676,18 +5667,20 @@ apply if these messages are used by DPLPMTUD.<a href="#section-14.3-5" class="pi
           <h4 id="name-pmtu-probes-containing-sour">
 <a href="#section-14.3.1" class="section-number selfRef">14.3.1. </a><a href="#name-pmtu-probes-containing-sour" class="section-name selfRef">PMTU Probes Containing Source Connection ID</a>
           </h4>
-<p id="section-14.3.1-1">Endpoints that rely on the destination connection ID for routing QUIC packets
-are likely to require that the connection ID be included in PMTU probe packets
-to route any resulting ICMP messages (<a href="#icmp-pmtud" class="xref">Section 14.2</a>) back to the correct
-endpoint.  However, only long header packets (<a href="#long-header" class="xref">Section 17.2</a>) contain source
-connection IDs, and long header packets are not decrypted or acknowledged by
-the peer once the handshake is complete.  One way to construct a PMTU probe is
-to coalesce (see <a href="#packet-coalesce" class="xref">Section 12.2</a>) a Handshake packet (<a href="#packet-handshake" class="xref">Section 17.2.4</a>)
-with a short header packet in a single UDP datagram.  If the UDP datagram
-reaches the endpoint, the Handshake packet will be ignored, but the short header
-packet will be acknowledged.  If the UDP datagram elicits an ICMP message, that
-message will likely contain the source connection ID within the quoted portion
-of the UDP datagram.<a href="#section-14.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-14.3.1-1">Endpoints that rely on the destination connection ID for routing incoming QUIC
+packets are likely to require that the connection ID be included in PMTU probe
+packets to route any resulting ICMP messages (<a href="#icmp-pmtud" class="xref">Section 14.2</a>) back to the
+correct endpoint.  However, only long header packets (<a href="#long-header" class="xref">Section 17.2</a>) contain
+source connection IDs, and long header packets are not decrypted or acknowledged
+by the peer once the handshake is complete.<a href="#section-14.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-14.3.1-2">One way to construct a probe for the path MTU is to coalesce (see
+<a href="#packet-coalesce" class="xref">Section 12.2</a>) a Handshake packet (<a href="#packet-handshake" class="xref">Section 17.2.4</a>) with a short
+header packet in a single UDP datagram.  If the UDP datagram reaches the
+endpoint, the Handshake packet will be ignored, but the short header packet will
+be acknowledged.  If the UDP datagram causes an ICMP message to be sent, the
+first part of the datagram will be quoted in that message.  If the the source
+connection ID is within the quoted portion of the UDP datagram, that could be
+used for routing.<a href="#section-14.3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -6594,7 +6587,7 @@ connection.<a href="#section-17.3.1-9" class="pilcrow">¶</a></p>
       <h2 id="name-transport-parameter-encodin">
 <a href="#section-18" class="section-number selfRef">18. </a><a href="#name-transport-parameter-encodin" class="section-name selfRef">Transport Parameter Encoding</a>
       </h2>
-<p id="section-18-1">The <code>extension_data</code> field of the quic_transport_parameters extension defined in
+<p id="section-18-1">The extension_data field of the quic_transport_parameters extension defined in
 <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span> contains the QUIC transport parameters. They are encoded as a
 sequence of transport parameters, as shown in <a href="#transport-parameter-sequence" class="xref">Figure 17</a>:<a href="#section-18-1" class="pilcrow">¶</a></p>
 <span id="name-sequence-of-transport-param"></span><div id="transport-parameter-sequence">
@@ -6963,7 +6956,7 @@ QUIC long or short header, the value in an ACK frame is not truncated.<a href="#
 when this ACK was sent and when the largest acknowledged packet, as indicated
 in the Largest Acknowledged field, was received by this peer.  The value of
 the ACK Delay field is scaled by multiplying the encoded value by 2 to the
-power of the value of the <code>ack_delay_exponent</code> transport parameter set by the
+power of the value of the ack_delay_exponent transport parameter set by the
 sender of the ACK frame; see <a href="#transport-parameter-definitions" class="xref">Section 18.2</a>.  Scaling in
 this fashion allows for a larger range of values with a shorter encoding at
 the cost of lower resolution.  Because the receiver doesn't use the ACK Delay
@@ -8995,7 +8988,7 @@ this registry MUST include the following fields:<a href="#section-22.2-3" class=
         </table>
 </div>
 <p id="section-22.2-7">Additionally, each value of the format <code>31 * N + 27</code> for integer values of N
-(that is, <code>27</code>, <code>58</code>, <code>89</code>, ...) are reserved and MUST NOT be assigned by IANA.<a href="#section-22.2-7" class="pilcrow">¶</a></p>
+(that is, 27, 58, 89, ...) are reserved and MUST NOT be assigned by IANA.<a href="#section-22.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-frames">
@@ -10418,35 +10411,74 @@ offset (#249)<a href="#section-c.26-1.35" class="pilcrow">¶</a>
 work by Jim Roskind <span>[<a href="#EARLY-DESIGN" class="xref">EARLY-DESIGN</a>]</span>.<a href="#section-appendix.d-1" class="pilcrow">¶</a></p>
 <p id="section-appendix.d-2">The IETF QUIC Working Group received an enormous amount of support from many
 people. The following people provided substantive contributions to this
-document:
-Alessandro Ghedini,
-Alyssa Wilk,
-Antoine Delignat-Lavaud,
-Brian Trammell,
-Christian Huitema,
-Colin Perkins,
-David Schinazi,
-Dmitri Tikhonov,
-Eric Kinnear,
-Eric Rescorla,
-Gorry Fairhurst,
-Ian Swett,
-Igor Lubashev, <span class="contact-name"><span class="non-ascii">奥 一穂</span> (<span class="ascii">Kazuho Oku</span>)</span>,
-Lucas Pardue,
-Magnus Westerlund,
-Marten Seemann,
-Martin Duke,
-Mike Bishop, <span class="contact-name">Mikkel Fahnøe Jørgensen</span>, <span class="contact-name">Mirja Kühlewind</span>,
-Nick Banks,
-Nick Harper,
-Patrick McManus,
-Roberto Peon,
-Ryan Hamilton,
-Subodh Iyengar,
-Tatsuhiro Tsujikawa,
-Ted Hardie,
-Tom Jones,
-and Victor Vasiliev.<a href="#section-appendix.d-2" class="pilcrow">¶</a></p>
+document:<a href="#section-appendix.d-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-appendix.d-3.1">Alessandro Ghedini<a href="#section-appendix.d-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.2">Alyssa Wilk<a href="#section-appendix.d-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.3">Antoine Delignat-Lavaud<a href="#section-appendix.d-3.3" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.4">Brian Trammell<a href="#section-appendix.d-3.4" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.5">Christian Huitema<a href="#section-appendix.d-3.5" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.6">Colin Perkins<a href="#section-appendix.d-3.6" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.7">David Schinazi<a href="#section-appendix.d-3.7" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.8">Dmitri Tikhonov<a href="#section-appendix.d-3.8" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.9">Eric Kinnear<a href="#section-appendix.d-3.9" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.10">Eric Rescorla<a href="#section-appendix.d-3.10" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.11">Gorry Fairhurst<a href="#section-appendix.d-3.11" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.12">Ian Swett<a href="#section-appendix.d-3.12" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.13">Igor Lubashev<a href="#section-appendix.d-3.13" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.14">
+          <p id="section-appendix.d-3.14.1">        <span class="contact-name"><span class="non-ascii">奥 一穂</span> (<span class="ascii">Kazuho Oku</span>)</span><a href="#section-appendix.d-3.14.1" class="pilcrow">¶</a></p>
+</li>
+<li id="section-appendix.d-3.15">Lucas Pardue<a href="#section-appendix.d-3.15" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.16">Magnus Westerlund<a href="#section-appendix.d-3.16" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.17">Marten Seemann<a href="#section-appendix.d-3.17" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.18">Martin Duke<a href="#section-appendix.d-3.18" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.19">Mike Bishop<a href="#section-appendix.d-3.19" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.20">
+          <p id="section-appendix.d-3.20.1">        <span class="contact-name">Mikkel Fahnøe Jørgensen</span><a href="#section-appendix.d-3.20.1" class="pilcrow">¶</a></p>
+</li>
+<li id="section-appendix.d-3.21">
+          <p id="section-appendix.d-3.21.1">        <span class="contact-name">Mirja Kühlewind</span><a href="#section-appendix.d-3.21.1" class="pilcrow">¶</a></p>
+</li>
+<li id="section-appendix.d-3.22">Nick Banks<a href="#section-appendix.d-3.22" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.23">Nick Harper<a href="#section-appendix.d-3.23" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.24">Patrick McManus<a href="#section-appendix.d-3.24" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.25">Roberto Peon<a href="#section-appendix.d-3.25" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.26">Ryan Hamilton<a href="#section-appendix.d-3.26" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.27">Subodh Iyengar<a href="#section-appendix.d-3.27" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.28">Tatsuhiro Tsujikawa<a href="#section-appendix.d-3.28" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.29">Ted Hardie<a href="#section-appendix.d-3.29" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.30">Tom Jones<a href="#section-appendix.d-3.30" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.d-3.31">Victor Vasiliev<a href="#section-appendix.d-3.31" class="pilcrow">¶</a>
+</li>
+</ul>
 </section>
 </div>
 <div id="authors-addresses">

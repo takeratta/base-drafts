@@ -180,7 +180,7 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
      C.23. Since draft-ietf-quic-tls-00  . . . . . . . . . . . . . .  54
      C.24. Since draft-thomson-quic-tls-01 . . . . . . . . . . . . .  55
    Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  55
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  55
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  56
 
 1.  Introduction
 
@@ -1026,14 +1026,19 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    If TLS experiences an error, it generates an appropriate alert as
    defined in Section 6 of [TLS13].
 
-   A TLS alert is turned into a QUIC connection error by converting the
-   one-byte alert description into a QUIC error code.  The alert
+   A TLS alert is converted into a QUIC connection error.  The alert
    description is added to 0x100 to produce a QUIC error code from the
    range reserved for CRYPTO_ERROR.  The resulting value is sent in a
    QUIC CONNECTION_CLOSE frame of type 0x1c.
 
    The alert level of all TLS alerts is "fatal"; a TLS stack MUST NOT
    generate alerts at the "warning" level.
+
+   QUIC permits the use of a generic code in place of a specific error
+   code; see Section 11 of [QUIC-TRANSPORT].  For TLS alerts, this
+   includes replacing any alert with a generic alert, such as
+   handshake_failure (0x128 in QUIC).  Endpoints MAY use a generic error
+   code to avoid possibly exposing confidential information.
 
 4.11.  Discarding Unused Keys
 
@@ -1051,13 +1056,8 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    lower encryption level are needed for a short time after keys for a
    newer encryption level are available.
 
-   An endpoint cannot discard keys for a given encryption level unless
-   it has both received and acknowledged all CRYPTO frames for that
-   encryption level and when all CRYPTO frames for that encryption level
-   have been acknowledged by its peer.  However, this does not guarantee
-   that no further packets will need to be received or sent at that
-   encryption level because a peer might not have received all the
-   acknowledgements necessary to reach the same state.
+
+
 
 
 
@@ -1065,6 +1065,14 @@ Thomson & Turner         Expires 7 November 2020               [Page 19]
 
 Internet-Draft          Using TLS to Secure QUIC                May 2020
 
+
+   An endpoint cannot discard keys for a given encryption level unless
+   it has both received and acknowledged all CRYPTO frames for that
+   encryption level and when all CRYPTO frames for that encryption level
+   have been acknowledged by its peer.  However, this does not guarantee
+   that no further packets will need to be received or sent at that
+   encryption level because a peer might not have received all the
+   acknowledgements necessary to reach the same state.
 
    Though an endpoint might retain older keys, new data MUST be sent at
    the highest currently-available encryption level.  Only ACK frames
@@ -1104,14 +1112,6 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
 
    Therefore, a client SHOULD discard 0-RTT keys as soon as it installs
    1-RTT keys, since they have no use after that moment.
-
-
-
-
-
-
-
-
 
 
 
@@ -2096,13 +2096,14 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    protocol negotiation.  TLS uses Application Layer Protocol
    Negotiation (ALPN) [ALPN] to select an application protocol.  Unless
    another mechanism is used for agreeing on an application protocol,
-   endpoints MUST use ALPN for this purpose.  When using ALPN, endpoints
-   MUST immediately close a connection (see Section 10.3 in
-   [QUIC-TRANSPORT]) if an application protocol is not negotiated with a
-   no_application_protocol TLS alert (QUIC error code 0x178, see
-   Section 4.10).  While [ALPN] only specifies that servers use this
-   alert, QUIC clients MUST also use it to terminate a connection when
-   ALPN negotiation fails.
+   endpoints MUST use ALPN for this purpose.
+
+   When using ALPN, endpoints MUST immediately close a connection (see
+   Section 10.3 of [QUIC-TRANSPORT]) with a no_application_protocol TLS
+   alert (QUIC error code 0x178; see Section 4.10) if an application
+   protocol is not negotiated.  While [ALPN] only specifies that servers
+   use this alert, QUIC clients MUST use error 0x178 to terminate a
+   connection when ALPN negotiation fails.
 
    An application protocol MAY restrict the QUIC versions that it can
    operate over.  Servers MUST select an application protocol compatible
@@ -2124,7 +2125,6 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
 
 
 
-
 Thomson & Turner         Expires 7 November 2020               [Page 38]
 
 Internet-Draft          Using TLS to Secure QUIC                May 2020
@@ -2134,7 +2134,7 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
          quic_transport_parameters(0xffa5), (65535)
       } ExtensionType;
 
-   The "extension_data" field of the quic_transport_parameters extension
+   The extension_data field of the quic_transport_parameters extension
    contains a value that is defined by the version of QUIC that is in
    use.
 
@@ -2756,8 +2756,10 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    n:  The size of the block function in bits.  For this cipher, n is
       128.
 
-   l:  The number of blocks in each packet.  To match the analysis in
-      [AEBounds], this analysis uses a value of 2^10.
+   l:  The number of blocks in each packet.  In this case, this is the
+      number of 16-byte AES blocks in a packet.  To match the analysis
+      in [AEBounds], this analysis uses a value of 2^10, which assumes a
+      limit on packet size of 2^14.
 
    q:  The number of genuine packets created and protected by endpoints.
       This value is the bound on the number of packets that can be
@@ -2790,8 +2792,6 @@ B.2.  Integrity Limits
    attacker gains an advantage over an ideal PRP of no more than:
 
    v / 2^t + (l * (v + q))^2 / 2^n
-
-
 
 
 
@@ -3048,12 +3048,57 @@ Contributors
 
    The IETF QUIC Working Group received an enormous amount of support
    from many people.  The following people provided substantive
-   contributions to this document: Adam Langley, Alessandro Ghedini,
-   Christian Huitema, Christopher Wood, David Schinazi, Dragana
-   Damjanovic, Eric Rescorla, Felix Guenther, Ian Swett, Jana Iyengar, 奥
-   一穂 (Kazuho Oku), Marten Seemann, Martin Duke, Mike Bishop, Mikkel
-   Fahnøe Jørgensen, Nick Banks, Nick Harper, Roberto Peon, Rui Paulo,
-   Ryan Hamilton, and Victor Vasiliev.
+   contributions to this document:
+
+   *  Adam Langley
+
+   *  Alessandro Ghedini
+
+   *  Christian Huitema
+
+   *  Christopher Wood
+
+   *  David Schinazi
+
+   *  Dragana Damjanovic
+
+   *  Eric Rescorla
+
+   *  Felix Guenther
+
+   *  Ian Swett
+
+   *  Jana Iyengar
+
+   *  奥 一穂 (Kazuho Oku)
+
+   *  Marten Seemann
+
+
+
+
+Thomson & Turner         Expires 7 November 2020               [Page 55]
+
+Internet-Draft          Using TLS to Secure QUIC                May 2020
+
+
+   *  Martin Duke
+
+   *  Mike Bishop
+
+   *  Mikkel Fahnøe Jørgensen
+
+   *  Nick Banks
+
+   *  Nick Harper
+
+   *  Roberto Peon
+
+   *  Rui Paulo
+
+   *  Ryan Hamilton
+
+   *  Victor Vasiliev
 
 Authors' Addresses
 
@@ -3077,4 +3122,15 @@ Authors' Addresses
 
 
 
-Thomson & Turner         Expires 7 November 2020               [Page 55]
+
+
+
+
+
+
+
+
+
+
+
+Thomson & Turner         Expires 7 November 2020               [Page 56]

@@ -195,8 +195,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
      17.1.  Packet Number Encoding and Decoding  . . . . . . . . . .  95
      17.2.  Long Header Packets  . . . . . . . . . . . . . . . . . .  96
        17.2.1.  Version Negotiation Packet . . . . . . . . . . . . .  99
-       17.2.2.  Initial Packet . . . . . . . . . . . . . . . . . . . 101
-       17.2.3.  0-RTT  . . . . . . . . . . . . . . . . . . . . . . . 103
+       17.2.2.  Initial Packet . . . . . . . . . . . . . . . . . . . 100
+       17.2.3.  0-RTT  . . . . . . . . . . . . . . . . . . . . . . . 102
        17.2.4.  Handshake Packet . . . . . . . . . . . . . . . . . . 104
        17.2.5.  Retry Packet . . . . . . . . . . . . . . . . . . . . 105
      17.3.  Short Header Packets . . . . . . . . . . . . . . . . . . 107
@@ -306,7 +306,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
      C.27. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 176
      C.28. Since draft-hamilton-quic-transport-protocol-01 . . . . . 176
    Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 177
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 177
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 178
 
 1.  Introduction
 
@@ -2877,7 +2877,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    An endpoint also MUST NOT send packets from a different local
    address, actively initiating migration, if the peer sent the
-   "disable_active_migration" transport parameter during the handshake.
+   disable_active_migration transport parameter during the handshake.
    An endpoint which has sent this transport parameter, but detects that
    a peer has nonetheless migrated to a different network MUST either
    drop the incoming packets on that path without generating a stateless
@@ -4499,7 +4499,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    more than the indicated value.  If it does, any excess accrues to the
    RTT estimate and could result in spurious or delayed retransmissions
    from the peer.  For Initial and Handshake packets, a max_ack_delay of
-   0 is used.  The sender uses the receiver's "max_ack_delay" value in
+   0 is used.  The sender uses the receiver's max_ack_delay value in
    determining timeouts for timer-based retransmission, as detailed in
    Section 5.2.1 of [QUIC-RECOVERY].
 
@@ -5135,16 +5135,16 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    ports [RFC8085] and, when possible, connection IDs to an active QUIC
    session.
 
-   Further validation can also be provided:
+   The endpoint SHOULD ignore all ICMP messages that fail validation.
 
-   *  An IPv4 endpoint could set the Don't Fragment (DF) bit on a small
-      proportion of packets, so that most invalid ICMP messages arrive
-      when there are no DF packets outstanding, and can therefore be
-      identified as spurious.
+   An endpoint MUST NOT increase PMTU based on ICMP messages; see
+   Section 3, clause 6 of [DPLPMTUD].  Any reduction in the QUIC maximum
+   packet size in response to ICMP messages MAY be provisional until
+   QUIC's loss detection algorithm determines that the quoted packet has
+   actually been lost.
 
-   *  An endpoint could store additional information from the IP or UDP
-      headers to use for validation (for example, the IP ID or UDP
-      checksum).
+
+
 
 
 
@@ -5153,13 +5153,6 @@ Iyengar & Thomson        Expires 7 November 2020               [Page 92]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
-
-   The endpoint SHOULD ignore all ICMP messages that fail validation.
-
-   An endpoint MUST NOT increase PMTU based on ICMP messages.  Any
-   reduction in the QUIC maximum packet size MAY be provisional until
-   QUIC's loss detection algorithm determines that the quoted packet has
-   actually been lost.
 
 14.3.  Datagram Packetization Layer PMTU Discovery
 
@@ -5183,23 +5176,30 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
 14.3.1.  PMTU Probes Containing Source Connection ID
 
-   Endpoints that rely on the destination connection ID for routing QUIC
-   packets are likely to require that the connection ID be included in
-   PMTU probe packets to route any resulting ICMP messages
+   Endpoints that rely on the destination connection ID for routing
+   incoming QUIC packets are likely to require that the connection ID be
+   included in PMTU probe packets to route any resulting ICMP messages
    (Section 14.2) back to the correct endpoint.  However, only long
    header packets (Section 17.2) contain source connection IDs, and long
    header packets are not decrypted or acknowledged by the peer once the
-   handshake is complete.  One way to construct a PMTU probe is to
-   coalesce (see Section 12.2) a Handshake packet (Section 17.2.4) with
-   a short header packet in a single UDP datagram.  If the UDP datagram
-   reaches the endpoint, the Handshake packet will be ignored, but the
-   short header packet will be acknowledged.  If the UDP datagram
-   elicits an ICMP message, that message will likely contain the source
-   connection ID within the quoted portion of the UDP datagram.
+   handshake is complete.
+
+   One way to construct a probe for the path MTU is to coalesce (see
+   Section 12.2) a Handshake packet (Section 17.2.4) with a short header
+   packet in a single UDP datagram.  If the UDP datagram reaches the
+   endpoint, the Handshake packet will be ignored, but the short header
+   packet will be acknowledged.  If the UDP datagram causes an ICMP
+   message to be sent, the first part of the datagram will be quoted in
+   that message.  If the the source connection ID is within the quoted
+   portion of the UDP datagram, that could be used for routing.
 
 15.  Versions
 
    QUIC versions are identified using a 32-bit unsigned number.
+
+   The version 0x00000000 is reserved to represent version negotiation.
+   This version of the specification is identified by the number
+   0x00000001.
 
 
 
@@ -5209,10 +5209,6 @@ Iyengar & Thomson        Expires 7 November 2020               [Page 93]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
-
-   The version 0x00000000 is reserved to represent version negotiation.
-   This version of the specification is identified by the number
-   0x00000001.
 
    Other versions of QUIC might have different properties to this
    version.  The properties of QUIC that are guaranteed to be consistent
@@ -5258,6 +5254,10 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    non-negative integer values.  This encoding ensures that smaller
    integer values need fewer bytes to encode.
 
+   The QUIC variable-length integer encoding reserves the two most
+   significant bits of the first byte to encode the base 2 logarithm of
+   the integer encoding length in bytes.  The integer value is encoded
+   on the remaining bits, in network byte order.
 
 
 
@@ -5265,11 +5265,6 @@ Iyengar & Thomson        Expires 7 November 2020               [Page 94]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
-
-   The QUIC variable-length integer encoding reserves the two most
-   significant bits of the first byte to encode the base 2 logarithm of
-   the integer encoding length in bytes.  The integer value is encoded
-   on the remaining bits, in network byte order.
 
    This means that integers are encoded on 1, 2, 4, or 8 bytes and can
    encode 6, 14, 30, or 62 bit values respectively.  Table 4 summarizes
@@ -5315,6 +5310,11 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    The encoded packet number is protected as described in Section 5.4 of
    [QUIC-TLS].
 
+   The sender MUST use a packet number size able to represent more than
+   twice as large a range than the difference between the largest
+   acknowledged packet and packet number being sent.  A peer receiving
+   the packet will then correctly decode the packet number, unless the
+
 
 
 Iyengar & Thomson        Expires 7 November 2020               [Page 95]
@@ -5322,10 +5322,6 @@ Iyengar & Thomson        Expires 7 November 2020               [Page 95]
 Internet-Draft           QUIC Transport Protocol                May 2020
 
 
-   The sender MUST use a packet number size able to represent more than
-   twice as large a range than the difference between the largest
-   acknowledged packet and packet number being sent.  A peer receiving
-   the packet will then correctly decode the packet number, unless the
    packet is delayed in transit such that it arrives after many higher-
    numbered packets have been received.  An endpoint SHOULD use a large
    enough packet number encoding to allow the packet number to be
@@ -5360,24 +5356,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
 17.2.  Long Header Packets
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020               [Page 96]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    Long Header Packet {
      Header Form (1) = 1,
      Fixed Bit (1) = 1,
@@ -5391,6 +5369,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    }
 
                     Figure 10: Long Header Packet Format
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020               [Page 96]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Long headers are used for packets that are sent prior to the
    establishment of 1-RTT keys.  Once 1-RTT keys are available, a sender
@@ -5426,14 +5412,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       other QUIC versions in order to properly form a version
       negotiation packet.
 
-
-
-
-Iyengar & Thomson        Expires 7 November 2020               [Page 97]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    Destination Connection ID:  The Destination Connection ID field
       follows the DCID Length field and is between 0 and 20 bytes in
       length.  Section 7.2 describes the use of this field in more
@@ -5447,6 +5425,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       than 20 MUST drop the packet.  Servers SHOULD be able to read
       longer connection IDs from other QUIC versions in order to
       properly form a version negotiation packet.
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020               [Page 97]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Source Connection ID:  The Source Connection ID field follows the
       SCID Length field and is between 0 and 20 bytes in length.
@@ -5480,16 +5466,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    version are described in the following sections, several long-header
    packets in this version of QUIC contain these additional fields:
 
-
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020               [Page 98]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    Reserved Bits:  Two bits (those with a mask of 0x0c) of byte 0 are
       reserved across multiple packet types.  These bits are protected
       using header protection; see Section 5.4 of [QUIC-TLS].  The value
@@ -5499,6 +5475,20 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       connection error of type PROTOCOL_VIOLATION.  Discarding such a
       packet after only removing header protection can expose the
       endpoint to attacks; see Section 9.3 of [QUIC-TLS].
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020               [Page 98]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Packet Number Length:  In packet types which contain a Packet Number
       field, the least significant two bits (those with a mask of 0x03)
@@ -5530,22 +5520,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    The layout of a Version Negotiation packet is:
 
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020               [Page 99]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    Version Negotiation Packet {
      Header Form (1) = 1,
      Unused (7),
@@ -5563,6 +5537,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    Clients MUST ignore the value of this field.  Servers SHOULD set the
    most significant bit of this field (0x40) to 1 so that Version
    Negotiation packets appear to have the Fixed Bit field.
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020               [Page 99]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The Version field of a Version Negotiation packet MUST be set to
    0x00000000.
@@ -5595,13 +5577,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    A server MUST NOT send more than one Version Negotiation packet in
    response to a single UDP datagram.
 
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 100]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    See Section 6 for a description of the version negotiation process.
 
 17.2.2.  Initial Packet
@@ -5609,6 +5584,23 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    An Initial packet uses long headers with a type value of 0x0.  It
    carries the first CRYPTO frames sent by the client and server to
    perform key exchange, and carries ACKs in either direction.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 100]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Initial Packet {
      Header Form (1) = 1,
@@ -5646,18 +5638,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    Packet Payload:  The payload of the packet.
 
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 101]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    In order to prevent tampering by version-unaware middleboxes, Initial
    packets are protected with connection- and version-specific keys
    (Initial keys) as described in [QUIC-TLS].  This protection does not
@@ -5669,6 +5649,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    all cases where a new packet containing the initial cryptographic
    message needs to be created, such as the packets sent after receiving
    a Retry packet (Section 17.2.5).
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 101]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    A server sends its first Initial packet in response to a client
    Initial.  A server may send multiple Initial packets.  The
@@ -5707,13 +5695,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    Any data in CRYPTO frames is discarded - and no longer retransmitted
    - when Initial keys are discarded.
 
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 102]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
 17.2.3.  0-RTT
 
    A 0-RTT packet uses long headers with a type value of 0x1, followed
@@ -5725,6 +5706,13 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    See Section 2.3 of [TLS13] for a discussion of 0-RTT data and its
    limitations.
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 102]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    0-RTT Packet {
      Header Form (1) = 1,
@@ -5762,14 +5750,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    packets to start with a packet number of 0.  Therefore, in
    determining the length of the packet number encoding for 0-RTT
    packets, a client MUST assume that all packets up to the current
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 103]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    packet number are in flight, starting from a packet number of 0.
    Thus, 0-RTT packets could need to use a longer packet number
    encoding.
@@ -5780,6 +5760,15 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    client cannot send an ACK frame in a 0-RTT packet, because that can
    only acknowledge a 1-RTT packet.  An acknowledgment for a 1-RTT
    packet MUST be carried in a 1-RTT packet.
+
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 103]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    A server SHOULD treat a violation of remembered limits as a
    connection error of an appropriate type (for instance, a
@@ -5816,16 +5805,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    Handshake packets to send subsequent cryptographic handshake messages
    and acknowledgments to the server.
 
-
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 104]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    The Destination Connection ID field in a Handshake packet contains a
    connection ID that is chosen by the recipient of the packet; the
    Source Connection ID includes the connection ID that the sender of
@@ -5839,6 +5818,13 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    PING, PADDING, or ACK frames.  Handshake packets MAY contain
    CONNECTION_CLOSE frames.  Endpoints MUST treat receipt of Handshake
    packets with other frames as a connection error.
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 104]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Like Initial packets (see Section 17.2.2.1), data in CRYPTO frames
    for Handshake packets is discarded - and no longer retransmitted -
@@ -5873,15 +5859,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    Retry Token:  An opaque token that the server can use to validate the
       client's address.
 
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 105]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    Retry Integrity Tag:  See the Retry Packet Integrity section of
       [QUIC-TLS].
 
@@ -5890,6 +5867,20 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    The server populates the Destination Connection ID with the
    connection ID that the client included in the Source Connection ID of
    the Initial packet.
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 105]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The server includes a connection ID of its choice in the Source
    Connection ID field.  This value MUST not be equal to the Destination
@@ -5924,20 +5915,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    includes the provided Retry Token to continue connection
    establishment.
 
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 106]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    A client sets the Destination Connection ID field of this Initial
    packet to the value from the Source Connection ID in the Retry
    packet.  Changing Destination Connection ID also results in a change
@@ -5949,6 +5926,17 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    A Retry packet does not include a packet number and cannot be
    explicitly acknowledged by a client.
+
+
+
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 106]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
 17.2.5.3.  Continuing a Handshake After Retry
 
@@ -5986,14 +5974,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    This version of QUIC defines a single packet type which uses the
    short packet header.
 
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 107]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    Short Header Packet {
      Header Form (1) = 0,
      Fixed Bit (1) = 1,
@@ -6005,6 +5985,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
      Packet Number (8..32),
      Packet Payload (..),
    }
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 107]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
                    Figure 16: Short Header Packet Format
 
@@ -6042,14 +6030,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       mask of 0x03) of byte 0 contain the length of the packet number,
       encoded as an unsigned, two-bit integer that is one less than the
       length of the packet number field in bytes.  That is, the length
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 108]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
       of the packet number field is the value of this field, plus one.
       These bits are protected using header protection; see Section 5.4
       of [QUIC-TLS].
@@ -6057,6 +6037,18 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    Destination Connection ID:  The Destination Connection ID is a
       connection ID that is chosen by the intended recipient of the
       packet.  See Section 5.1 for more details.
+
+
+
+
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 108]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Packet Number:  The packet number field is 1 to 4 bytes long.  The
       packet number has confidentiality protection separate from packet
@@ -6097,15 +6089,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    spin bit independently, this ensures that the spin bit signal is
    disabled on approximately one in eight network paths.
 
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 109]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    When the spin bit is disabled, endpoints MAY set the spin bit to any
    value, and MUST ignore any incoming value.  It is RECOMMENDED that
    endpoints set the spin bit to a random value either chosen
@@ -6115,6 +6098,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    If the spin bit is enabled for the connection, the endpoint maintains
    a spin value and sets the spin bit in the short header to the
    currently stored value when a packet with a short header is sent out.
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 109]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    The spin value is initialized to 0 in the endpoint at connection
    start.  Each endpoint also remembers the highest packet number seen
    from its peer on the connection.
@@ -6139,7 +6130,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
 18.  Transport Parameter Encoding
 
-   The "extension_data" field of the quic_transport_parameters extension
+   The extension_data field of the quic_transport_parameters extension
    defined in [QUIC-TLS] contains the QUIC transport parameters.  They
    are encoded as a sequence of transport parameters, as shown in
    Figure 17:
@@ -6153,15 +6144,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    Each transport parameter is encoded as an (identifier, length, value)
    tuple, as shown in Figure 18:
 
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 110]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    Transport Parameter {
      Transport Parameter ID (i),
      Transport Parameter Length (i),
@@ -6172,6 +6154,13 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    The Transport Param Length field contains the length of the Transport
    Parameter Value field.
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 110]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    QUIC encodes transport parameters into a sequence of bytes, which are
    then included in the cryptographic handshake.
@@ -6209,15 +6198,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       Idle timeout is disabled when both endpoints omit this transport
       parameter or specify a value of 0.
 
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 111]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    stateless_reset_token (0x02):  A stateless reset token is used in
       verifying a stateless reset; see Section 10.4.  This parameter is
       a sequence of 16 bytes.  This transport parameter MUST NOT be sent
@@ -6230,6 +6210,13 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       is an integer value that limits the size of UDP payloads that the
       endpoint is willing to receive.  UDP packets with payloads larger
       than this limit are not likely to be processed by the receiver.
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 111]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
       The default for this parameter is the maximum permitted UDP
       payload of 65527.  Values below 1200 are invalid.
@@ -6264,6 +6251,19 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       two bits set to 0x1; in server transport parameters, this applies
       to streams with the least significant two bits set to 0x0.
 
+   initial_max_stream_data_uni (0x07):  This parameter is an integer
+      value specifying the initial flow control limit for unidirectional
+      streams.  This limit applies to newly created unidirectional
+      streams opened by the endpoint that receives the transport
+      parameter.  In client transport parameters, this applies to
+      streams with an identifier with the least significant two bits set
+      to 0x3; in server transport parameters, this applies to streams
+      with the least significant two bits set to 0x2.
+
+
+
+
+
 
 
 
@@ -6273,15 +6273,6 @@ Iyengar & Thomson        Expires 7 November 2020              [Page 112]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
-
-   initial_max_stream_data_uni (0x07):  This parameter is an integer
-      value specifying the initial flow control limit for unidirectional
-      streams.  This limit applies to newly created unidirectional
-      streams opened by the endpoint that receives the transport
-      parameter.  In client transport parameters, this applies to
-      streams with an identifier with the least significant two bits set
-      to 0x3; in server transport parameters, this applies to streams
-      with the least significant two bits set to 0x2.
 
    initial_max_streams_bidi (0x08):  The initial maximum bidirectional
       streams parameter is an integer value that contains the initial
@@ -6322,14 +6313,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       port other than that used to perform the handshake.  This
       parameter is a zero-length value.
 
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 113]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
-
    preferred_address (0x0d):  The server's preferred address is used to
       effect a change in server address at the end of the handshake, as
       described in Section 9.6.  The format of this transport parameter
@@ -6338,6 +6321,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       one address family by sending an all-zero address and port
       (0.0.0.0:0 or ::.0) for the other family.  IP addresses are
       encoded in network byte order.
+
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 113]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
       The Connection ID field and the Stateless Reset Token field
       contain an alternative connection ID that has a sequence number of
@@ -6378,6 +6369,15 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    the transport parameter is absent, streams of that type start with a
    flow control limit of 0.
 
+   A client MUST NOT include server-only transport parameters
+   (original_connection_id, stateless_reset_token, or
+   preferred_address).  A server MUST treat receipt of any of these
+   transport parameters as a connection error of type
+   TRANSPORT_PARAMETER_ERROR.
+
+
+
+
 
 
 
@@ -6385,12 +6385,6 @@ Iyengar & Thomson        Expires 7 November 2020              [Page 114]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
-
-   A client MUST NOT include server-only transport parameters
-   (original_connection_id, stateless_reset_token, or
-   preferred_address).  A server MUST treat receipt of any of these
-   transport parameters as a connection error of type
-   TRANSPORT_PARAMETER_ERROR.
 
 19.  Frame Types and Formats
 
@@ -6433,6 +6427,12 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    recommends a 2 minute timeout interval, experience shows that sending
    packets every 15 to 30 seconds is necessary to prevent the majority
    of middleboxes from losing state for UDP flows.
+
+
+
+
+
+
 
 
 
@@ -6503,8 +6503,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       acknowledged packet, as indicated in the Largest Acknowledged
       field, was received by this peer.  The value of the ACK Delay
       field is scaled by multiplying the encoded value by 2 to the power
-      of the value of the "ack_delay_exponent" transport parameter set
-      by the sender of the ACK frame; see Section 18.2.  Scaling in this
+      of the value of the ack_delay_exponent transport parameter set by
+      the sender of the ACK frame; see Section 18.2.  Scaling in this
       fashion allows for a larger range of values with a shorter
       encoding at the cost of lower resolution.  Because the receiver
       doesn't use the ACK Delay for Initial and Handshake packets, a
@@ -8439,8 +8439,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
              Table 6: Initial QUIC Transport Parameters Entries
 
    Additionally, each value of the format "31 * N + 27" for integer
-   values of N (that is, "27", "58", "89", ...) are reserved and MUST
-   NOT be assigned by IANA.
+   values of N (that is, 27, 58, 89, ...) are reserved and MUST NOT be
+   assigned by IANA.
 
 22.3.  QUIC Frame Type Registry
 
@@ -9867,15 +9867,76 @@ Contributors
 
    The IETF QUIC Working Group received an enormous amount of support
    from many people.  The following people provided substantive
-   contributions to this document: Alessandro Ghedini, Alyssa Wilk,
-   Antoine Delignat-Lavaud, Brian Trammell, Christian Huitema, Colin
-   Perkins, David Schinazi, Dmitri Tikhonov, Eric Kinnear, Eric
-   Rescorla, Gorry Fairhurst, Ian Swett, Igor Lubashev, 奥 一穂 (Kazuho
-   Oku), Lucas Pardue, Magnus Westerlund, Marten Seemann, Martin Duke,
-   Mike Bishop, Mikkel Fahnøe Jørgensen, Mirja Kühlewind, Nick Banks,
-   Nick Harper, Patrick McManus, Roberto Peon, Ryan Hamilton, Subodh
-   Iyengar, Tatsuhiro Tsujikawa, Ted Hardie, Tom Jones, and Victor
-   Vasiliev.
+   contributions to this document:
+
+   *  Alessandro Ghedini
+
+   *  Alyssa Wilk
+
+   *  Antoine Delignat-Lavaud
+
+   *  Brian Trammell
+
+   *  Christian Huitema
+
+   *  Colin Perkins
+
+   *  David Schinazi
+
+   *  Dmitri Tikhonov
+
+   *  Eric Kinnear
+
+   *  Eric Rescorla
+
+   *  Gorry Fairhurst
+
+   *  Ian Swett
+
+   *  Igor Lubashev
+
+   *  奥 一穂 (Kazuho Oku)
+
+   *  Lucas Pardue
+
+   *  Magnus Westerlund
+
+   *  Marten Seemann
+
+   *  Martin Duke
+
+   *  Mike Bishop
+
+
+
+Iyengar & Thomson        Expires 7 November 2020              [Page 177]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
+   *  Mikkel Fahnøe Jørgensen
+
+   *  Mirja Kühlewind
+
+   *  Nick Banks
+
+   *  Nick Harper
+
+   *  Patrick McManus
+
+   *  Roberto Peon
+
+   *  Ryan Hamilton
+
+   *  Subodh Iyengar
+
+   *  Tatsuhiro Tsujikawa
+
+   *  Ted Hardie
+
+   *  Tom Jones
+
+   *  Victor Vasiliev
 
 Authors' Addresses
 
@@ -9904,9 +9965,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Iyengar & Thomson        Expires 7 November 2020              [Page 177]
+Iyengar & Thomson        Expires 7 November 2020              [Page 178]
