@@ -2102,21 +2102,29 @@ approximately equivalent to two TLPs before an RTO in TCP.<a href="#section-6.8-
 </pre><a href="#section-6.8-3" class="pilcrow">¶</a>
 </div>
 <p id="section-6.8-4">For example, assume:<a href="#section-6.8-4" class="pilcrow">¶</a></p>
-<p id="section-6.8-5">smoothed_rtt = 1
-  rttvar = 0
-  max_ack_delay = 0
-  kPersistentCongestionThreshold = 3<a href="#section-6.8-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.8-5">
+<pre>
+smoothed_rtt = 1
+rttvar = 0
+max_ack_delay = 0
+kPersistentCongestionThreshold = 3
+</pre><a href="#section-6.8-5" class="pilcrow">¶</a>
+</div>
 <p id="section-6.8-6">If an ack-eliciting packet is sent at time t = 0, the following scenario would
 illustrate persistent congestion:<a href="#section-6.8-6" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
           <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
             <tr>
-              <th class="text-left" rowspan="1" colspan="1">t=0</th>
-              <th class="text-left" rowspan="1" colspan="1">Send Pkt #1 (App Data)</th>
+              <th class="text-left" rowspan="1" colspan="1">Time</th>
+              <th class="text-left" rowspan="1" colspan="1">Action</th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">t=0</td>
+              <td class="text-left" rowspan="1" colspan="1">Send Pkt #1 (App Data)</td>
+            </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">t=1</td>
               <td class="text-left" rowspan="1" colspan="1">Send Pkt #2 (PTO 1)</td>
@@ -2136,7 +2144,7 @@ illustrate persistent congestion:<a href="#section-6.8-6" class="pilcrow">¶</a>
           </tbody>
         </table>
 <p id="section-6.8-8">The first three packets are determined to be lost when the acknowledgement of
-packet 4 is received at t=8.  The congestion period is calculated as the time
+packet 4 is received at t = 8.  The congestion period is calculated as the time
 between the oldest and newest lost packets: (3 - 0) = 3.  The duration for
 persistent congestion is equal to: (1 * kPersistentCongestionThreshold) = 3.
 Because the threshold was reached and because none of the packets between the
@@ -2170,7 +2178,7 @@ their delivery to the peer.<a href="#section-6.9-3" class="pilcrow">¶</a></p>
 creates a packet burst that might cause short-term congestion and losses.
 Implementations MUST either use pacing or limit such bursts to the initial
 congestion window, which is recommended to be the minimum of
-10 * max_datagram_size and max(2* max_datagram_size, 14720)), where
+<code>10 * max_datagram_size</code> and <code>max(2 * max_datagram_size, 14720))</code>, where
 max_datagram_size is the current maximum size of a datagram for the connection,
 not including UDP or IP overhead.<a href="#section-6.9-4" class="pilcrow">¶</a></p>
 <p id="section-6.9-5">As an example of a well-known and publicly available implementation of a flow
