@@ -2185,11 +2185,16 @@ congestion window, which is recommended to be the minimum of
 max_datagram_size is the current maximum size of a datagram for the connection,
 not including UDP or IP overhead.<a href="#section-6.9-4" class="pilcrow">¶</a></p>
 <p id="section-6.9-5">Endpoints can implement pacing as they choose, as long as the total number of
-bytes sent over any period, <code>t[n] - t[m]</code>, does not exceed a small multiple,
-<code>N</code>, of maximum value of the congestion window, <code>cwnd</code>, over that same period.<a href="#section-6.9-5" class="pilcrow">¶</a></p>
+bytes sent over any interval, <code>t[n] - t[m]</code>, does not exceed a small multiple,
+<code>N</code>, of maximum value of the congestion window, <code>cwnd</code>, over that same period.
+Allowing for bursts produces the following relation for the total number of
+bytes sent over any interval:<a href="#section-6.9-5" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-6.9-6">
 <pre>
-sent@t[n] - sent@t[m] = N * cwnd * (t[m] - t[n]) / RTT
+sent@t[n] - sent@t[m]
+    &lt;= N * cwnd * (t[m] - t[n]) / RTT
+       + min(10 * max_datagram_size,
+             max(2 * max_datagram_size, 14720))
 </pre><a href="#section-6.9-6" class="pilcrow">¶</a>
 </div>
 <p id="section-6.9-7">For a congestion controller that limits the increase in congestion window by a

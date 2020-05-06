@@ -117,7 +117,7 @@ Internet-Draft             QUIC Loss Detection                  May 2020
      6.9.  Pacing  . . . . . . . . . . . . . . . . . . . . . . . . .  22
      6.10. Under-utilizing the Congestion Window . . . . . . . . . .  23
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
-     7.1.  Congestion Signals  . . . . . . . . . . . . . . . . . . .  23
+     7.1.  Congestion Signals  . . . . . . . . . . . . . . . . . . .  24
      7.2.  Traffic Analysis  . . . . . . . . . . . . . . . . . . . .  24
      7.3.  Misreporting ECN Markings . . . . . . . . . . . . . . . .  24
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
@@ -1222,10 +1222,10 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    maximum size of a datagram for the connection, not including UDP or
    IP overhead.
 
-   Endpoints can implement pacing as they choose, as long as the total
-   number of bytes sent over any period, "t[n] - t[m]", does not exceed
-   a small multiple, "N", of maximum value of the congestion window,
-   "cwnd", over that same period.
+
+
+
+
 
 
 
@@ -1234,7 +1234,17 @@ Iyengar & Swett          Expires 7 November 2020               [Page 22]
 Internet-Draft             QUIC Loss Detection                  May 2020
 
 
-   sent@t[n] - sent@t[m] = N * cwnd * (t[m] - t[n]) / RTT
+   Endpoints can implement pacing as they choose, as long as the total
+   number of bytes sent over any interval, "t[n] - t[m]", does not
+   exceed a small multiple, "N", of maximum value of the congestion
+   window, "cwnd", over that same period.  Allowing for bursts produces
+   the following relation for the total number of bytes sent over any
+   interval:
+
+   sent@t[n] - sent@t[m]
+       <= N * cwnd * (t[m] - t[n]) / RTT
+          + min(10 * max_datagram_size,
+                max(2 * max_datagram_size, 14720))
 
    For a congestion controller that limits the increase in congestion
    window by a fixed multiple each round trip, using that value for "N"
@@ -1272,16 +1282,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
 7.  Security Considerations
 
-7.1.  Congestion Signals
-
-   Congestion control fundamentally involves the consumption of signals
-   - both loss and ECN codepoints - from unauthenticated entities.  On-
-   path attackers can spoof or alter these signals.  An attacker can
-   cause endpoints to reduce their sending rate by dropping packets, or
-   alter send rate by changing ECN codepoints.
-
-
-
 
 
 
@@ -1289,6 +1289,14 @@ Iyengar & Swett          Expires 7 November 2020               [Page 23]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+7.1.  Congestion Signals
+
+   Congestion control fundamentally involves the consumption of signals
+   - both loss and ECN codepoints - from unauthenticated entities.  On-
+   path attackers can spoof or alter these signals.  An attacker can
+   cause endpoints to reduce their sending rate by dropping packets, or
+   alter send rate by changing ECN codepoints.
 
 7.2.  Traffic Analysis
 
@@ -1329,14 +1337,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
 9.1.  Normative References
 
-   [QUIC-TLS] Thomson, M., Ed. and S. Turner, Ed., "Using TLS to Secure
-              QUIC", Work in Progress, Internet-Draft, draft-ietf-quic-
-              tls-latest, 6 May 2020,
-              <https://tools.ietf.org/html/draft-ietf-quic-tls-latest>.
-
-
-
-
 
 
 
@@ -1345,6 +1345,11 @@ Iyengar & Swett          Expires 7 November 2020               [Page 24]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   [QUIC-TLS] Thomson, M., Ed. and S. Turner, Ed., "Using TLS to Secure
+              QUIC", Work in Progress, Internet-Draft, draft-ietf-quic-
+              tls-latest, 6 May 2020,
+              <https://tools.ietf.org/html/draft-ietf-quic-tls-latest>.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
@@ -1388,11 +1393,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
               Congestion Events", RFC 4653, DOI 10.17487/RFC4653, August
               2006, <https://www.rfc-editor.org/info/rfc4653>.
 
-   [RFC5681]  Allman, M., Paxson, V., and E. Blanton, "TCP Congestion
-              Control", RFC 5681, DOI 10.17487/RFC5681, September 2009,
-              <https://www.rfc-editor.org/info/rfc5681>.
-
-
 
 
 
@@ -1401,6 +1401,10 @@ Iyengar & Swett          Expires 7 November 2020               [Page 25]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   [RFC5681]  Allman, M., Paxson, V., and E. Blanton, "TCP Congestion
+              Control", RFC 5681, DOI 10.17487/RFC5681, September 2009,
+              <https://www.rfc-editor.org/info/rfc5681>.
 
    [RFC5682]  Sarolahti, P., Kojo, M., Yamamoto, K., and M. Hata,
               "Forward RTO-Recovery (F-RTO): An Algorithm for Detecting
@@ -1445,10 +1449,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
               DOI 10.17487/RFC8311, January 2018,
               <https://www.rfc-editor.org/info/rfc8311>.
 
-   [RFC8312]  Rhee, I., Xu, L., Ha, S., Zimmermann, A., Eggert, L., and
-              R. Scheffenegger, "CUBIC for Fast Long-Distance Networks",
-              RFC 8312, DOI 10.17487/RFC8312, February 2018,
-              <https://www.rfc-editor.org/info/rfc8312>.
 
 
 
@@ -1457,6 +1457,11 @@ Iyengar & Swett          Expires 7 November 2020               [Page 26]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   [RFC8312]  Rhee, I., Xu, L., Ha, S., Zimmermann, A., Eggert, L., and
+              R. Scheffenegger, "CUBIC for Fast Long-Distance Networks",
+              RFC 8312, DOI 10.17487/RFC8312, February 2018,
+              <https://www.rfc-editor.org/info/rfc8312>.
 
 Appendix A.  Loss Recovery Pseudocode
 
@@ -1501,11 +1506,6 @@ A.2.  Constants of Interest
    Constants used in loss recovery are based on a combination of RFCs,
    papers, and common practice.
 
-   kPacketThreshold:  Maximum reordering in packets before packet
-      threshold loss detection considers a packet lost.  The value
-      recommended in Section 5.1.1 is 3.
-
-
 
 
 
@@ -1513,6 +1513,10 @@ Iyengar & Swett          Expires 7 November 2020               [Page 27]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   kPacketThreshold:  Maximum reordering in packets before packet
+      threshold loss detection considers a packet lost.  The value
+      recommended in Section 5.1.1 is 3.
 
    kTimeThreshold:  Maximum reordering in time before time threshold
       loss detection considers a packet lost.  Specified as an RTT
@@ -1557,11 +1561,7 @@ A.3.  Variables of interest
 
    loss_detection_timer:  Multi-modal timer used for loss detection.
 
-   pto_count:  The number of times a PTO has been sent without receiving
-      an ack.
 
-   time_of_last_sent_ack_eliciting_packet[kPacketNumberSpace]:  The time
-      the most recent ack-eliciting packet was sent.
 
 
 
@@ -1569,6 +1569,12 @@ Iyengar & Swett          Expires 7 November 2020               [Page 28]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   pto_count:  The number of times a PTO has been sent without receiving
+      an ack.
+
+   time_of_last_sent_ack_eliciting_packet[kPacketNumberSpace]:  The time
+      the most recent ack-eliciting packet was sent.
 
    largest_acked_packet[kPacketNumberSpace]:  The largest packet number
       acknowledged in the packet number space so far.
@@ -1605,12 +1611,6 @@ A.5.  On Sending a Packet
    Appendix A.1.1.
 
    Pseudocode for OnPacketSent follows:
-
-
-
-
-
-
 
 
 
