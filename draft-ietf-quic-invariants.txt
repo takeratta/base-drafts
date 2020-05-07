@@ -151,8 +151,8 @@ Internet-Draft               QUIC Invariants                    May 2020
 
 4.1.  Long Header
 
-   Long headers take the form described in Figure 1.  Bits that have
-   version-specific semantics are marked with an X.
+   Long headers take the form described in Figure 1.
+
 
 
 
@@ -175,9 +175,9 @@ Internet-Draft               QUIC Invariants                    May 2020
      Version-Specific Bits (7),
      Version (32),
      DCID Len (8),
-     Destination Connection ID (0..160),
+     Destination Connection ID (0..2040),
      SCID Len (8),
-     Source Connection ID (0..160),
+     Source Connection ID (0..2040),
      Version-Specific Data (..),
    }
 
@@ -203,8 +203,7 @@ Internet-Draft               QUIC Invariants                    May 2020
 
 4.2.  Short Header
 
-   Short headers take the form described in Figure 2.  Bits that have
-   version-specific semantics are marked with an X.
+   Short headers take the form described in Figure 2.
 
    Short Header Packet {
      Header Form (1) = 0,
@@ -217,6 +216,7 @@ Internet-Draft               QUIC Invariants                    May 2020
 
    A QUIC packet with a short header has the high bit of the first byte
    set to 0.
+
 
 
 
