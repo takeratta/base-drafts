@@ -8579,9 +8579,9 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    [DPLPMTUD] Fairhurst, G., Jones, T., Tuexen, M., Ruengeler, I., and
               T. Voelker, "Packetization Layer Path MTU Discovery for
               Datagram Transports", Work in Progress, Internet-Draft,
-              draft-ietf-tsvwg-datagram-plpmtud-19, 3 April 2020,
+              draft-ietf-tsvwg-datagram-plpmtud-20, 7 May 2020,
               <http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-
-              datagram-plpmtud-19.txt>.
+              datagram-plpmtud-20.txt>.
 
    [IPv4]     Postel, J., "Internet Protocol", STD 5, RFC 791,
               DOI 10.17487/RFC0791, September 1981,

@@ -2819,7 +2819,7 @@ integrity protection.<a href="#section-6.6-2" class="pilcrow">¶</a></p>
 authenticated. Packet protection keys MUST NOT be used for removing packet
 protection after authentication fails on more than a per-AEAD limit. Endpoints
 MUST initiate a key update before reaching this limit. Applying a limit reduces
-the probability than attacker is able to successfully forge a packet; see
+the probability that an attacker is able to successfully forge a packet; see
 <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span> and <span>[<a href="#ROBUST" class="xref">ROBUST</a>]</span>.<a href="#section-6.6-3" class="pilcrow">¶</a></p>
 <p id="section-6.6-4">For AEAD_AES_128_GCM, AEAD_AES_256_GCM, and AEAD_CHACHA20_POLY1305 the
 number of packets that fail authentication MUST NOT exceed 2^36. Note that the
