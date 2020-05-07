@@ -2817,34 +2817,36 @@ packet that cannot be authenticated, allowing multiple attempts at defeating
 integrity protection.<a href="#section-6.6-2" class="pilcrow">¶</a></p>
 <p id="section-6.6-3">Endpoints MUST count the number of packets that are received but cannot be
 authenticated. Packet protection keys MUST NOT be used for removing packet
-protection after authentication fails on more than a per-AEAD limit. Endpoints
-MUST initiate a key update before reaching this limit. Applying a limit reduces
-the probability that an attacker is able to successfully forge a packet; see
-<span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span> and <span>[<a href="#ROBUST" class="xref">ROBUST</a>]</span>.<a href="#section-6.6-3" class="pilcrow">¶</a></p>
-<p id="section-6.6-4">For AEAD_AES_128_GCM, AEAD_AES_256_GCM, and AEAD_CHACHA20_POLY1305 the
-number of packets that fail authentication MUST NOT exceed 2^36. Note that the
-analysis in <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span> supports a higher limit for the AEAD_AES_128_GCM and
-AEAD_AES_256_GCM, but this specification recommends a lower limit. For
-AEAD_AES_128_CCM the number of packets that fail authentication MUST NOT exceed
-2^24.5; see <a href="#ccm-bounds" class="xref">Appendix B</a>.<a href="#section-6.6-4" class="pilcrow">¶</a></p>
-<p id="section-6.6-5">Any TLS cipher suite that is specified for use with QUIC MUST define limits on
-the use of the associated AEAD function that preserves margins for
-confidentiality and integrity. That is, limits MUST be specified for the number
-of packets that can be authenticated and for the number packets that can fail
-authentication.  Any limits SHOULD reference any analysis upon which values are
-based and describe any assumptions used in that analysis.<a href="#section-6.6-5" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-6.6-6">
-          <dt id="section-6.6-6.1">Note:</dt>
-<dd id="section-6.6-6.2">
+protection after authentication fails on more than a limit that is specific to
+the AEAD in use. Endpoints MUST initiate a key update before reaching this
+limit. Applying a limit reduces the probability that an attacker is able to
+successfully forge a packet; see <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span> and <span>[<a href="#ROBUST" class="xref">ROBUST</a>]</span>.<a href="#section-6.6-3" class="pilcrow">¶</a></p>
+<p id="section-6.6-4">For AEAD_AES_128_GCM, AEAD_AES_256_GCM, and AEAD_CHACHA20_POLY1305, if the
+number of packets that fail authentication exceeds 2^36, the endpoint MUST
+immediately close the connection.  Note that the analysis in <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span>
+supports a higher limit for the AEAD_AES_128_GCM and AEAD_AES_256_GCM, but this
+specification recommends a lower limit.  For AEAD_AES_128_CCM, if the number of
+packets that fail authentication exceeds 2^24.5, the endpoint MUST immediately
+close the connection; see <a href="#ccm-bounds" class="xref">Appendix B</a>.<a href="#section-6.6-4" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-6.6-5">
+          <dt id="section-6.6-5.1">Note:</dt>
+<dd id="section-6.6-5.2">
   These limits were originally calculated using assumptions about the
 limits on TLS record size. The maximum size of a TLS record is 2^14 bytes.
 In comparison, QUIC packets can be up to 2^16 bytes.  However, it is
 expected that QUIC packets will generally be smaller than TLS records.
 Where packets might be larger than 2^14 bytes in length, smaller limits might
-be needed.<a href="#section-6.6-6.2" class="pilcrow">¶</a>
+be needed.<a href="#section-6.6-5.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 </dl>
+<p id="section-6.6-6">Any TLS cipher suite that is specified for use with QUIC MUST define limits on
+the use of the associated AEAD function that preserves margins for
+confidentiality and integrity. That is, limits MUST be specified for the number
+of packets that can be authenticated and for the number packets that can fail
+authentication.  Providing a reference to any analysis upon which values are
+based - and any assumptions used in that analysis - allows limits to be adapted
+to varying usage conditions.<a href="#section-6.6-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="key-update-error">
