@@ -829,7 +829,7 @@ table.left {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Thomson &amp; Turner</td>
-<td class="center">Expires 8 November 2020</td>
+<td class="center">Expires 9 November 2020</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -842,12 +842,12 @@ table.left {
 <dd class="internet-draft">draft-ietf-quic-tls-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-05-07" class="published">7 May 2020</time>
+<time datetime="2020-05-08" class="published">8 May 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-11-08">8 November 2020</time></dd>
+<dd class="expires"><time datetime="2020-11-09">9 November 2020</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -899,7 +899,7 @@ code and issues list for this draft can be found at
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2805,7 +2805,7 @@ discarded.<a href="#section-6.5-7" class="pilcrow">¶</a></p>
 <p id="section-6.6-1">Key updates MUST be initiated before usage limits on packet protection keys are
 exceeded. For the cipher suites mentioned in this document, the limits in
 Section 5.5 of <span>[<a href="#TLS13" class="xref">TLS13</a>]</span> apply. <span>[<a href="#TLS13" class="xref">TLS13</a>]</span> does not specify a limit for
-AEAD_AES_128_CCM, but the analysis in <a href="#ccm-bounds" class="xref">Appendix B</a> shows that a limit of 2^24
+AEAD_AES_128_CCM, but the analysis in <a href="#ccm-bounds" class="xref">Appendix B</a> shows that a limit of 2^23
 packets can be used to obtain the same confidentiality protection as the limits
 specified in TLS.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
 <p id="section-6.6-2">The usage limits defined in TLS 1.3 exist to provide protection against attacks
@@ -2816,18 +2816,17 @@ after any record fails an authentication check. In comparison, QUIC ignores any
 packet that cannot be authenticated, allowing multiple attempts at defeating
 integrity protection.<a href="#section-6.6-2" class="pilcrow">¶</a></p>
 <p id="section-6.6-3">Endpoints MUST count the number of packets that are received but cannot be
-authenticated. Packet protection keys MUST NOT be used for removing packet
-protection after authentication fails on more than a limit that is specific to
-the AEAD in use. Endpoints MUST initiate a key update before reaching this
-limit. Applying a limit reduces the probability that an attacker is able to
+authenticated.  If the number of packets that fail authentication exceeds a
+limit that is specific to the AEAD in use, the endpoint MUST immediately close
+the connection.  Endpoints MUST initiate a key update before reaching this
+limit.  Applying a limit reduces the probability that an attacker is able to
 successfully forge a packet; see <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span> and <span>[<a href="#ROBUST" class="xref">ROBUST</a>]</span>.<a href="#section-6.6-3" class="pilcrow">¶</a></p>
-<p id="section-6.6-4">For AEAD_AES_128_GCM, AEAD_AES_256_GCM, and AEAD_CHACHA20_POLY1305, if the
-number of packets that fail authentication exceeds 2^36, the endpoint MUST
-immediately close the connection.  Note that the analysis in <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span>
-supports a higher limit for the AEAD_AES_128_GCM and AEAD_AES_256_GCM, but this
-specification recommends a lower limit.  For AEAD_AES_128_CCM, if the number of
-packets that fail authentication exceeds 2^24.5, the endpoint MUST immediately
-close the connection; see <a href="#ccm-bounds" class="xref">Appendix B</a>.<a href="#section-6.6-4" class="pilcrow">¶</a></p>
+<p id="section-6.6-4">For AEAD_AES_128_GCM, AEAD_AES_256_GCM, and AEAD_CHACHA20_POLY1305, the limit on
+the number of packets that fail authentication is 2^36.  Note that the analysis
+in <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span> supports a higher limit for the AEAD_AES_128_GCM and
+AEAD_AES_256_GCM, but this specification recommends a lower limit.  For
+AEAD_AES_128_CCM, the limit on the number of packets that fail authentication
+is 2^23.5; see <a href="#ccm-bounds" class="xref">Appendix B</a>.<a href="#section-6.6-4" class="pilcrow">¶</a></p>
 <dl class="dlParallel" id="section-6.6-5">
           <dt id="section-6.6-5.1">Note:</dt>
 <dd id="section-6.6-5.2">
@@ -3184,11 +3183,11 @@ the KEY_UPDATE_ERROR (0xE), as described in <a href="#key-update-error" class="x
 <dd class="break"></dd>
 <dt id="QUIC-RECOVERY">[QUIC-RECOVERY]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-05-07">7 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-05-08">8 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-transport-latest</span>, <time datetime="2020-05-07">7 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-latest">https://tools.ietf.org/html/draft-ietf-quic-transport-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-transport-latest</span>, <time datetime="2020-05-08">8 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-latest">https://tools.ietf.org/html/draft-ietf-quic-transport-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
 <dd>
@@ -3239,7 +3238,7 @@ the KEY_UPDATE_ERROR (0xE), as described in <a href="#key-update-error" class="x
 <dd class="break"></dd>
 <dt id="QUIC-HTTP">[QUIC-HTTP]</dt>
 <dd>
-<span class="refAuthor">Bishop, M., Ed.</span>, <span class="refTitle">"Hypertext Transfer Protocol Version 3 (HTTP/3)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-http-latest</span>, <time datetime="2020-05-07">7 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-http-latest">https://tools.ietf.org/html/draft-ietf-quic-http-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Bishop, M., Ed.</span>, <span class="refTitle">"Hypertext Transfer Protocol Version 3 (HTTP/3)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-http-latest</span>, <time datetime="2020-05-08">8 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-http-latest">https://tools.ietf.org/html/draft-ietf-quic-http-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2818">[RFC2818]</dt>
 <dd>
@@ -3553,17 +3552,17 @@ attacker gains an advantage over an ideal pseudorandom permutation (PRP) of no
 more than:<a href="#section-b.1-1" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.1-2">
 <pre>
-(l * q)^2 / 2^n
+(2l * q)^2 / 2^n
 </pre><a href="#section-b.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-b.1-3">For a target advantage of 2^-60, which matches that used by <span>[<a href="#TLS13" class="xref">TLS13</a>]</span>, this
 results in the relation:<a href="#section-b.1-3" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.1-4">
 <pre>
-q &lt;= 2^24
+q &lt;= 2^23
 </pre><a href="#section-b.1-4" class="pilcrow">¶</a>
 </div>
-<p id="section-b.1-5">That is, endpoints cannot protect more than 2^24 packets with the same set of
+<p id="section-b.1-5">That is, endpoints cannot protect more than 2^23 packets with the same set of
 keys without causing an attacker to gain an larger advantage than the target of
 2^-60.<a href="#section-b.1-5" class="pilcrow">¶</a></p>
 </section>
@@ -3577,7 +3576,7 @@ keys without causing an attacker to gain an larger advantage than the target of
 gains an advantage over an ideal PRP of no more than:<a href="#section-b.2-1" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.2-2">
 <pre>
-v / 2^t + (l * (v + q))^2 / 2^n
+v / 2^t + (2l * (v + q))^2 / 2^n
 </pre><a href="#section-b.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-b.2-3">The goal is to limit this advantage to 2^-57, to match the target in
@@ -3586,12 +3585,12 @@ to the second, so that term can be removed without a significant effect on the
 result. This produces the relation:<a href="#section-b.2-3" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.2-4">
 <pre>
-v + q &lt;= 2^25.5
+v + q &lt;= 2^24.5
 </pre><a href="#section-b.2-4" class="pilcrow">¶</a>
 </div>
 <p id="section-b.2-5">Using the previously-established value of 2^24 for <code>q</code> and rounding, this leads
-to an upper limit on <code>v</code> of 2^24.5. That is, endpoints cannot attempt to
-authenticate more than 2^24.5 packets with the same set of keys without causing
+to an upper limit on <code>v</code> of 2^23.5. That is, endpoints cannot attempt to
+authenticate more than 2^23.5 packets with the same set of keys without causing
 an attacker to gain an larger advantage than the target of 2^-57.<a href="#section-b.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
