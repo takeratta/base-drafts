@@ -1998,7 +1998,7 @@ the maximum datagram size (max_datagram_size), limited to the larger of 14720 or
 twice the maximum datagram size. This follows the analysis and recommendations
 in <span>[<a href="#RFC6928" class="xref">RFC6928</a>]</span>, increasing the byte limit to account for the smaller 8 byte
 overhead of UDP compared to the 20 byte overhead for TCP.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2-2">Prior to validating the client's address, the server can also be limited by
+<p id="section-6.2-2">Prior to validating the client's address, the server can be further limited by
 the anti-amplification limit as specified in Section 8.1 of <span>[<a href="#QUIC-TRANSPORT" class="xref">QUIC-TRANSPORT</a>]</span>.
 Though the anti-amplification limit can prevent the congestion window from
 being fully utilized and therefore slow down the increase in congestion window,
