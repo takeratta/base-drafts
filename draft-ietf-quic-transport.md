@@ -1110,9 +1110,10 @@ be unable to continue using the connection IDs with the active connection.
 An endpoint SHOULD limit the state it commits to retiring connection IDs.  An
 endpoint SHOULD allow for sending and tracking a number of RETIRE_CONNECTION_ID
 frames of at least twice the active_connection_id_limit. An endpoint MUST
-NOT forget a connection ID without retiring it, though MAY choose to treat
-having too many connection IDs in need of retirement as a connection error of
-type CONNECTION_ID_LIMIT_ERROR.
+NOT forget a connection ID without retiring it; however, an endpoint MAY choose
+to set a limit for the number of connection IDs that are tracked for retirement
+and treat this limit being exceeded as a connection error of type
+CONNECTION_ID_LIMIT_ERROR.
 
 Endpoints SHOULD NOT issue updates of the Retire Prior To field before receiving
 RETIRE_CONNECTION_ID frames that retire all connection IDs indicated by the
