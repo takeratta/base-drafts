@@ -2147,9 +2147,10 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    semantic content and are ignored.
 
    This mode has no use in QUIC as it only applies to middleboxes that
-   interfere with TLS over TCP.  A client MUST NOT request the use of
-   the TLS 1.3 compatibility mode.  A server SHOULD treat the receipt of
-   a TLS ClientHello that with a non-empty legacy_session_id field as a
+   interfere with TLS over TCP.  QUIC also provides no means to carry a
+   change_cipher_spec record.  A client MUST NOT request the use of the
+   TLS 1.3 compatibility mode.  A server SHOULD treat the receipt of a
+   TLS ClientHello that with a non-empty legacy_session_id field as a
    connection error of type PROTOCOL_VIOLATION.
 
 9.  Security Considerations
@@ -2174,7 +2175,6 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    As described in Section 8 of [TLS13], use of TLS early data comes
    with an exposure to replay attack.  The use of 0-RTT in QUIC is
    similarly vulnerable to replay attack.
-
 
 
 
