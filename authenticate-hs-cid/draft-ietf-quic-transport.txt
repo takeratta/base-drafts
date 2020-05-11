@@ -5,8 +5,8 @@
 QUIC                                                     J. Iyengar, Ed.
 Internet-Draft                                                    Fastly
 Intended status: Standards Track                         M. Thomson, Ed.
-Expires: 15 October 2020                                         Mozilla
-                                                           13 April 2020
+Expires: 12 November 2020                                        Mozilla
+                                                             11 May 2020
 
 
            QUIC: A UDP-Based Multiplexed and Secure Transport
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 October 2020.
+   This Internet-Draft will expire on 12 November 2020.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 1]
+Iyengar & Thomson       Expires 12 November 2020                [Page 1]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -80,233 +80,233 @@ Table of Contents
      2.4.  Required Operations on Streams  . . . . . . . . . . . . .  12
    3.  Stream States . . . . . . . . . . . . . . . . . . . . . . . .  12
      3.1.  Sending Stream States . . . . . . . . . . . . . . . . . .  13
-     3.2.  Receiving Stream States . . . . . . . . . . . . . . . . .  15
+     3.2.  Receiving Stream States . . . . . . . . . . . . . . . . .  16
      3.3.  Permitted Frame Types . . . . . . . . . . . . . . . . . .  18
-     3.4.  Bidirectional Stream States . . . . . . . . . . . . . . .  18
-     3.5.  Solicited State Transitions . . . . . . . . . . . . . . .  19
-   4.  Flow Control  . . . . . . . . . . . . . . . . . . . . . . . .  21
-     4.1.  Data Flow Control . . . . . . . . . . . . . . . . . . . .  21
-     4.2.  Flow Credit Increments  . . . . . . . . . . . . . . . . .  22
-     4.3.  Handling Stream Cancellation  . . . . . . . . . . . . . .  23
-     4.4.  Stream Final Size . . . . . . . . . . . . . . . . . . . .  24
-     4.5.  Controlling Concurrency . . . . . . . . . . . . . . . . .  24
-   5.  Connections . . . . . . . . . . . . . . . . . . . . . . . . .  25
-     5.1.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  25
-       5.1.1.  Issuing Connection IDs  . . . . . . . . . . . . . . .  26
-       5.1.2.  Consuming and Retiring Connection IDs . . . . . . . .  27
-     5.2.  Matching Packets to Connections . . . . . . . . . . . . .  28
-       5.2.1.  Client Packet Handling  . . . . . . . . . . . . . . .  29
-       5.2.2.  Server Packet Handling  . . . . . . . . . . . . . . .  29
-     5.3.  Life of a QUIC Connection . . . . . . . . . . . . . . . .  30
-     5.4.  Required Operations on Connections  . . . . . . . . . . .  31
-   6.  Version Negotiation . . . . . . . . . . . . . . . . . . . . .  32
-     6.1.  Sending Version Negotiation Packets . . . . . . . . . . .  32
-     6.2.  Handling Version Negotiation Packets  . . . . . . . . . .  33
-       6.2.1.  Version Negotiation Between Draft Versions  . . . . .  33
-     6.3.  Using Reserved Versions . . . . . . . . . . . . . . . . .  33
-   7.  Cryptographic and Transport Handshake . . . . . . . . . . . .  34
-     7.1.  Example Handshake Flows . . . . . . . . . . . . . . . . .  35
+     3.4.  Bidirectional Stream States . . . . . . . . . . . . . . .  19
+     3.5.  Solicited State Transitions . . . . . . . . . . . . . . .  20
+   4.  Flow Control  . . . . . . . . . . . . . . . . . . . . . . . .  22
+     4.1.  Data Flow Control . . . . . . . . . . . . . . . . . . . .  22
+     4.2.  Flow Credit Increments  . . . . . . . . . . . . . . . . .  23
+     4.3.  Handling Stream Cancellation  . . . . . . . . . . . . . .  24
+     4.4.  Stream Final Size . . . . . . . . . . . . . . . . . . . .  25
+     4.5.  Controlling Concurrency . . . . . . . . . . . . . . . . .  25
+   5.  Connections . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     5.1.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  26
+       5.1.1.  Issuing Connection IDs  . . . . . . . . . . . . . . .  28
+       5.1.2.  Consuming and Retiring Connection IDs . . . . . . . .  29
+     5.2.  Matching Packets to Connections . . . . . . . . . . . . .  30
+       5.2.1.  Client Packet Handling  . . . . . . . . . . . . . . .  30
+       5.2.2.  Server Packet Handling  . . . . . . . . . . . . . . .  31
+     5.3.  Life of a QUIC Connection . . . . . . . . . . . . . . . .  31
+     5.4.  Required Operations on Connections  . . . . . . . . . . .  32
+   6.  Version Negotiation . . . . . . . . . . . . . . . . . . . . .  33
+     6.1.  Sending Version Negotiation Packets . . . . . . . . . . .  34
+     6.2.  Handling Version Negotiation Packets  . . . . . . . . . .  34
+       6.2.1.  Version Negotiation Between Draft Versions  . . . . .  34
+     6.3.  Using Reserved Versions . . . . . . . . . . . . . . . . .  35
+   7.  Cryptographic and Transport Handshake . . . . . . . . . . . .  35
+     7.1.  Example Handshake Flows . . . . . . . . . . . . . . . . .  36
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 2]
+Iyengar & Thomson       Expires 12 November 2020                [Page 2]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
-     7.2.  Negotiating Connection IDs  . . . . . . . . . . . . . . .  36
-     7.3.  Authenticating Connection IDs . . . . . . . . . . . . . .  37
-     7.4.  Transport Parameters  . . . . . . . . . . . . . . . . . .  38
-       7.4.1.  Values of Transport Parameters for 0-RTT  . . . . . .  39
-       7.4.2.  New Transport Parameters  . . . . . . . . . . . . . .  40
-     7.5.  Cryptographic Message Buffering . . . . . . . . . . . . .  41
-   8.  Address Validation  . . . . . . . . . . . . . . . . . . . . .  41
-     8.1.  Address Validation During Connection Establishment  . . .  42
-       8.1.1.  Token Construction  . . . . . . . . . . . . . . . . .  43
-       8.1.2.  Address Validation using Retry Packets  . . . . . . .  43
-       8.1.3.  Address Validation for Future Connections . . . . . .  44
-       8.1.4.  Address Validation Token Integrity  . . . . . . . . .  46
-     8.2.  Path Validation . . . . . . . . . . . . . . . . . . . . .  47
-     8.3.  Initiating Path Validation  . . . . . . . . . . . . . . .  48
-     8.4.  Path Validation Responses . . . . . . . . . . . . . . . .  48
-     8.5.  Successful Path Validation  . . . . . . . . . . . . . . .  48
-     8.6.  Failed Path Validation  . . . . . . . . . . . . . . . . .  49
-   9.  Connection Migration  . . . . . . . . . . . . . . . . . . . .  49
-     9.1.  Probing a New Path  . . . . . . . . . . . . . . . . . . .  50
-     9.2.  Initiating Connection Migration . . . . . . . . . . . . .  51
-     9.3.  Responding to Connection Migration  . . . . . . . . . . .  51
-       9.3.1.  Peer Address Spoofing . . . . . . . . . . . . . . . .  52
-       9.3.2.  On-Path Address Spoofing  . . . . . . . . . . . . . .  52
-       9.3.3.  Off-Path Packet Forwarding  . . . . . . . . . . . . .  53
-     9.4.  Loss Detection and Congestion Control . . . . . . . . . .  54
-     9.5.  Privacy Implications of Connection Migration  . . . . . .  55
-     9.6.  Server's Preferred Address  . . . . . . . . . . . . . . .  56
-       9.6.1.  Communicating a Preferred Address . . . . . . . . . .  56
-       9.6.2.  Responding to Connection Migration  . . . . . . . . .  57
+     7.2.  Negotiating Connection IDs  . . . . . . . . . . . . . . .  38
+     7.3.  Authenticating Connection IDs . . . . . . . . . . . . . .  39
+     7.4.  Transport Parameters  . . . . . . . . . . . . . . . . . .  40
+       7.4.1.  Values of Transport Parameters for 0-RTT  . . . . . .  41
+       7.4.2.  New Transport Parameters  . . . . . . . . . . . . . .  42
+     7.5.  Cryptographic Message Buffering . . . . . . . . . . . . .  42
+   8.  Address Validation  . . . . . . . . . . . . . . . . . . . . .  43
+     8.1.  Address Validation During Connection Establishment  . . .  43
+       8.1.1.  Token Construction  . . . . . . . . . . . . . . . . .  44
+       8.1.2.  Address Validation using Retry Packets  . . . . . . .  44
+       8.1.3.  Address Validation for Future Connections . . . . . .  45
+       8.1.4.  Address Validation Token Integrity  . . . . . . . . .  48
+     8.2.  Path Validation . . . . . . . . . . . . . . . . . . . . .  49
+     8.3.  Initiating Path Validation  . . . . . . . . . . . . . . .  49
+     8.4.  Path Validation Responses . . . . . . . . . . . . . . . .  50
+     8.5.  Successful Path Validation  . . . . . . . . . . . . . . .  50
+     8.6.  Failed Path Validation  . . . . . . . . . . . . . . . . .  50
+   9.  Connection Migration  . . . . . . . . . . . . . . . . . . . .  51
+     9.1.  Probing a New Path  . . . . . . . . . . . . . . . . . . .  52
+     9.2.  Initiating Connection Migration . . . . . . . . . . . . .  52
+     9.3.  Responding to Connection Migration  . . . . . . . . . . .  53
+       9.3.1.  Peer Address Spoofing . . . . . . . . . . . . . . . .  54
+       9.3.2.  On-Path Address Spoofing  . . . . . . . . . . . . . .  54
+       9.3.3.  Off-Path Packet Forwarding  . . . . . . . . . . . . .  55
+     9.4.  Loss Detection and Congestion Control . . . . . . . . . .  56
+     9.5.  Privacy Implications of Connection Migration  . . . . . .  57
+     9.6.  Server's Preferred Address  . . . . . . . . . . . . . . .  58
+       9.6.1.  Communicating a Preferred Address . . . . . . . . . .  58
+       9.6.2.  Responding to Connection Migration  . . . . . . . . .  59
        9.6.3.  Interaction of Client Migration and Preferred
-               Address . . . . . . . . . . . . . . . . . . . . . . .  57
-     9.7.  Use of IPv6 Flow-Label and Migration  . . . . . . . . . .  58
-   10. Connection Termination  . . . . . . . . . . . . . . . . . . .  58
-     10.1.  Closing and Draining Connection States . . . . . . . . .  58
-     10.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . . . .  60
-     10.3.  Immediate Close  . . . . . . . . . . . . . . . . . . . .  60
-       10.3.1.  Immediate Close During the Handshake . . . . . . . .  62
-     10.4.  Stateless Reset  . . . . . . . . . . . . . . . . . . . .  63
-       10.4.1.  Detecting a Stateless Reset  . . . . . . . . . . . .  66
-       10.4.2.  Calculating a Stateless Reset Token  . . . . . . . .  67
-       10.4.3.  Looping  . . . . . . . . . . . . . . . . . . . . . .  68
-   11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  68
-     11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . .  69
-     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  69
-   12. Packets and Frames  . . . . . . . . . . . . . . . . . . . . .  70
-     12.1.  Protected Packets  . . . . . . . . . . . . . . . . . . .  70
-     12.2.  Coalescing Packets . . . . . . . . . . . . . . . . . . .  71
-     12.3.  Packet Numbers . . . . . . . . . . . . . . . . . . . . .  72
+               Address . . . . . . . . . . . . . . . . . . . . . . .  59
+     9.7.  Use of IPv6 Flow-Label and Migration  . . . . . . . . . .  60
+   10. Connection Termination  . . . . . . . . . . . . . . . . . . .  60
+     10.1.  Closing and Draining Connection States . . . . . . . . .  60
+     10.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . . . .  62
+     10.3.  Immediate Close  . . . . . . . . . . . . . . . . . . . .  62
+       10.3.1.  Immediate Close During the Handshake . . . . . . . .  64
+     10.4.  Stateless Reset  . . . . . . . . . . . . . . . . . . . .  65
+       10.4.1.  Detecting a Stateless Reset  . . . . . . . . . . . .  68
+       10.4.2.  Calculating a Stateless Reset Token  . . . . . . . .  69
+       10.4.3.  Looping  . . . . . . . . . . . . . . . . . . . . . .  70
+   11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  70
+     11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . .  71
+     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  71
+   12. Packets and Frames  . . . . . . . . . . . . . . . . . . . . .  72
+     12.1.  Protected Packets  . . . . . . . . . . . . . . . . . . .  72
+     12.2.  Coalescing Packets . . . . . . . . . . . . . . . . . . .  73
+     12.3.  Packet Numbers . . . . . . . . . . . . . . . . . . . . .  74
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 3]
+Iyengar & Thomson       Expires 12 November 2020                [Page 3]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
-     12.4.  Frames and Frame Types . . . . . . . . . . . . . . . . .  73
-   13. Packetization and Reliability . . . . . . . . . . . . . . . .  76
-     13.1.  Packet Processing  . . . . . . . . . . . . . . . . . . .  77
-     13.2.  Generating Acknowledgements  . . . . . . . . . . . . . .  77
-       13.2.1.  Sending ACK Frames . . . . . . . . . . . . . . . . .  78
-       13.2.2.  Managing ACK Ranges  . . . . . . . . . . . . . . . .  79
-       13.2.3.  Receiver Tracking of ACK Frames  . . . . . . . . . .  80
-       13.2.4.  Limiting ACK Ranges  . . . . . . . . . . . . . . . .  80
-       13.2.5.  Measuring and Reporting Host Delay . . . . . . . . .  81
-       13.2.6.  ACK Frames and Packet Protection . . . . . . . . . .  81
-     13.3.  Retransmission of Information  . . . . . . . . . . . . .  81
-     13.4.  Explicit Congestion Notification . . . . . . . . . . . .  84
-       13.4.1.  ECN Counts . . . . . . . . . . . . . . . . . . . . .  84
-       13.4.2.  ECN Validation . . . . . . . . . . . . . . . . . . .  85
-   14. Packet Size . . . . . . . . . . . . . . . . . . . . . . . . .  87
-     14.1.  Path Maximum Transmission Unit (PMTU)  . . . . . . . . .  87
-     14.2.  ICMP Packet Too Big Messages . . . . . . . . . . . . . .  88
-     14.3.  Datagram Packetization Layer PMTU Discovery  . . . . . .  89
-       14.3.1.  PMTU Probes Containing Source Connection ID  . . . .  90
-   15. Versions  . . . . . . . . . . . . . . . . . . . . . . . . . .  90
-   16. Variable-Length Integer Encoding  . . . . . . . . . . . . . .  91
-   17. Packet Formats  . . . . . . . . . . . . . . . . . . . . . . .  92
-     17.1.  Packet Number Encoding and Decoding  . . . . . . . . . .  92
-     17.2.  Long Header Packets  . . . . . . . . . . . . . . . . . .  93
-       17.2.1.  Version Negotiation Packet . . . . . . . . . . . . .  96
-       17.2.2.  Initial Packet . . . . . . . . . . . . . . . . . . .  97
-       17.2.3.  0-RTT  . . . . . . . . . . . . . . . . . . . . . . . 100
-       17.2.4.  Handshake Packet . . . . . . . . . . . . . . . . . . 101
-       17.2.5.  Retry Packet . . . . . . . . . . . . . . . . . . . . 102
-     17.3.  Short Header Packets . . . . . . . . . . . . . . . . . . 105
-       17.3.1.  Latency Spin Bit . . . . . . . . . . . . . . . . . . 107
-   18. Transport Parameter Encoding  . . . . . . . . . . . . . . . . 108
-     18.1.  Reserved Transport Parameters  . . . . . . . . . . . . . 109
-     18.2.  Transport Parameter Definitions  . . . . . . . . . . . . 109
-   19. Frame Types and Formats . . . . . . . . . . . . . . . . . . . 113
-     19.1.  PADDING Frame  . . . . . . . . . . . . . . . . . . . . . 113
-     19.2.  PING Frame . . . . . . . . . . . . . . . . . . . . . . . 114
-     19.3.  ACK Frames . . . . . . . . . . . . . . . . . . . . . . . 114
-       19.3.1.  ACK Ranges . . . . . . . . . . . . . . . . . . . . . 116
-       19.3.2.  ECN Counts . . . . . . . . . . . . . . . . . . . . . 117
-     19.4.  RESET_STREAM Frame . . . . . . . . . . . . . . . . . . . 118
-     19.5.  STOP_SENDING Frame . . . . . . . . . . . . . . . . . . . 119
-     19.6.  CRYPTO Frame . . . . . . . . . . . . . . . . . . . . . . 120
-     19.7.  NEW_TOKEN Frame  . . . . . . . . . . . . . . . . . . . . 121
-     19.8.  STREAM Frames  . . . . . . . . . . . . . . . . . . . . . 122
-     19.9.  MAX_DATA Frame . . . . . . . . . . . . . . . . . . . . . 123
-     19.10. MAX_STREAM_DATA Frame  . . . . . . . . . . . . . . . . . 124
-     19.11. MAX_STREAMS Frames . . . . . . . . . . . . . . . . . . . 125
+     12.4.  Frames and Frame Types . . . . . . . . . . . . . . . . .  75
+   13. Packetization and Reliability . . . . . . . . . . . . . . . .  78
+     13.1.  Packet Processing  . . . . . . . . . . . . . . . . . . .  79
+     13.2.  Generating Acknowledgements  . . . . . . . . . . . . . .  79
+       13.2.1.  Sending ACK Frames . . . . . . . . . . . . . . . . .  80
+       13.2.2.  Managing ACK Ranges  . . . . . . . . . . . . . . . .  81
+       13.2.3.  Receiver Tracking of ACK Frames  . . . . . . . . . .  82
+       13.2.4.  Limiting ACK Ranges  . . . . . . . . . . . . . . . .  82
+       13.2.5.  Measuring and Reporting Host Delay . . . . . . . . .  83
+       13.2.6.  ACK Frames and Packet Protection . . . . . . . . . .  83
+     13.3.  Retransmission of Information  . . . . . . . . . . . . .  83
+     13.4.  Explicit Congestion Notification . . . . . . . . . . . .  86
+       13.4.1.  ECN Counts . . . . . . . . . . . . . . . . . . . . .  86
+       13.4.2.  ECN Validation . . . . . . . . . . . . . . . . . . .  87
+   14. Packet Size . . . . . . . . . . . . . . . . . . . . . . . . .  89
+     14.1.  Path Maximum Transmission Unit (PMTU)  . . . . . . . . .  89
+     14.2.  ICMP Packet Too Big Messages . . . . . . . . . . . . . .  90
+     14.3.  Datagram Packetization Layer PMTU Discovery  . . . . . .  91
+       14.3.1.  PMTU Probes Containing Source Connection ID  . . . .  92
+   15. Versions  . . . . . . . . . . . . . . . . . . . . . . . . . .  92
+   16. Variable-Length Integer Encoding  . . . . . . . . . . . . . .  93
+   17. Packet Formats  . . . . . . . . . . . . . . . . . . . . . . .  94
+     17.1.  Packet Number Encoding and Decoding  . . . . . . . . . .  94
+     17.2.  Long Header Packets  . . . . . . . . . . . . . . . . . .  95
+       17.2.1.  Version Negotiation Packet . . . . . . . . . . . . .  98
+       17.2.2.  Initial Packet . . . . . . . . . . . . . . . . . . . 100
+       17.2.3.  0-RTT  . . . . . . . . . . . . . . . . . . . . . . . 102
+       17.2.4.  Handshake Packet . . . . . . . . . . . . . . . . . . 104
+       17.2.5.  Retry Packet . . . . . . . . . . . . . . . . . . . . 105
+     17.3.  Short Header Packets . . . . . . . . . . . . . . . . . . 107
+       17.3.1.  Latency Spin Bit . . . . . . . . . . . . . . . . . . 109
+   18. Transport Parameter Encoding  . . . . . . . . . . . . . . . . 110
+     18.1.  Reserved Transport Parameters  . . . . . . . . . . . . . 111
+     18.2.  Transport Parameter Definitions  . . . . . . . . . . . . 111
+   19. Frame Types and Formats . . . . . . . . . . . . . . . . . . . 116
+     19.1.  PADDING Frame  . . . . . . . . . . . . . . . . . . . . . 116
+     19.2.  PING Frame . . . . . . . . . . . . . . . . . . . . . . . 116
+     19.3.  ACK Frames . . . . . . . . . . . . . . . . . . . . . . . 117
+       19.3.1.  ACK Ranges . . . . . . . . . . . . . . . . . . . . . 119
+       19.3.2.  ECN Counts . . . . . . . . . . . . . . . . . . . . . 120
+     19.4.  RESET_STREAM Frame . . . . . . . . . . . . . . . . . . . 121
+     19.5.  STOP_SENDING Frame . . . . . . . . . . . . . . . . . . . 122
+     19.6.  CRYPTO Frame . . . . . . . . . . . . . . . . . . . . . . 123
+     19.7.  NEW_TOKEN Frame  . . . . . . . . . . . . . . . . . . . . 124
+     19.8.  STREAM Frames  . . . . . . . . . . . . . . . . . . . . . 125
+     19.9.  MAX_DATA Frame . . . . . . . . . . . . . . . . . . . . . 126
+     19.10. MAX_STREAM_DATA Frame  . . . . . . . . . . . . . . . . . 127
+     19.11. MAX_STREAMS Frames . . . . . . . . . . . . . . . . . . . 128
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 4]
+Iyengar & Thomson       Expires 12 November 2020                [Page 4]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
-     19.12. DATA_BLOCKED Frame . . . . . . . . . . . . . . . . . . . 126
-     19.13. STREAM_DATA_BLOCKED Frame  . . . . . . . . . . . . . . . 126
-     19.14. STREAMS_BLOCKED Frames . . . . . . . . . . . . . . . . . 127
-     19.15. NEW_CONNECTION_ID Frame  . . . . . . . . . . . . . . . . 127
-     19.16. RETIRE_CONNECTION_ID Frame . . . . . . . . . . . . . . . 129
-     19.17. PATH_CHALLENGE Frame . . . . . . . . . . . . . . . . . . 130
-     19.18. PATH_RESPONSE Frame  . . . . . . . . . . . . . . . . . . 131
-     19.19. CONNECTION_CLOSE Frames  . . . . . . . . . . . . . . . . 131
-     19.20. HANDSHAKE_DONE frame . . . . . . . . . . . . . . . . . . 132
-     19.21. Extension Frames . . . . . . . . . . . . . . . . . . . . 132
-   20. Transport Error Codes . . . . . . . . . . . . . . . . . . . . 133
-     20.1.  Application Protocol Error Codes . . . . . . . . . . . . 135
-   21. Security Considerations . . . . . . . . . . . . . . . . . . . 135
-     21.1.  Handshake Denial of Service  . . . . . . . . . . . . . . 135
-     21.2.  Amplification Attack . . . . . . . . . . . . . . . . . . 136
-     21.3.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . . 136
-     21.4.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . . 137
-     21.5.  Stream Fragmentation and Reassembly Attacks  . . . . . . 137
-     21.6.  Stream Commitment Attack . . . . . . . . . . . . . . . . 137
-     21.7.  Peer Denial of Service . . . . . . . . . . . . . . . . . 138
-     21.8.  Explicit Congestion Notification Attacks . . . . . . . . 138
-     21.9.  Stateless Reset Oracle . . . . . . . . . . . . . . . . . 139
-     21.10. Version Downgrade  . . . . . . . . . . . . . . . . . . . 139
-     21.11. Targeted Attacks by Routing  . . . . . . . . . . . . . . 139
-     21.12. Overview of Security Properties  . . . . . . . . . . . . 140
-       21.12.1.  Handshake . . . . . . . . . . . . . . . . . . . . . 140
-       21.12.2.  Protected Packets . . . . . . . . . . . . . . . . . 142
-       21.12.3.  Connection Migration  . . . . . . . . . . . . . . . 142
-   22. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 146
-     22.1.  Registration Policies for QUIC Registries  . . . . . . . 147
-       22.1.1.  Provisional Registrations  . . . . . . . . . . . . . 147
-       22.1.2.  Selecting Codepoints . . . . . . . . . . . . . . . . 148
-       22.1.3.  Reclaiming Provisional Codepoints  . . . . . . . . . 148
-       22.1.4.  Permanent Registrations  . . . . . . . . . . . . . . 149
-     22.2.  QUIC Transport Parameter Registry  . . . . . . . . . . . 149
-     22.3.  QUIC Frame Type Registry . . . . . . . . . . . . . . . . 151
-     22.4.  QUIC Transport Error Codes Registry  . . . . . . . . . . 151
-   23. References  . . . . . . . . . . . . . . . . . . . . . . . . . 153
-     23.1.  Normative References . . . . . . . . . . . . . . . . . . 153
-     23.2.  Informative References . . . . . . . . . . . . . . . . . 154
-   Appendix A.  Sample Packet Number Decoding Algorithm  . . . . . . 156
-   Appendix B.  Sample ECN Validation Algorithm  . . . . . . . . . . 157
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . . 158
-     C.1.  Since draft-ietf-quic-transport-26  . . . . . . . . . . . 158
-     C.2.  Since draft-ietf-quic-transport-25  . . . . . . . . . . . 158
-     C.3.  Since draft-ietf-quic-transport-24  . . . . . . . . . . . 158
-     C.4.  Since draft-ietf-quic-transport-23  . . . . . . . . . . . 160
-     C.5.  Since draft-ietf-quic-transport-22  . . . . . . . . . . . 160
+     19.12. DATA_BLOCKED Frame . . . . . . . . . . . . . . . . . . . 129
+     19.13. STREAM_DATA_BLOCKED Frame  . . . . . . . . . . . . . . . 129
+     19.14. STREAMS_BLOCKED Frames . . . . . . . . . . . . . . . . . 130
+     19.15. NEW_CONNECTION_ID Frame  . . . . . . . . . . . . . . . . 130
+     19.16. RETIRE_CONNECTION_ID Frame . . . . . . . . . . . . . . . 132
+     19.17. PATH_CHALLENGE Frame . . . . . . . . . . . . . . . . . . 133
+     19.18. PATH_RESPONSE Frame  . . . . . . . . . . . . . . . . . . 134
+     19.19. CONNECTION_CLOSE Frames  . . . . . . . . . . . . . . . . 134
+     19.20. HANDSHAKE_DONE frame . . . . . . . . . . . . . . . . . . 135
+     19.21. Extension Frames . . . . . . . . . . . . . . . . . . . . 135
+   20. Transport Error Codes . . . . . . . . . . . . . . . . . . . . 136
+     20.1.  Application Protocol Error Codes . . . . . . . . . . . . 138
+   21. Security Considerations . . . . . . . . . . . . . . . . . . . 138
+     21.1.  Handshake Denial of Service  . . . . . . . . . . . . . . 138
+     21.2.  Amplification Attack . . . . . . . . . . . . . . . . . . 139
+     21.3.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . . 139
+     21.4.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . . 140
+     21.5.  Stream Fragmentation and Reassembly Attacks  . . . . . . 140
+     21.6.  Stream Commitment Attack . . . . . . . . . . . . . . . . 140
+     21.7.  Peer Denial of Service . . . . . . . . . . . . . . . . . 141
+     21.8.  Explicit Congestion Notification Attacks . . . . . . . . 141
+     21.9.  Stateless Reset Oracle . . . . . . . . . . . . . . . . . 142
+     21.10. Version Downgrade  . . . . . . . . . . . . . . . . . . . 142
+     21.11. Targeted Attacks by Routing  . . . . . . . . . . . . . . 143
+     21.12. Overview of Security Properties  . . . . . . . . . . . . 143
+       21.12.1.  Handshake . . . . . . . . . . . . . . . . . . . . . 143
+       21.12.2.  Protected Packets . . . . . . . . . . . . . . . . . 145
+       21.12.3.  Connection Migration  . . . . . . . . . . . . . . . 146
+   22. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 150
+     22.1.  Registration Policies for QUIC Registries  . . . . . . . 150
+       22.1.1.  Provisional Registrations  . . . . . . . . . . . . . 150
+       22.1.2.  Selecting Codepoints . . . . . . . . . . . . . . . . 151
+       22.1.3.  Reclaiming Provisional Codepoints  . . . . . . . . . 151
+       22.1.4.  Permanent Registrations  . . . . . . . . . . . . . . 152
+     22.2.  QUIC Transport Parameter Registry  . . . . . . . . . . . 153
+     22.3.  QUIC Frame Type Registry . . . . . . . . . . . . . . . . 154
+     22.4.  QUIC Transport Error Codes Registry  . . . . . . . . . . 155
+   23. References  . . . . . . . . . . . . . . . . . . . . . . . . . 157
+     23.1.  Normative References . . . . . . . . . . . . . . . . . . 157
+     23.2.  Informative References . . . . . . . . . . . . . . . . . 158
+   Appendix A.  Sample Packet Number Decoding Algorithm  . . . . . . 160
+   Appendix B.  Sample ECN Validation Algorithm  . . . . . . . . . . 161
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . . 162
+     C.1.  Since draft-ietf-quic-transport-26  . . . . . . . . . . . 162
+     C.2.  Since draft-ietf-quic-transport-25  . . . . . . . . . . . 162
+     C.3.  Since draft-ietf-quic-transport-24  . . . . . . . . . . . 162
+     C.4.  Since draft-ietf-quic-transport-23  . . . . . . . . . . . 164
+     C.5.  Since draft-ietf-quic-transport-22  . . . . . . . . . . . 164
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 5]
+Iyengar & Thomson       Expires 12 November 2020                [Page 5]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
-     C.6.  Since draft-ietf-quic-transport-21  . . . . . . . . . . . 161
-     C.7.  Since draft-ietf-quic-transport-20  . . . . . . . . . . . 162
-     C.8.  Since draft-ietf-quic-transport-19  . . . . . . . . . . . 162
-     C.9.  Since draft-ietf-quic-transport-18  . . . . . . . . . . . 163
-     C.10. Since draft-ietf-quic-transport-17  . . . . . . . . . . . 163
-     C.11. Since draft-ietf-quic-transport-16  . . . . . . . . . . . 164
-     C.12. Since draft-ietf-quic-transport-15  . . . . . . . . . . . 165
-     C.13. Since draft-ietf-quic-transport-14  . . . . . . . . . . . 165
-     C.14. Since draft-ietf-quic-transport-13  . . . . . . . . . . . 166
-     C.15. Since draft-ietf-quic-transport-12  . . . . . . . . . . . 167
-     C.16. Since draft-ietf-quic-transport-11  . . . . . . . . . . . 167
-     C.17. Since draft-ietf-quic-transport-10  . . . . . . . . . . . 168
-     C.18. Since draft-ietf-quic-transport-09  . . . . . . . . . . . 168
-     C.19. Since draft-ietf-quic-transport-08  . . . . . . . . . . . 169
-     C.20. Since draft-ietf-quic-transport-07  . . . . . . . . . . . 170
-     C.21. Since draft-ietf-quic-transport-06  . . . . . . . . . . . 171
-     C.22. Since draft-ietf-quic-transport-05  . . . . . . . . . . . 171
-     C.23. Since draft-ietf-quic-transport-04  . . . . . . . . . . . 171
-     C.24. Since draft-ietf-quic-transport-03  . . . . . . . . . . . 172
-     C.25. Since draft-ietf-quic-transport-02  . . . . . . . . . . . 172
-     C.26. Since draft-ietf-quic-transport-01  . . . . . . . . . . . 173
-     C.27. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 175
-     C.28. Since draft-hamilton-quic-transport-protocol-01 . . . . . 175
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 175
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 176
+     C.6.  Since draft-ietf-quic-transport-21  . . . . . . . . . . . 165
+     C.7.  Since draft-ietf-quic-transport-20  . . . . . . . . . . . 166
+     C.8.  Since draft-ietf-quic-transport-19  . . . . . . . . . . . 167
+     C.9.  Since draft-ietf-quic-transport-18  . . . . . . . . . . . 167
+     C.10. Since draft-ietf-quic-transport-17  . . . . . . . . . . . 167
+     C.11. Since draft-ietf-quic-transport-16  . . . . . . . . . . . 168
+     C.12. Since draft-ietf-quic-transport-15  . . . . . . . . . . . 169
+     C.13. Since draft-ietf-quic-transport-14  . . . . . . . . . . . 170
+     C.14. Since draft-ietf-quic-transport-13  . . . . . . . . . . . 170
+     C.15. Since draft-ietf-quic-transport-12  . . . . . . . . . . . 171
+     C.16. Since draft-ietf-quic-transport-11  . . . . . . . . . . . 172
+     C.17. Since draft-ietf-quic-transport-10  . . . . . . . . . . . 172
+     C.18. Since draft-ietf-quic-transport-09  . . . . . . . . . . . 173
+     C.19. Since draft-ietf-quic-transport-08  . . . . . . . . . . . 173
+     C.20. Since draft-ietf-quic-transport-07  . . . . . . . . . . . 174
+     C.21. Since draft-ietf-quic-transport-06  . . . . . . . . . . . 175
+     C.22. Since draft-ietf-quic-transport-05  . . . . . . . . . . . 175
+     C.23. Since draft-ietf-quic-transport-04  . . . . . . . . . . . 175
+     C.24. Since draft-ietf-quic-transport-03  . . . . . . . . . . . 176
+     C.25. Since draft-ietf-quic-transport-02  . . . . . . . . . . . 176
+     C.26. Since draft-ietf-quic-transport-01  . . . . . . . . . . . 177
+     C.27. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 179
+     C.28. Since draft-hamilton-quic-transport-protocol-01 . . . . . 179
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 180
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 180
 
 1.  Introduction
 
@@ -333,9 +333,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 6]
+Iyengar & Thomson       Expires 12 November 2020                [Page 6]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 1.1.  Document Structure
@@ -389,9 +389,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 7]
+Iyengar & Thomson       Expires 12 November 2020                [Page 7]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
       -  Section 17 (Packet Headers),
@@ -445,9 +445,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 8]
+Iyengar & Thomson       Expires 12 November 2020                [Page 8]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Server:  The endpoint accepting incoming QUIC connections.
@@ -501,9 +501,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020                [Page 9]
+Iyengar & Thomson       Expires 12 November 2020                [Page 9]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Streams can be created by either endpoint, can concurrently send data
@@ -557,9 +557,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 10]
+Iyengar & Thomson       Expires 12 November 2020               [Page 10]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Within each type, streams are created with numerically increasing
@@ -613,9 +613,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 11]
+Iyengar & Thomson       Expires 12 November 2020               [Page 11]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    A QUIC implementation SHOULD provide ways in which an application can
@@ -669,9 +669,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 12]
+Iyengar & Thomson       Expires 12 November 2020               [Page 12]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Unidirectional streams use the applicable state machine directly.
@@ -725,9 +725,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 13]
+Iyengar & Thomson       Expires 12 November 2020               [Page 13]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
           o
@@ -781,9 +781,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 14]
+Iyengar & Thomson       Expires 12 November 2020               [Page 14]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    The sending part of a bidirectional stream initiated by a peer (type
@@ -827,6 +827,21 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    sending part of the stream enters the "Reset Recvd" state, which is a
    terminal state.
 
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 15]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 3.2.  Receiving Stream States
 
    Figure 2 shows the states for the part of a stream that receives data
@@ -834,14 +849,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    some of the states of the sending part of the stream at the peer.
    The receiving part of a stream does not track states on the sending
    part that cannot be observed, such as the "Ready" state.  Instead,
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 15]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    the receiving part of a stream tracks the delivery of data to the
    application, some of which cannot be observed by the sender.
 
@@ -883,6 +890,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    a client, or 0 and 2 for a server) is created when the first STREAM,
    STREAM_DATA_BLOCKED, or RESET_STREAM is received for that stream.
    For bidirectional streams initiated by a peer, receipt of a
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 16]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    MAX_STREAM_DATA or STOP_SENDING frame for the sending part of the
    stream also creates the receiving part.  The initial state for the
    receiving part of stream is "Recv".
@@ -890,13 +905,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    The receiving part of a stream enters the "Recv" state when the
    sending part of a bidirectional stream initiated by the endpoint
    (type 0 for a client, type 1 for a server) enters the "Ready" state.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 16]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    An endpoint opens a bidirectional stream when a MAX_STREAM_DATA or
    STOP_SENDING frame is received from the peer for that stream.
@@ -938,6 +946,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    causes the stream to enter the "Reset Recvd" state.  This might cause
    the delivery of stream data to the application to be interrupted.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 17]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    It is possible that all stream data is received when a RESET_STREAM
    is received (that is, from the "Data Recvd" state).  Similarly, it is
    possible for remaining stream data to arrive after receiving a
@@ -946,14 +962,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Sending RESET_STREAM means that an endpoint cannot guarantee delivery
    of stream data; however there is no requirement that stream data not
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 17]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    be delivered if a RESET_STREAM is received.  An implementation MAY
    interrupt delivery of stream data, discard any data that was not
    consumed, and signal the receipt of the RESET_STREAM.  A RESET_STREAM
@@ -991,6 +999,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    has been received.  A sender could receive either of these two frames
    in any state as a result of delayed delivery of packets.
 
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 18]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 3.4.  Bidirectional Stream States
 
    A bidirectional stream is composed of sending and receiving parts.
@@ -1002,19 +1021,50 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Table 2 shows a more complex mapping of bidirectional stream states
    that loosely correspond to the stream states in HTTP/2 [HTTP2].  This
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 18]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    shows that multiple states on sending or receiving parts of streams
    are mapped to the same composite state.  Note that this is just one
    possibility for such a mapping; this mapping requires that data is
    acknowledged before the transition to a "closed" or "half-closed"
    state.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 19]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
      +----------------------+----------------------+-----------------+
      | Sending Part         | Receiving Part       | Composite State |
@@ -1061,9 +1111,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 19]
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 20]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    If the stream is in the "Recv" or "Size Known" states, the transport
@@ -1117,9 +1173,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 20]
+Iyengar & Thomson       Expires 12 November 2020               [Page 21]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 4.  Flow Control
@@ -1164,20 +1220,26 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    MAX_STREAM_DATA (Section 19.10) or MAX_DATA (Section 19.9) frames to
    the sender to advertise additional credit.
 
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 22]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    A receiver advertises credit for a stream by sending a
    MAX_STREAM_DATA frame with the Stream ID field set appropriately.  A
    MAX_STREAM_DATA frame indicates the maximum absolute byte offset of a
    stream.  A receiver could use the current offset of data consumed to
    determine the flow control offset to be advertised.  A receiver MAY
    send MAX_STREAM_DATA frames in multiple packets in order to make sure
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 21]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    that the sender receives an update before running out of flow control
    credit, even if one of the packets is lost.
 
@@ -1219,6 +1281,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    MAX_DATA frame multiple times within a round trip or send it early
    enough to allow for recovery from loss of the frame.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 23]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Control frames contribute to connection overhead.  Therefore,
    frequently sending MAX_STREAM_DATA and MAX_DATA frames with small
    changes is undesirable.  On the other hand, if updates are less
@@ -1226,13 +1297,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    a sender, requiring larger resource commitments at the receiver.
    There is a trade-off between resource commitment and overhead when
    determining how large a limit is advertised.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 22]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    A receiver can use an autotuning mechanism to tune the frequency and
    amount of advertised additional credit based on a round-trip time
@@ -1274,21 +1338,20 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    MUST use the final size of the stream to account for all bytes sent
    on the stream in its connection level flow controller.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 24]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    RESET_STREAM terminates one direction of a stream abruptly.  For a
    bidirectional stream, RESET_STREAM has no effect on data flow in the
    opposite direction.  Both endpoints MUST maintain flow control state
    for the stream in the unterminated direction until that direction
    enters a terminal state, or until one of the endpoints sends
    CONNECTION_CLOSE.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 23]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 4.4.  Stream Final Size
 
@@ -1331,20 +1394,20 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    (Section 19.11).  Separate limits apply to unidirectional and
    bidirectional streams.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 25]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    If a max_streams transport parameter or MAX_STREAMS frame is received
    with a value greater than 2^60, this would allow a maximum stream ID
    that cannot be expressed as a variable-length integer (see
    Section 16).  If either is received, the connection MUST be closed
    immediately with a connection error of type STREAM_LIMIT_ERROR (see
    Section 10.3).
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 24]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Endpoints MUST NOT exceed the limit set by their peer.  An endpoint
    that receives a frame with a stream ID exceeding the limit it has
@@ -1385,6 +1448,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Connection IDs are independently selected by endpoints; each endpoint
    selects the connection IDs that its peer uses.
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 26]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    The primary function of a connection ID is to ensure that changes in
    addressing at lower protocol layers (UDP, IP) don't cause packets for
    a QUIC connection to be delivered to the wrong endpoint.  Each
@@ -1392,15 +1465,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    perhaps deployment-specific) method which will allow packets with
    that connection ID to be routed back to the endpoint and identified
    by the endpoint upon receipt.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 25]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Connection IDs MUST NOT contain any information that can be used by
    an external observer (that is, one that does not cooperate with the
@@ -1440,6 +1504,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    supplied by the endpoint using the NEW_CONNECTION_ID frame
    (Section 19.15).
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 27]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 5.1.1.  Issuing Connection IDs
 
    Each Connection ID has an associated sequence number to assist in
@@ -1449,14 +1523,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    the initial connection ID is 0.  If the preferred_address transport
    parameter is sent, the sequence number of the supplied connection ID
    is 1.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 26]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Additional connection IDs are communicated to the peer using
    NEW_CONNECTION_ID frames (Section 19.15).  The sequence number on
@@ -1492,6 +1558,18 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    IDs issued for each connection to avoid the risk of running out of
    connection IDs; see Section 10.4.2.
 
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 28]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    An endpoint that initiates migration and requires non-zero-length
    connection IDs SHOULD ensure that the pool of connection IDs
    available to its peer allows the peer to use a new connection ID on
@@ -1504,15 +1582,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    another available one at any time during the connection.  An endpoint
    consumes connection IDs in response to a migrating peer; see
    Section 9.5 for more.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 27]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    An endpoint maintains a set of connection IDs received from its peer,
    any of which it can use when sending packets.  When the endpoint
@@ -1546,6 +1615,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    in connection failures, as the issuing endpoint might be unable to
    continue using the connection IDs with the active connection.
 
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 29]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 5.2.  Matching Packets to Connections
 
    Incoming packets are classified on receipt.  Packets can either be
@@ -1562,14 +1642,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    information in the packet matches the addressing information the
    endpoint uses to identify a connection with a zero-length connection
    ID, QUIC processes the packet as part of that connection.  An
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 28]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    endpoint can use just destination IP and port or both source and
    destination addresses for identification, though this makes
    connections fragile as described in Section 5.1.
@@ -1603,6 +1675,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    The client MAY drop these packets, or MAY buffer them in anticipation
    of later packets that allow it to compute the key.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 30]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    If a client receives a packet that has an unsupported version, it
    MUST discard that packet.
 
@@ -1618,14 +1697,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    The first packet for an unsupported version can use different
    semantics and encodings for any version-specific field.  In
    particular, different packet protection keys might be used for
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 29]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    different versions.  Servers that do not support a particular version
    are unlikely to be able to decrypt the payload of the packet.
    Servers SHOULD NOT attempt to decode or decrypt a packet from an
@@ -1660,6 +1731,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    data by an application protocol.  Streams (Section 2) are the primary
    means by which an application protocol exchanges information.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 31]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Each connection starts with a handshake phase, during which client
    and server establish a shared secret using the cryptographic
    handshake protocol [QUIC-TLS] and negotiate the application protocol.
@@ -1674,14 +1752,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    no protection against replay attacks in 0-RTT; see [QUIC-TLS].
    Separately, a server can also send application data to a client
    before it receives the final cryptographic handshake messages that
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 30]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    allow it to confirm the identity and liveness of the client.  These
    capabilities allow an application protocol to offer the option to
    trade some security guarantees for reduced latency.
@@ -1715,6 +1785,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    When implementing the server role, applications need to be able to:
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 32]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  listen for incoming connections, which prepares for the exchange
       described in Section 7;
 
@@ -1730,13 +1809,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    *  configure minimum values for the initial number of permitted
       streams of each type, as communicated in the transport parameters
       (Section 7.4);
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 31]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  control resource allocation of various types, including flow
       control and the number of permitted streams of each type;
@@ -1765,6 +1837,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    This ensures that the server responds if there is a mutually
    supported version.
 
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 33]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 6.1.  Sending Version Negotiation Packets
 
    If the version selected by the client is not acceptable to the
@@ -1786,13 +1871,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    0-RTT might choose not to send Version Negotiation packets in
    response to 0-RTT packets with the expectation that it will
    eventually receive an Initial packet.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 32]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 6.2.  Handling Version Negotiation Packets
 
@@ -1821,6 +1899,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    packet that the client sent.  If this check fails, the packet MUST be
    discarded.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 34]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Once the Version Negotiation packet is determined to be valid, the
    client then selects an acceptable protocol version from the list
    provided by the server.  The client then attempts to create a new
@@ -1841,14 +1926,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    The design of version negotiation permits a server to avoid
    maintaining state for packets that it rejects in this fashion.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 33]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    A client MAY send a packet using a version that is reserved for
    forcing version negotiation.  This can be used to solicit a list of
@@ -1876,6 +1953,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
       -  every connection produces distinct and unrelated keys,
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 35]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
       -  keying material is usable for packet protection for both 0-RTT
          and 1-RTT packets, and
 
@@ -1897,15 +1983,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    each packet number space.
 
    Endpoints MUST explicitly negotiate an application protocol.  This
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 34]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    avoids situations where there is a disagreement about the protocol
    that is in use.
 
@@ -1927,6 +2004,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    packets.  So, for instance the first packet is of type Initial, with
    packet number 0, and contains a CRYPTO frame carrying the
    ClientHello.
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 36]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Note that multiple QUIC packets - even of different packet types -
    can be coalesced into a single UDP datagram (see Section 12.2), and
@@ -1954,14 +2044,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Figure 4 shows an example of a connection with a 0-RTT handshake and
    a single packet of 0-RTT data.  Note that as described in
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 35]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    Section 12.3, the server acknowledges 0-RTT data in 1-RTT packets,
    and the client sends 1-RTT packets in the same packet number space.
 
@@ -1982,6 +2064,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
                                           <- Handshake[1]: ACK[0]
 
                      Figure 4: Example 0-RTT Handshake
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 37]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
 7.2.  Negotiating Connection IDs
 
@@ -2009,15 +2100,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    connection.  This Destination Connection ID is used to determine
    packet protection keys for Initial packets.
 
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 36]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    The client populates the Source Connection ID field with a value of
    its choosing and sets the SCID Len field to indicate the length.
 
@@ -2040,6 +2122,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Retry packet.  A server MUST set the Destination Connection ID it
    uses for sending packets based on the first received Initial packet.
    Any further changes to the Destination Connection ID are only
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 38]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    permitted if the values are taken from any received NEW_CONNECTION_ID
    frames; if subsequent Initial packets include a different Source
    Connection ID, they MUST be discarded.  This avoids unpredictable
@@ -2059,44 +2149,45 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    handshake.
 
    Each endpoint includes the value of the Source Connection ID field
-   from the most recent Initial packet it sent in the
-   initial_connection_id transport parameter; see Section 18.2.  A
-   server includes the Destination Connection ID field it receives in
-   original Initial packets from the client - Initial packets received
-   by the server prior to sending a Retry packet - in the
-   original_connection_id transport parameter.  After sending a Retry
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 37]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
-   packet, a server also includes the Source Connection ID field from
-   the Retry packet in the retry_connection_id transport parameter.
+   from the first Initial packet it sent in the
+   initial_source_connection_id transport parameter; see Section 18.2.
+   A server includes the Destination Connection ID field from the first
+   Initial packet it received from the client in the
+   original_destination_connection_id transport parameter; if the server
+   sent a Retry packet this refers to the first Initial packet received
+   before sending the Retry packet.  If it sends a Retry packet, a
+   server also includes the Source Connection ID field from the Retry
+   packet in the retry_source_connection_id transport parameter.
 
    The values provided by a peer for these transport parameters MUST
-   match the values that an endpoint used in the Destination Connection
-   ID field of Initial packets that it sent.  Including connection ID
-   values in transport parameters and verifying them ensures that that
-   an attacker cannot influence the choice of connection ID for a
-   successful connection by injecting packets carrying attacker-chosen
-   connection IDs during the handshake.  An endpoint MUST treat any of
-   the following as a connection error of type PROTOCOL_VIOLATION:
+   match the values that an endpoint used in the Destination and Source
+   Connection ID fields of Initial packets that it sent.  Including
+   connection ID values in transport parameters and verifying them
+   ensures that that an attacker cannot influence the choice of
+   connection ID for a successful connection by injecting packets
+   carrying attacker-chosen connection IDs during the handshake.  An
+   endpoint MUST treat any of the following as a connection error of
+   type PROTOCOL_VIOLATION:
 
-   *  absence of the initial_connection_id transport parameter from
-      either endpoint,
+   *  absence of the initial_source_connection_id transport parameter
+      from either endpoint,
 
-   *  absence of the original_connection_id transport parameter from the
-      server,
+   *  absence of the original_destination_connection_id transport
+      parameter from the server,
 
-   *  absence of the retry_connection_id transport parameter from the
-      server after receiving a Retry packet,
+   *  absence of the retry_source_connection_id transport parameter from
+      the server after receiving a Retry packet,
 
-   *  presence of the retry_connection_id transport parameter when no
-      Retry packet was received, or
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 39]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
+   *  presence of the retry_source_connection_id transport parameter
+      when no Retry packet was received, or
 
    *  a mismatch between values received from a peer in these transport
       parameters and the value sent in the corresponding Destination
@@ -2123,13 +2214,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    declared by the peer are available.  Each endpoint validates the
    value provided by its peer.
 
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 38]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    Definitions for each of the defined transport parameters are included
    in Section 18.2.
 
@@ -2142,9 +2226,21 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    duplicate transport parameters as a connection error of type
    TRANSPORT_PARAMETER_ERROR.
 
-   A server MUST include the original_connection_id transport parameter
-   (Section 18.2) if it sent a Retry packet to enable validation of the
-   Retry, as described in Section 17.2.5.
+   A server MUST include the original_destination_connection_id
+   transport parameter (Section 18.2) if it sent a Retry packet to
+   enable validation of the Retry, as described in Section 17.2.5.
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 40]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
 7.4.1.  Values of Transport Parameters for 0-RTT
 
@@ -2162,10 +2258,11 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    client need not store a transport parameter it cannot process.
 
    A client MUST NOT use remembered values for the following parameters:
-   ack_delay_exponent, initial_connection_id, original_connection_id,
-   preferred_address, retry_connection_id, and stateless_reset_token.
-   The client MUST use the server's new values in the handshake instead
-   and, absent new values from the server, the default value.
+   ack_delay_exponent, initial_source_connection_id,
+   original_destination_connection_id, preferred_address,
+   retry_source_connection_id, and stateless_reset_token.  The client
+   MUST use the server's new values in the handshake instead and, absent
+   new values from the server, the default value.
 
    A client that attempts to send 0-RTT data MUST remember all other
    transport parameters used by the server.  The server can remember
@@ -2177,15 +2274,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    If 0-RTT data is accepted by the server, the server MUST NOT reduce
    any limits or alter any values that might be violated by the client
    with its 0-RTT data.  In particular, a server that accepts 0-RTT data
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 39]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    MUST NOT set values for the following parameters (Section 18.2) that
    are smaller than the remembered value of the parameters.
 
@@ -2202,6 +2290,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    *  initial_max_streams_bidi
 
    *  initial_max_streams_uni
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 41]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Omitting or setting a zero value for certain transport parameters can
    result in 0-RTT data being enabled, but not usable.  The applicable
@@ -2234,14 +2329,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    described in Section 18.1, some identifiers are reserved in order to
    exercise this requirement.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 40]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    New transport parameters can be registered according to the rules in
    Section 22.2.
 
@@ -2258,6 +2345,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    during the handshake could allow for larger keys or credentials to be
    exchanged.  An endpoint's buffer size does not need to remain
    constant during the life of the connection.
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 42]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Being unable to buffer CRYPTO frames during the handshake can lead to
    a connection failure.  If an endpoint's buffer is exceeded during the
@@ -2288,16 +2383,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    establishment (see Section 8.1) and during connection migration (see
    Section 8.2).
 
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 41]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
 8.1.  Address Validation During Connection Establishment
 
    Connection establishment implicitly provides address validation for
@@ -2316,6 +2401,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    uniquely attributed to a single connection.  This includes datagrams
    that contain packets that are successfully processed and datagrams
    that contain packets that are all discarded.
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 43]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Clients MUST ensure that UDP datagrams containing Initial packets
    have UDP payloads of at least 1200 bytes, adding padding to packets
@@ -2345,15 +2438,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    In addition to sending limits imposed prior to address validation,
    servers are also constrained in what they can send by the limits set
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 42]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    by the congestion controller.  Clients are only constrained by the
    congestion controller.
 
@@ -2374,6 +2458,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    token, a server can either abort the connection or permit it to
    proceed.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 44]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    As long as it is not possible for an attacker to generate a valid
    token for its own address (see Section 8.1.4) and the client is able
    to return that token, it proves to the server that it received the
@@ -2382,12 +2474,12 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    A server can also use a Retry packet to defer the state and
    processing costs of connection establishment.  Requiring the server
    to provide a different connection ID, along with the
-   original_connection_id transport parameter defined in Section 18.2,
-   forces the server to demonstrate that it, or an entity it cooperates
-   with, received the original Initial packet from the client.
-   Providing a different connection ID also grants a server some control
-   over how subsequent packets are routed.  This can be used to direct
-   connections to a different server instance.
+   original_destination_connection_id transport parameter defined in
+   Section 18.2, forces the server to demonstrate that it, or an entity
+   it cooperates with, received the original Initial packet from the
+   client.  Providing a different connection ID also grants a server
+   some control over how subsequent packets are routed.  This can be
+   used to direct connections to a different server instance.
 
    If a server receives a client Initial that can be unprotected but
    contains an invalid Retry token, it knows the client will not accept
@@ -2400,15 +2492,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    closing period.
 
    A flow showing the use of a Retry packet is shown in Figure 5.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 43]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Client                                                  Server
 
@@ -2431,6 +2514,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    validation is especially important with 0-RTT because a server
    potentially sends a significant amount of data to a client in
    response to 0-RTT data.
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 45]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The server uses the NEW_TOKEN frame Section 19.7 to provide the
    client with an address validation token that can be used to validate
@@ -2459,13 +2549,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    server to distinguish between tokens from Retry and NEW_TOKEN MAY be
    accessible to entities other than the server.
 
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 44]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    It is unlikely that the client port number is the same on two
    different connections; validating the port is therefore unlikely to
    be successful.
@@ -2487,6 +2570,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    where the token was issued and any connection where it is used.
    Clients that want to break continuity of identity with a server MAY
    discard tokens provided using the NEW_TOKEN frame.  In comparison, a
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 46]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    token obtained in a Retry packet MUST be used immediately during the
    connection attempt and cannot be used in subsequent connection
    attempts.
@@ -2514,14 +2605,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Note:  The rationale for treating the client as unvalidated rather
       than discarding the packet is that the client might have received
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 45]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
       the token in a previous connection using the NEW_TOKEN frame, and
       if the server has lost state, it might be unable to validate the
       token at all, leading to connection failure if the packet is
@@ -2543,6 +2626,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    clients do not need to consider other properties of the connection
    that is being attempted, including the choice of possible application
    protocols, session tickets, or other connection properties.
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 47]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Attackers could replay tokens to use servers as amplifiers in DDoS
    attacks.  To protect against such attacks, servers SHOULD ensure that
@@ -2569,15 +2659,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    There is no need for a single well-defined format for the token
    because the server that generates the token also consumes it.  Tokens
    sent in Retry packets SHOULD include information that allows the
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 46]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    server to verify that the source IP address and port in client
    packets remains constant.
 
@@ -2595,6 +2676,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    accepted.  Tokens provided in NEW_TOKEN frames might need to allow
    longer validity periods.  Tokens MAY include additional information
    about clients to further narrow applicability or reuse.
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 48]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
 8.2.  Path Validation
 
@@ -2626,14 +2720,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    discovery, or an endpoint may bundle a PATH_RESPONSE with its own
    PATH_CHALLENGE.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 47]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    When probing a new path, an endpoint might want to ensure that its
    peer has an unused connection ID available for responses.  The
    endpoint can send NEW_CONNECTION_ID and PATH_CHALLENGE frames in the
@@ -2651,6 +2737,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    send a PATH_CHALLENGE more frequently than it would an Initial
    packet, ensuring that connection migration is no more load on a new
    path than establishing a new connection.
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 49]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The endpoint MUST use unpredictable data in every PATH_CHALLENGE
    frame so that it can associate the peer's response with the
@@ -2680,16 +2774,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    packet (see Section 9.3.3) or misrouting.  It is possible that a
    valid PATH_RESPONSE might be received in the future.
 
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 48]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
 8.6.  Failed Path Validation
 
    Path validation only fails when the endpoint attempting to validate
@@ -2707,6 +2791,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Note that the endpoint might receive packets containing other frames
    on the new path, but a PATH_RESPONSE frame with appropriate data is
    required for path validation to succeed.
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 50]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    When an endpoint abandons path validation, it determines that the
    path is unusable.  This does not necessarily imply a failure of the
@@ -2738,14 +2832,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    a peer has nonetheless migrated to a different network MUST either
    drop the incoming packets on that path without generating a stateless
    reset or proceed with path validation and allow the peer to migrate.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 49]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    Generating a stateless reset or closing the connection would allow
    third parties in the network to cause connections to close by
    spoofing or otherwise manipulating observed traffic.
@@ -2761,6 +2847,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    MAY discard connection state.  An endpoint capable of connection
    migration MAY wait for a new path to become available before
    discarding connection state.
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 51]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    This document limits migration of connections to new client
    addresses, except as described in Section 9.6.  Clients are
@@ -2794,14 +2890,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    A packet containing only probing frames is a "probing packet", and a
    packet containing any other frame is a "non-probing packet".
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 50]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
 9.2.  Initiating Connection Migration
 
    An endpoint can migrate a connection to a new local address by
@@ -2816,6 +2904,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    When migrating, the new path might not support the endpoint's current
    sending rate.  Therefore, the endpoint resets its congestion
    controller, as described in Section 9.4.
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 52]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The new path might not have the same ECN capability.  Therefore, the
    endpoint verifies ECN capability as described in Section 13.4.
@@ -2851,13 +2948,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    that an endpoint does not send packets to an old peer address in the
    case that it receives reordered packets.
 
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 51]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    After changing the address to which it sends non-probing packets, an
    endpoint could abandon any path validation for other addresses.
 
@@ -2866,6 +2956,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    After verifying a new client address, the server SHOULD send new
    address validation tokens (Section 8) to the client.
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 53]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
 9.3.1.  Peer Address Spoofing
 
@@ -2906,19 +3009,22 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    migration, an endpoint MUST revert to using the last validated peer
    address when validation of a new peer address fails.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 52]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    If an endpoint has no state about the last validated peer address, it
    MUST close the connection silently by discarding all connection
    state.  This results in new packets on the connection being handled
    generically.  For instance, an endpoint MAY send a stateless reset in
    response to any further incoming packets.
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 54]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Note that receipt of packets with higher packet numbers from the
    legitimate peer address will trigger another connection migration.
@@ -2962,19 +3068,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    connection being migrated back to the original path.  Any subsequent
    migration to another path restarts this entire process.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 53]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    This defense is imperfect, but this is not considered a serious
    problem.  If the path via the attack is reliably faster than the
    original path despite multiple attempts to use that original path, it
    is not possible to distinguish between attack and an improvement in
    routing.
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 55]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    An endpoint could also use heuristics to improve detection of this
    style of attack.  For instance, NAT rebinding is improbable if
@@ -3018,20 +3124,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    A sender can make exceptions for probe packets so that their loss
    detection is independent and does not unduly cause the congestion
    controller to reduce its sending rate.  An endpoint might set a
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 54]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    separate timer when a PATH_CHALLENGE is sent, which is cancelled if
    the corresponding PATH_RESPONSE is received.  If the timer fires
    before the PATH_RESPONSE is received, the endpoint might send a new
    PATH_CHALLENGE, and restart the timer for a longer period of time.
    This timer SHOULD be set as described in Section 5.3 of
    [QUIC-RECOVERY] and MUST NOT be more aggressive.
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 56]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
 9.5.  Privacy Implications of Connection Migration
 
@@ -3074,14 +3179,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    migration.  This ensures that the mechanisms that support migration
    are exercised even for clients that don't experience NAT rebindings
    or genuine migrations.  Changing port number can cause a peer to
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 55]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    reset its congestion state (see Section 9.4), so the port SHOULD only
    be changed infrequently.
 
@@ -3089,6 +3186,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    paths or initiate migration, nor can it respond to probes or attempts
    by its peer to migrate.  To ensure that migration is possible and
    packets sent on different paths cannot be correlated, endpoints
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 57]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    SHOULD provide new connection IDs before peers migrate; see
    Section 5.1.1.  If a peer might have exhausted available connection
    IDs, a migrating endpoint could include a NEW_CONNECTION_ID frame in
@@ -3133,9 +3238,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 56]
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 58]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 9.6.2.  Responding to Connection Migration
@@ -3189,9 +3301,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 57]
+Iyengar & Thomson       Expires 12 November 2020               [Page 59]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    A client that migrates to a new address SHOULD use a preferred
@@ -3245,9 +3357,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 58]
+Iyengar & Thomson       Expires 12 November 2020               [Page 60]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    and to identify packets as belonging to the connection.  The
@@ -3301,9 +3413,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 59]
+Iyengar & Thomson       Expires 12 November 2020               [Page 61]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 10.2.  Idle Timeout
@@ -3357,9 +3469,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 60]
+Iyengar & Thomson       Expires 12 November 2020               [Page 62]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    CONNECTION_CLOSE frame.  For instance, an endpoint could wait for a
@@ -3413,9 +3525,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 61]
+Iyengar & Thomson       Expires 12 November 2020               [Page 63]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 10.3.1.  Immediate Close During the Handshake
@@ -3469,9 +3581,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 62]
+Iyengar & Thomson       Expires 12 November 2020               [Page 64]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    However, at the cost of reducing feedback about errors for legitimate
@@ -3525,9 +3637,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 63]
+Iyengar & Thomson       Expires 12 November 2020               [Page 65]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
     0                   1                   2                   3
@@ -3581,9 +3693,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 64]
+Iyengar & Thomson       Expires 12 November 2020               [Page 66]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    An endpoint MUST NOT send a stateless reset that is three times or
@@ -3637,9 +3749,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 65]
+Iyengar & Thomson       Expires 12 November 2020               [Page 67]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    This stateless reset design is specific to QUIC version 1.  An
@@ -3693,9 +3805,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 66]
+Iyengar & Thomson       Expires 12 November 2020               [Page 68]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 10.4.2.  Calculating a Stateless Reset Token
@@ -3749,9 +3861,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 67]
+Iyengar & Thomson       Expires 12 November 2020               [Page 69]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Note that Stateless Reset packets do not have any cryptographic
@@ -3805,9 +3917,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 68]
+Iyengar & Thomson       Expires 12 November 2020               [Page 70]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    A stateless reset (Section 10.4) is not suitable for any error that
@@ -3861,9 +3973,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 69]
+Iyengar & Thomson       Expires 12 November 2020               [Page 71]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    instance of the application protocol uses a direct API call and a
@@ -3917,9 +4029,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020               [Page 70]
+Iyengar & Thomson       Expires 12 November 2020               [Page 72]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    The packet number field contains a packet number, which has
@@ -3966,18 +4078,22 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    or buffer the packet for later processing and MUST attempt to process
    the remaining packets.
 
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 73]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Retry packets (Section 17.2.5), Version Negotiation packets
    (Section 17.2.1), and packets with a short header (Section 17.3) do
    not contain a Length field and so cannot be followed by other packets
    in the same UDP datagram.  Note also that there is no situation where
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 71]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    a Retry or Version Negotiation packet is coalesced with another
    packet.
 
@@ -4023,16 +4139,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    space start at packet number 0.  Subsequent packets sent in the same
    packet number space MUST increase the packet number by at least one.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 74]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    0-RTT and 1-RTT data exist in the same packet number space to make
    loss recovery algorithms easier to implement between the two packet
    types.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 72]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    A QUIC endpoint MUST NOT reuse a packet number within the same packet
    number space in one connection.  If the packet number for sending
@@ -4077,18 +4193,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Frames always fit within a single QUIC packet and cannot span
    multiple packets.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 75]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Each frame begins with a Frame Type, indicating its type, followed by
    additional type-dependent fields:
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 73]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -4138,12 +4253,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 74]
+Iyengar & Thomson       Expires 12 November 2020               [Page 76]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
      +-------------+----------------------+---------------+---------+
@@ -4192,16 +4304,18 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
                            Table 3: Frame Types
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 77]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    The "Packets" column in Table 3 does not form part of the IANA
    registry (see Section 22.3).  This column lists the types of packets
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 75]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    that each frame type could appear in, indicated by the following
    characters:
 
@@ -4248,16 +4362,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    bundling as many frames as possible within a QUIC packet.  A sender
    MAY wait for a short period of time to bundle multiple frames before
    sending a packet that is not maximally packed, to avoid sending out
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 78]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    large numbers of small packets.  An implementation MAY use knowledge
    about application sending behavior or heuristics to determine whether
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 76]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    and for how long to wait.  This waiting period is an implementation
    decision, and an implementation should be careful to delay
    conservatively, since any delay is likely to increase application-
@@ -4300,19 +4414,23 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    bundle an ACK frame if one has not been sent recently.  Doing so
    helps with timely loss detection at the peer.
 
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 79]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    In general, frequent feedback from a receiver improves loss and
    congestion response, but this has to be balanced against excessive
    load generated by a receiver that sends an ACK frame in response to
    every ack-eliciting packet.  The guidance offered below seeks to
    strike this balance.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 77]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 13.2.1.  Sending ACK Frames
 
@@ -4356,19 +4474,18 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Packets containing PADDING frames are considered to be in flight for
    congestion control purposes [QUIC-RECOVERY].  Sending only PADDING
    frames might cause the sender to become limited by the congestion
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 80]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    controller with no acknowledgments forthcoming from the receiver.
    Therefore, a sender SHOULD ensure that other frames are sent in
    addition to PADDING frames to elicit acknowledgments from the
    receiver.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 78]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    An endpoint that is only sending ACK frames will not receive
    acknowledgments from its peer unless those acknowledgements are
@@ -4413,18 +4530,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    single QUIC packet.  If it does not, then older ranges (those with
    the smallest packet numbers) are omitted.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 81]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Section 13.2.3 and Section 13.2.4 describe an exemplary approach for
    determining what packets to acknowledge in each ACK frame.
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 79]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 13.2.3.  Receiver Tracking of ACK Frames
 
@@ -4470,17 +4585,18 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    bundle a PING or other small ack-eliciting frame occasionally, such
    as once per round trip, to elicit an ACK from the peer.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 82]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    A receiver MUST NOT bundle an ack-eliciting frame with all packets
    that would otherwise be non-ack-eliciting, to avoid an infinite
    feedback loop of acknowledgements.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 80]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 13.2.5.  Measuring and Reporting Host Delay
 
@@ -4527,17 +4643,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       CRYPTO frames for Initial and Handshake packets is discarded when
       keys for the corresponding packet number space are discarded.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 83]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Application data sent in STREAM frames is retransmitted in new
       STREAM frames unless the endpoint has sent a RESET_STREAM for that
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 81]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
       stream.  Once an endpoint sends a RESET_STREAM frame, no further
       STREAM frames are needed.
 
@@ -4587,11 +4701,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 82]
+Iyengar & Thomson       Expires 12 November 2020               [Page 84]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    *  Blocked signals are carried in DATA_BLOCKED, STREAM_DATA_BLOCKED,
@@ -4635,21 +4747,27 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    data, unless priorities specified by the application indicate
    otherwise (see Section 2.3).
 
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 85]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Even though a sender is encouraged to assemble frames containing up-
    to-date information every time it sends a packet, it is not forbidden
    to retransmit copies of frames from lost packets.  A sender that
    retransmits copies of frames needs to handle decreases in available
    payload size due to change in packet number length, connection ID
    length, and path MTU.  A receiver MUST accept packets containing an
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 83]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    outdated frame, such as a MAX_DATA frame carrying a smaller maximum
    data than one found in an older packet.
 
@@ -4693,18 +4811,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    implement ECN support or does not have access to received ECN
    codepoints, it does not increase ECN counts.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 86]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Coalesced packets (see Section 12.2) mean that several packets can
    share the same IP header.  The ECN counter for the ECN codepoint
    received in the associated IP header are incremented once for each
    QUIC packet, not per enclosing IP packet or UDP datagram.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 84]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Each packet number space maintains separate acknowledgement state and
    separate ECN counts.  For example, if one each of an Initial, 0-RTT,
@@ -4748,19 +4865,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    codepoint in the first ten outgoing packets on a path, or for a
    period of three RTTs, whichever occurs first.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 87]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Implementations MAY experiment with and use other strategies for use
    of ECN.  Other methods of probing paths for ECN support are possible,
    as are different marking strategies.  Implementations can also use
    the ECT(1) codepoint, as specified in [RFC8311].
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 85]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 13.4.2.2.  Receiving ACK Frames
 
@@ -4805,18 +4922,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    subsequent IP packets with the expectation that either the network
    path or the peer does not support ECN.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 88]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Upon successful validation, an endpoint can continue to set ECT
    codepoints in subsequent packets with the expectation that the path
    is ECN-capable.  Network routing and path elements can change mid-
    connection however; an endpoint MUST disable ECN if validation fails
    at any point in the connection.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 86]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Even if validation fails, an endpoint MAY revalidate ECN on the same
    path at any later time in the connection.
@@ -4859,20 +4977,20 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Therefore, the current largest UDP payload an implementation will
    send is referred to as the QUIC maximum packet size.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 89]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    QUIC depends on a PMTU of at least 1280 bytes.  This is the IPv6
    minimum size [RFC8200] and is also supported by most modern IPv4
    networks.  All QUIC packets (except for PMTU probe packets) SHOULD be
    sized to fit within the maximum packet size to avoid the packet being
    fragmented or dropped [RFC8085].
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 87]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    An endpoint SHOULD use Datagram Packetization Layer PMTU Discovery
    ([DPLPMTUD]) or implement Path MTU Discovery (PMTUD) [RFC1191]
@@ -4911,6 +5029,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    An endpoint MUST ignore an ICMP message that claims the PMTU has
    decreased below 1280 bytes.
 
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 90]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    The requirements for generating ICMP ([RFC1812], [RFC4443]) state
    that the quoted packet should contain as much of the original packet
    as possible without exceeding the minimum MTU for the IP version.
@@ -4921,15 +5052,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    QUIC endpoints SHOULD validate ICMP messages to protect from off-path
    injection as specified in [RFC8201] and Section 5.2 of [RFC8085].
    This validation SHOULD use the quoted packet supplied in the payload
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 88]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    of an ICMP message to associate the message with a corresponding
    transport connection [DPLPMTUD].
 
@@ -4969,22 +5091,18 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    them is lost.  However, these frames do consume congestion window,
    which could delay the transmission of subsequent application data.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 91]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    A PING frame can be included in a PMTU probe to ensure that a valid
    probe is acknowledged.
 
    The considerations for processing ICMP messages in the previous
    section also apply if these messages are used by DPLPMTUD.
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 89]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 14.3.1.  PMTU Probes Containing Source Connection ID
 
@@ -5027,20 +5145,20 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    client or server MAY advertise support for any of these reserved
    versions.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 92]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Reserved version numbers will never represent a real protocol; a
    client MAY use one of these version numbers with the expectation that
    the server will initiate version negotiation; a server MAY advertise
    support for one of these versions and can expect that clients ignore
    the value.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 90]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    [[RFC editor: please remove the remainder of this section before
    publication.]]
@@ -5072,6 +5190,26 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    encode 6, 14, 30, or 62 bit values respectively.  Table 4 summarizes
    the encoding properties.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 93]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
           +------+--------+-------------+-----------------------+
           | 2Bit | Length | Usable Bits | Range                 |
           +======+========+=============+=======================+
@@ -5089,15 +5227,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    For example, the eight byte sequence c2 19 7c 5e ff 14 e8 8c (in
    hexadecimal) decodes to the decimal value 151288809941952652; the
    four byte sequence 9d 7f 3e 7d decodes to 494878333; the two byte
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 91]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    sequence 7b bd decodes to 15293; and the single byte 25 decodes to 37
    (as does the two byte sequence 40 25).
 
@@ -5120,6 +5249,22 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    The encoded packet number is protected as described in Section 5.4 of
    [QUIC-TLS].
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 94]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The sender MUST use a packet number size able to represent more than
    twice as large a range than the difference between the largest
@@ -5145,15 +5290,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    recovering the full packet number.  The full packet number is then
    reconstructed based on the number of significant bits present, the
    value of those bits, and the largest packet number received on a
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 92]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    successfully authenticated packet.  Recovering the full packet number
    is necessary to successfully remove packet protection.
 
@@ -5167,6 +5303,24 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Appendix A.
 
 17.2.  Long Header Packets
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 95]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -5201,15 +5355,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       containing a zero value for this bit are not valid packets in this
       version and MUST be discarded.
 
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 93]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    Long Packet Type (T):  The next two bits (those with a mask of 0x30)
       of byte 0 contain a packet type.  Packet types are listed in
       Table 5.
@@ -5225,6 +5370,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       bytes of the Destination Connection ID field that follows it.
       This length is encoded as an 8-bit unsigned integer.  In QUIC
       version 1, this value MUST NOT exceed 20.  Endpoints that receive
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 96]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
       a version 1 long header with a value larger than 20 MUST drop the
       packet.  Servers SHOULD be able to read longer connection IDs from
       other QUIC versions in order to properly form a version
@@ -5250,22 +5403,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    In this version of QUIC, the following packet types with the long
    header are defined:
 
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 94]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
                    +------+-----------+----------------+
                    | Type | Name      | Section        |
                    +======+===========+================+
@@ -5285,6 +5422,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    packet are version-independent.  The other fields in the first byte
    are version-specific.  See [QUIC-INVARIANTS] for details on how
    packets from different versions of QUIC are interpreted.
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 97]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The interpretation of the fields and the payload are specific to a
    version and packet type.  While type-specific semantics for this
@@ -5314,14 +5462,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       Packet Number and Payload fields) in bytes, encoded as a variable-
       length integer (Section 16).
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 95]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    Packet Number:  The packet number field is 1 to 4 bytes long.  The
       packet number has confidentiality protection separate from packet
       protection, as described in Section 5.4 of [QUIC-TLS].  The length
@@ -5339,6 +5479,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    sent by servers.
 
    The layout of a Version Negotiation packet is:
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 98]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -5371,13 +5521,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    most significant bit of this field (0x40) to 1 so that Version
    Negotiation packets appear to have the Fixed Bit field.
 
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 96]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    The Version field of a Version Negotiation packet MUST be set to
    0x00000000.
 
@@ -5393,6 +5536,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    As future versions of QUIC may support Connection IDs larger than the
    version 1 limit, Version Negotiation packets could carry Connection
    IDs that are longer than 20 bytes.
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020               [Page 99]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The remainder of the Version Negotiation packet is a list of 32-bit
    versions which the server supports.
@@ -5416,23 +5568,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    An Initial packet uses long headers with a type value of 0x0.  It
    carries the first CRYPTO frames sent by the client and server to
    perform key exchange, and carries ACKs in either direction.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 97]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    +-+-+-+-+-+-+-+-+
    |1|1| 0 |R R|P P|
@@ -5460,6 +5595,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
                          Figure 11: Initial Packet
 
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 100]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    The Initial packet contains a long header as well as the Length and
    Packet Number fields.  The first byte contains the Reserved and
    Packet Number Length bits.  Between the SCID and Length fields, there
@@ -5482,13 +5624,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    (Initial keys) as described in [QUIC-TLS].  This protection does not
    provide confidentiality or integrity against on-path attackers, but
    provides some level of protection against off-path attackers.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 98]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    The client and server use the Initial packet type for any packet that
    contains an initial cryptographic handshake message.  This includes
@@ -5513,6 +5648,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    message.  The first CRYPTO frame sent always begins at an offset of 0
    (see Section 7).
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 101]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Note that if the server sends a HelloRetryRequest, the client will
    send another series of Initial packets.  These Initial packets will
    continue the cryptographic handshake and will contain CRYPTO frames
@@ -5533,19 +5678,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Any data in CRYPTO frames is discarded - and no longer retransmitted
    - when Initial keys are discarded.
 
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020               [Page 99]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
 17.2.3.  0-RTT
 
    A 0-RTT packet uses long headers with a type value of 0x1, followed
@@ -5557,6 +5689,30 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    See Section 2.3 of [TLS13] for a discussion of 0-RTT data and its
    limitations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 102]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    +-+-+-+-+-+-+-+-+
    |1|1| 1 |R R|P P|
@@ -5594,14 +5750,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    protection for all 0-RTT packets because the same key and nonce could
    be used to protect different content.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 100]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    A client only receives acknowledgments for its 0-RTT packets once the
    handshake is complete.  Consequently, a server might expect 0-RTT
    packets to start with a packet number of 0.  Therefore, in
@@ -5614,6 +5762,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    A client MUST NOT send 0-RTT packets once it starts processing 1-RTT
    packets from the server.  This means that 0-RTT packets cannot
    contain any response to frames from 1-RTT packets.  For instance, a
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 103]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    client cannot send an ACK frame in a 0-RTT packet, because that can
    only acknowledge a 1-RTT packet.  An acknowledgment for a 1-RTT
    packet MUST be carried in a 1-RTT packet.
@@ -5650,14 +5806,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    |                          Payload (*)                        ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 101]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
                    Figure 13: Handshake Protected Packet
 
    Once a client has received a Handshake packet from a server, it uses
@@ -5668,6 +5816,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    connection ID that is chosen by the recipient of the packet; the
    Source Connection ID includes the connection ID that the sender of
    the packet wishes to use (see Section 7.2).
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 104]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Handshake packets are their own packet number space, and thus the
    first Handshake packet sent by a server contains a packet number of
@@ -5687,32 +5844,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    A Retry packet uses a long packet header with a type value of 0x3.
    It carries an address validation token created by the server.  It is
    used by a server that wishes to perform a retry (see Section 8.1).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 102]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -5742,6 +5873,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
                           Figure 14: Retry Packet
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 105]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    A Retry packet (shown in Figure 14) does not contain any protected
    fields.  The value in the Unused field is selected randomly by the
    server.  In addition to the long header, it contains these additional
@@ -5762,14 +5902,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Connection ID field of the packet sent by the client.  A client MUST
    discard a Retry packet that contains a Source Connection ID field
    that is identical to the Destination Connection ID field of its
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 103]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    Initial packet.  The client MUST use the value from the Source
    Connection ID field of the Retry packet in the Destination Connection
    ID field of subsequent packets that it sends.
@@ -5796,6 +5928,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    includes the provided Retry Token to continue connection
    establishment.
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 106]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    A client sets the Destination Connection ID field of this Initial
    packet to the value from the Source Connection ID in the Retry
    packet.  Changing Destination Connection ID also results in a change
@@ -5818,38 +5960,21 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    MUST NOT change the cryptographic handshake message it sends in
    response to receiving a Retry.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 104]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    A client MUST NOT reset the packet number for any packet number space
    after processing a Retry packet; Section 17.2.3 contains more
    information on this.
 
    A server acknowledges the use of a Retry packet for a connection
-   using the retry_connection_id transport parameter; see Section 18.2.
-   If it sends a Retry packet, the server also subsequently includes the
-   value of the Source Connection ID field from the Retry packet in its
-   retry_connection_id transport parameter.
-
-   A server always includes an original_connection_id transport
-   parameter.  If it sends a Retry packet, the server MUST subsequently
-   include the Destination Connection ID field from the client's
-   original Initial packets - packets received by the server prior to
-   sending the Retry packet - in the original_connection_id transport
-   parameter.  If the server did not send a Retry packet, the value of
-   the original_connection_id transport parameter MUST be copied from
-   the Destination Connection ID field of the most recent client Initial
-   packets.
+   using the retry_source_connection_id transport parameter; see
+   Section 18.2.  If it sends a Retry packet, the server also
+   subsequently includes the value of the Source Connection ID field
+   from the Retry packet in its retry_source_connection_id transport
+   parameter.
 
    If the client received and processed a Retry packet, it MUST validate
-   that the retry_connection_id transport parameter is present and
-   correct; otherwise, it MUST validate that the transport parameter is
-   absent.  A client MUST treat a failed validation as a connection
+   that the retry_source_connection_id transport parameter is present
+   and correct; otherwise, it MUST validate that the transport parameter
+   is absent.  A client MUST treat a failed validation as a connection
    error of type TRANSPORT_PARAMETER_ERROR.
 
    A Retry packet does not include a packet number and cannot be
@@ -5859,6 +5984,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    This version of QUIC defines a single packet type which uses the
    short packet header.
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 107]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -5873,14 +6007,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                    Figure 15: Short Header Packet Format
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 105]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    The short header can be used after the version and 1-RTT keys are
    negotiated.  Packets that use the short header contain the following
@@ -5916,6 +6042,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       a mask of 0x03) of byte 0 contain the length of the packet number,
       encoded as an unsigned, two-bit integer that is one less than the
       length of the packet number field in bytes.  That is, the length
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 108]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
       of the packet number field is the value of this field, plus one.
       These bits are protected using header protection (see Section 5.4
       of [QUIC-TLS]).
@@ -5929,14 +6063,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       protection, as described in Section 5.4 of [QUIC-TLS].  The length
       of the packet number field is encoded in Packet Number Length
       field.  See Section 17.1 for details.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 106]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Protected Payload:  Packets with a short header always include a
       1-RTT protected payload.
@@ -5971,6 +6097,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    spin bit independently, this ensures that the spin bit signal is
    disabled on approximately one in eight network paths.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 109]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    When the spin bit is disabled, endpoints MAY set the spin bit to any
    value, and MUST ignore any incoming value.  It is RECOMMENDED that
    endpoints set the spin bit to a random value either chosen
@@ -5985,15 +6120,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    from its peer on the connection.
 
    When a server receives a short header packet that increments the
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 107]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    highest packet number seen by the server from the client, it sets the
    spin value to be equal to the spin bit in the received packet.
 
@@ -6018,6 +6144,24 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    are encoded as a sequence of transport parameters, as shown in
    Figure 16:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 110]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -6034,21 +6178,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Each transport parameter is encoded as an (identifier, length, value)
    tuple, as shown in Figure 17:
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 108]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -6080,6 +6209,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    This section details the transport parameters defined in this
    document.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 111]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Many transport parameters listed here have integer values.  Those
    transport parameters that are identified as integers use a variable-
    length integer encoding (see Section 16) and have a default value of
@@ -6087,24 +6225,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    The following transport parameters are defined:
 
-   original_connection_id (0x00):  The value of the Destination
-      Connection ID field from the first Initial packet sent by the
-      client; see Section 7.3.  This transport parameter is only sent by
-      a server.  The value of this parameter depends on whether the
-      server sent a Retry packet; see Section 17.2.5.
+   original_destination_connection_id (0x00):  The value of the
+      Destination Connection ID field from the first Initial packet sent
+      by the client; see Section 7.3.  This transport parameter is only
+      sent by a server.
 
    max_idle_timeout (0x01):  The max idle timeout is a value in
       milliseconds that is encoded as an integer; see (Section 10.2).
       Idle timeout is disabled when both endpoints omit this transport
       parameter or specify a value of 0.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 109]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    stateless_reset_token (0x02):  A stateless reset token is used in
       verifying a stateless reset; see Section 10.4.  This parameter is
@@ -6137,6 +6266,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    initial_max_stream_data_bidi_local (0x05):  This parameter is an
       integer value specifying the initial flow control limit for
       locally-initiated bidirectional streams.  This limit applies to
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 112]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
       newly created bidirectional streams opened by the endpoint that
       sends the transport parameter.  In client transport parameters,
       this applies to streams with an identifier with the least
@@ -6152,15 +6289,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       applies to streams with an identifier with the least significant
       two bits set to 0x1; in server transport parameters, this applies
       to streams with the least significant two bits set to 0x0.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 110]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    initial_max_stream_data_uni (0x07):  This parameter is an integer
       value specifying the initial flow control limit for unidirectional
@@ -6193,6 +6321,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       value of 3 is assumed (indicating a multiplier of 8).  Values
       above 20 are invalid.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 113]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    max_ack_delay (0x0b):  The maximum ACK delay is an integer value
       indicating the maximum amount of time in milliseconds by which the
       endpoint will delay sending acknowledgments.  This value SHOULD
@@ -6210,14 +6347,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       port other than that used to perform the handshake.  This
       parameter is a zero-length value.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 111]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    preferred_address (0x0d):  The server's preferred address is used to
       effect a change in server address at the end of the handshake, as
       described in Section 9.6.  The format of this transport parameter
@@ -6233,6 +6362,29 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       address ensures that there will be at least one unused active
       connection ID when the client initiates migration to the preferred
       address.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 114]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -6266,14 +6418,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
                     Figure 18: Preferred Address format
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 112]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    active_connection_id_limit (0x0e):  The active connection ID limit is
       an integer value specifying the maximum number of connection IDs
       from the peer that an endpoint is willing to store.  This value
@@ -6286,12 +6430,20 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       When a zero-length connection ID is being used, the
       active_connection_id_limit parameter MUST NOT be sent.
 
-   initial_connection_id (0x0f):  The value that the endpoint included
-      in the Source Connection ID field of the first Initial packet it
-      sends during the handshake; see Section 7.3.
+   initial_source_connection_id (0x0f):  The value that the endpoint
+      included in the Source Connection ID field of the first Initial
+      packet it sends for the connection; see Section 7.3.
 
-   retry_connection_id (0x10):  The value that the the server included
-      in the Source Connection ID field of a Retry packet; see
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 115]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
+   retry_source_connection_id (0x10):  The value that the the server
+      included in the Source Connection ID field of a Retry packet; see
       Section 7.3.  This transport parameter is only sent by a server.
 
    If present, transport parameters that set initial flow control limits
@@ -6303,10 +6455,10 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    flow control limit of 0.
 
    A client MUST NOT include any server-only transport parameter:
-   original_connection_id, preferred_address, retry_connection_id, or
-   stateless_reset_token.  A server MUST treat receipt of any of these
-   transport parameters as a connection error of type
-   TRANSPORT_PARAMETER_ERROR.
+   original_destination_connection_id, preferred_address,
+   retry_source_connection_id, or stateless_reset_token.  A server MUST
+   treat receipt of any of these transport parameters as a connection
+   error of type TRANSPORT_PARAMETER_ERROR.
 
 19.  Frame Types and Formats
 
@@ -6320,15 +6472,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    can be used to increase the size of a packet.  Padding can be used to
    increase an initial client packet to the minimum required size, or to
    provide protection against traffic analysis for protected packets.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 113]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    A PADDING frame has no content.  That is, a PADDING frame consists of
    the single byte that identifies the frame as a PADDING frame.
@@ -6347,6 +6490,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    from timing out.  An application protocol SHOULD provide guidance
    about the conditions under which generating a PING is recommended.
    This guidance SHOULD indicate whether it is the client or the server
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 116]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    that is expected to send the PING.  Having both endpoints send PING
    frames without coordination can produce an excessive number of
    packets and poor performance.
@@ -6377,15 +6528,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Packets from different packet number spaces can be identified using
    the same numeric value.  An acknowledgment for a packet needs to
    indicate both a packet number and a packet number space.  This is
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 114]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    accomplished by having each ACK frame only acknowledge packet numbers
    in the same space as the packet in which the ACK frame is contained.
 
@@ -6395,6 +6537,22 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    packet sent by the client.
 
    An ACK frame is shown in Figure 19.
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 117]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -6434,14 +6592,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       doesn't use the ACK Delay for Initial and Handshake packets, a
       sender SHOULD send a value of 0.
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 115]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    ACK Range Count:  A variable-length integer specifying the number of
       Gap and ACK Range fields in the frame.
 
@@ -6452,6 +6602,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       That is, the smallest packet acknowledged in the range is
       determined by subtracting the First ACK Range value from the
       Largest Acknowledged.
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 118]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    ACK Ranges:  Contains additional ranges of packets which are
       alternately not acknowledged (Gap) and acknowledged (ACK Range);
@@ -6490,14 +6647,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    The fields that form the ACK Ranges are:
 
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 116]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    Gap (repeated):  A variable-length integer indicating the number of
       contiguous unacknowledged packets preceding the packet number one
       lower than the smallest in the preceding ACK Range.
@@ -6505,6 +6654,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    ACK Range (repeated):  A variable-length integer indicating the
       number of contiguous acknowledged packets preceding the largest
       packet number, as determined by the preceding Gap.
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 119]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    Gap and ACK Range value use a relative integer encoding for
    efficiency.  Though each encoded value is positive, the values are
@@ -6547,15 +6707,20 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    associated ECN codepoints of ECT(0), ECT(1), or CE in the packet's IP
    header.  ECN Counts are only present when the ACK frame type is 0x03.
 
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 117]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    ECN Counts are only parsed when the ACK frame type is 0x03.  There
    are 3 ECN counts, as shown in Figure 21.
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 120]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -6605,9 +6770,12 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 118]
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 121]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
     0                   1                   2                   3
@@ -6661,9 +6829,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 119]
+Iyengar & Thomson       Expires 12 November 2020              [Page 122]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    STOP_SENDING frames contain the following fields:
@@ -6717,9 +6885,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 120]
+Iyengar & Thomson       Expires 12 November 2020              [Page 123]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    The largest offset delivered on a stream - the sum of the offset and
@@ -6773,9 +6941,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 121]
+Iyengar & Thomson       Expires 12 November 2020              [Page 124]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 19.8.  STREAM Frames
@@ -6829,9 +6997,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 122]
+Iyengar & Thomson       Expires 12 November 2020              [Page 125]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Offset:  A variable-length integer specifying the byte offset in the
@@ -6885,9 +7053,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 123]
+Iyengar & Thomson       Expires 12 November 2020              [Page 126]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    error if it receives more data than the maximum data value that it
@@ -6941,9 +7109,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 124]
+Iyengar & Thomson       Expires 12 November 2020              [Page 127]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    than the largest maximum stream data that it has sent for the
@@ -6997,9 +7165,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 125]
+Iyengar & Thomson       Expires 12 November 2020              [Page 128]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 19.12.  DATA_BLOCKED Frame
@@ -7053,9 +7221,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 126]
+Iyengar & Thomson       Expires 12 November 2020              [Page 129]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Stream Data Limit:  A variable-length integer indicating the offset
@@ -7109,9 +7277,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 127]
+Iyengar & Thomson       Expires 12 November 2020              [Page 130]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
     0                   1                   2                   3
@@ -7165,9 +7333,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 128]
+Iyengar & Thomson       Expires 12 November 2020              [Page 131]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Transmission errors, timeouts and retransmissions might cause the
@@ -7221,9 +7389,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 129]
+Iyengar & Thomson       Expires 12 November 2020              [Page 132]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
     0                   1                   2                   3
@@ -7277,9 +7445,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 130]
+Iyengar & Thomson       Expires 12 November 2020              [Page 133]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    A PATH_CHALLENGE frame containing 8 bytes that are hard to guess is
@@ -7333,9 +7501,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 131]
+Iyengar & Thomson       Expires 12 November 2020              [Page 134]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Error Code:  A variable length integer error code which indicates the
@@ -7389,9 +7557,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 132]
+Iyengar & Thomson       Expires 12 November 2020              [Page 135]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    An extension to QUIC that wishes to use a new type of frame MUST
@@ -7445,9 +7613,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 133]
+Iyengar & Thomson       Expires 12 November 2020              [Page 136]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    FINAL_SIZE_ERROR (0x6):  An endpoint received a STREAM frame
@@ -7501,9 +7669,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 134]
+Iyengar & Thomson       Expires 12 November 2020              [Page 137]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    the stack, like flow control or transport parameter handling.
@@ -7557,9 +7725,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 135]
+Iyengar & Thomson       Expires 12 November 2020              [Page 138]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    the QUIC version.  This allows endpoints to use the same process for
@@ -7613,9 +7781,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 136]
+Iyengar & Thomson       Expires 12 November 2020              [Page 139]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
 21.4.  Slowloris Attacks
@@ -7669,9 +7837,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 137]
+Iyengar & Thomson       Expires 12 November 2020              [Page 140]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Normally, clients will open streams sequentially, as explained in
@@ -7717,19 +7885,24 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    the IP header to influence the sender's rate.  [RFC3168] discusses
    manipulations and their effects in more detail.
 
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 141]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    An on-the-side attacker can duplicate and send packets with modified
    ECN codepoints to affect the sender's rate.  If duplicate packets are
    discarded by a receiver, an off-path attacker will need to race the
    duplicate packet against the original to be successful in this
    attack.  Therefore, QUIC endpoints ignore the ECN codepoint field on
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 138]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    an IP packet unless at least one QUIC packet in that IP packet is
    successfully processed; see Section 13.4.
 
@@ -7771,6 +7944,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    versions of QUIC that use Version Negotiation packets MUST define a
    mechanism that is robust against version downgrade attacks.
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 142]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 21.11.  Targeted Attacks by Routing
 
    Deployments should limit the ability of an attacker to target a new
@@ -7778,14 +7961,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    controlled fields, such as the initial Destination Connection ID used
    on Initial and 0-RTT packets SHOULD NOT be used by themselves to make
    routing decisions.  Ideally, routing decisions are made independently
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 139]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    of client-selected values; a Source Connection ID can be selected to
    route later packets to the same server.
 
@@ -7826,21 +8001,21 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    some defense against DoS attacks on the handshake, as described
    below.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 143]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 21.12.1.1.  Anti-Amplification
 
    Address validation (Section 8) is used to verify that an entity that
    claims a given address is able to receive packets at that address.
    Address validation limits amplification attack targets to addresses
    for which an attacker is either on-path or off-path.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 140]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    Prior to validation, endpoints are limited in what they are able to
    send.  During the handshake, a server cannot send more than three
@@ -7884,19 +8059,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    but cannot observe the server's transport parameters and cannot
    influence parameter negotiation.
 
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 144]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Connection IDs are unencrypted but integrity protected in all
    packets.
 
    This version of QUIC does not incorporate a version negotiation
    mechanism; implementations of incompatible versions will simply fail
    to establish a connection.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 141]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 21.12.2.  Protected Packets
 
@@ -7936,6 +8111,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    functional effect on a connection, although it might change some
    performance characteristics.
 
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 145]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 21.12.3.  Connection Migration
 
    Connection Migration (Section 9) provides endpoints with the ability
@@ -7945,14 +8131,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    both willing and able to receive packets sent on a particular path.
    This helps reduce the effects of address spoofing by limiting the
    number of packets sent to a spoofed address.
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 142]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    This section describes the intended security properties of connection
    migration when under various types of DoS attacks.
@@ -7991,6 +8169,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    packet will cause it to be dropped by the receiving endpoint as
    invalid, as packet payloads are both authenticated and encrypted.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 146]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    In the presence of an on-path attacker, QUIC aims to provide the
    following properties:
 
@@ -8001,15 +8188,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
        methods.
 
    2.  An on-path attacker can prevent migration to a new path for which
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 143]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
        the attacker is also on-path by causing path validation to fail
        on the new path.
 
@@ -8048,6 +8226,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    *  Reorder original packets
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 147]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    An off-path attacker can modify packets that it has observed and
    inject them back into the network, potentially with spoofed source
    and destination addresses.
@@ -8057,15 +8243,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    into the network that will reach the destination endpoint prior to
    the arrival of the original packet observed by the attacker.  In
    other words, an attacker has the ability to consistently "win" a race
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 144]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    with the legitimate packets between the endpoints, potentially
    causing the original packet to be ignored by the recipient.
 
@@ -8100,6 +8277,19 @@ Internet-Draft           QUIC Transport Protocol              April 2020
        server from the same IP address and port that the client
        originally used.
 
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 148]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 21.12.3.3.  Limited On-Path Active Attacks
 
    A limited on-path attacker is an off-path attacker that has offered
@@ -8114,13 +8304,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    destination.  This means that a future failure to route copied
    packets to the destination faster than their original path will not
    prevent the original packets from reaching the destination.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 145]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    A limited on-path attacker can:
 
@@ -8154,6 +8337,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    1.  A limited on-path attacker cannot cause a connection to close
        once the handshake has completed.
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 149]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    2.  A limited on-path attacker cannot cause an idle connection to
        close if the client is first to resume activity.
 
@@ -8168,15 +8360,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    This document establishes several registries for the management of
    codepoints in QUIC.  These registries operate on a common set of
    policies as defined in Section 22.1.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 146]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 22.1.  Registration Policies for QUIC Registries
 
@@ -8210,6 +8393,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Status:  "Permanent" or "Provisional".
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 150]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    Specification:  A reference to a publicly available specification for
       the value.
 
@@ -8224,15 +8416,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    permanent registration.  The Date field is not required as part of
    requesting a registration as it is set to the date the registration
    is created or updated.
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 147]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 22.1.2.  Selecting Codepoints
 
@@ -8265,6 +8448,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    codepoints with the earliest recorded date and entries that have been
    updated less than a year prior SHOULD NOT be reclaimed.
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 151]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    A request to remove a codepoint MUST be reviewed by the designated
    expert(s).  The expert(s) MUST attempt to determine whether the
    codepoint is still in use.  Experts are advised to contact the listed
@@ -8282,13 +8475,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    If no use of the codepoint was identified and no request was made to
    update the registration, the codepoint MAY be removed from the
    registry.
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 148]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    This process also applies to requests to change a provisional
    registration into a permanent registration, except that the goal is
@@ -8320,6 +8506,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    All registrations made by Standards Track publications MUST be
    permanent.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 152]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    All registrations in this document are assigned a permanent status
    and list as contact both the IESG (ietf@ietf.org) and the QUIC
    working group (quic@ietf.org).
@@ -8339,19 +8533,47 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    Parameter Name:  A short mnemonic for the parameter.
 
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 149]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    The initial contents of this registry are shown in Table 6.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 153]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
       +-------+-------------------------------------+---------------+
       | Value | Parameter Name                      | Specification |
       +=======+=====================================+===============+
-      | 0x00  | original_connection_id              | Section 18.2  |
+      | 0x00  | original_destination_connection_id  | Section 18.2  |
       +-------+-------------------------------------+---------------+
       | 0x01  | max_idle_timeout                    | Section 18.2  |
       +-------+-------------------------------------+---------------+
@@ -8381,9 +8603,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
       +-------+-------------------------------------+---------------+
       | 0x0e  | active_connection_id_limit          | Section 18.2  |
       +-------+-------------------------------------+---------------+
-      | 0x0f  | initial_connection_id               | Section 18.2  |
+      | 0x0f  | initial_source_connection_id        | Section 18.2  |
       +-------+-------------------------------------+---------------+
-      | 0x10  | retry_connection_id                 | Section 18.2  |
+      | 0x10  | retry_source_connection_id          | Section 18.2  |
       +-------+-------------------------------------+---------------+
 
              Table 6: Initial QUIC Transport Parameters Entries
@@ -8392,20 +8614,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    values of N (that is, "27", "58", "89", ...) are reserved and MUST
    NOT be assigned by IANA.
 
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 150]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
 22.3.  QUIC Frame Type Registry
 
    IANA [SHALL add/has added] a registry for "QUIC Frame Types" under a
    "QUIC" heading.
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 154]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    The "QUIC Frame Types" registry governs a 62-bit space.  This
    registry follows the registration policy from Section 22.1.
@@ -8451,14 +8670,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    Description:  A brief description of the error code semantics, which
       MAY be a summary if a specification reference is provided.
 
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 151]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    The initial contents of this registry are shown in Table 7.
+
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 155]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    +------+---------------------------+----------------+---------------+
    |Value | Error                     | Description    | Specification |
@@ -8506,16 +8728,15 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    +------+---------------------------+----------------+---------------+
    | 0xD  | CRYPTO_BUFFER_EXCEEDED    | CRYPTO data    | Section 20    |
    |      |                           | buffer         |               |
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 152]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    |      |                           | overflowed     |               |
    +------+---------------------------+----------------+---------------+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 156]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
             Table 7: Initial QUIC Transport Error Codes Entries
 
@@ -8526,9 +8747,9 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    [DPLPMTUD] Fairhurst, G., Jones, T., Tuexen, M., Ruengeler, I., and
               T. Voelker, "Packetization Layer Path MTU Discovery for
               Datagram Transports", Work in Progress, Internet-Draft,
-              draft-ietf-tsvwg-datagram-plpmtud-19, 3 April 2020,
+              draft-ietf-tsvwg-datagram-plpmtud-20, 7 May 2020,
               <http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-
-              datagram-plpmtud-19.txt>.
+              datagram-plpmtud-20.txt>.
 
    [IPv4]     Postel, J., "Internet Protocol", STD 5, RFC 791,
               DOI 10.17487/RFC0791, September 1981,
@@ -8537,13 +8758,13 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    [QUIC-RECOVERY]
               Iyengar, J., Ed. and I. Swett, Ed., "QUIC Loss Detection
               and Congestion Control", Work in Progress, Internet-Draft,
-              draft-ietf-quic-recovery-latest, 13 April 2020,
+              draft-ietf-quic-recovery-latest, 11 May 2020,
               <https://tools.ietf.org/html/draft-ietf-quic-recovery-
               latest>.
 
    [QUIC-TLS] Thomson, M., Ed. and S. Turner, Ed., "Using Transport
               Layer Security (TLS) to Secure QUIC", Work in Progress,
-              Internet-Draft, draft-ietf-quic-tls-latest, 13 April 2020,
+              Internet-Draft, draft-ietf-quic-tls-latest, 11 May 2020,
               <https://tools.ietf.org/html/draft-ietf-quic-tls-latest>.
 
    [RFC1191]  Mogul, J.C. and S.E. Deering, "Path MTU discovery",
@@ -8561,17 +8782,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
               <https://www.rfc-editor.org/info/rfc3168>.
 
    [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 153]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
               10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
               2003, <https://www.rfc-editor.org/info/rfc3629>.
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 157]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    [RFC4086]  Eastlake 3rd, D., Schiller, J., and S. Crocker,
               "Randomness Requirements for Security", BCP 106, RFC 4086,
@@ -8617,17 +8838,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 23.2.  Informative References
 
    [EARLY-DESIGN]
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 154]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
               Roskind, J., "QUIC: Multiplexed Transport Over UDP", 2
               December 2013, <https://goo.gl/dMVtFi>.
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 158]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    [HTTP2]    Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
               Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
@@ -8637,7 +8858,7 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    [QUIC-INVARIANTS]
               Thomson, M., "Version-Independent Properties of QUIC",
               Work in Progress, Internet-Draft, draft-ietf-quic-
-              invariants-latest, 13 April 2020,
+              invariants-latest, 11 May 2020,
               <https://tools.ietf.org/html/draft-ietf-quic-invariants-
               latest>.
 
@@ -8673,17 +8894,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    [RFC4443]  Conta, A., Deering, S., and M. Gupta, Ed., "Internet
               Control Message Protocol (ICMPv6) for the Internet
               Protocol Version 6 (IPv6) Specification", STD 89,
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 155]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
               RFC 4443, DOI 10.17487/RFC4443, March 2006,
               <https://www.rfc-editor.org/info/rfc4443>.
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 159]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
 
    [RFC4787]  Audet, F., Ed. and C. Jennings, "Network Address
               Translation (NAT) Behavioral Requirements for Unicast
@@ -8733,9 +8954,12 @@ Appendix A.  Sample Packet Number Decoding Algorithm
 
 
 
-Iyengar & Thomson        Expires 15 October 2020              [Page 156]
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 160]
 
-Internet-Draft           QUIC Transport Protocol              April 2020
+Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
@@ -8784,16 +9008,18 @@ Appendix B.  Sample ECN Validation Algorithm
    To start testing a path, the ECN state is set to "testing" and
    existing ECN counts are remembered as a baseline.
 
+
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 161]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    The testing period runs for a number of packets or round-trip times,
    as determined by the endpoint.  The goal is not to limit the duration
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 157]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
-
    of the testing period, but to ensure that enough marked packets are
    sent for received ECN counts to provide a clear indication of how the
    path treats marked packets.  Section 13.4.2.2 suggests limiting this
@@ -8840,15 +9066,16 @@ C.2.  Since draft-ietf-quic-transport-25
 
 C.3.  Since draft-ietf-quic-transport-24
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 162]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Added HANDSHAKE_DONE to signal handshake confirmation (#2863,
       #3142, #3145)
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 158]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Add integrity check to Retry packets (#3014, #3274, #3120)
 
@@ -8894,17 +9121,17 @@ Internet-Draft           QUIC Transport Protocol              April 2020
    *  Define the use of provisional registration for all registries
       (#3109, #3020, #3102, #3170)
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 163]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Packets on one path must not adjust values for a different path
       (#2909, #3139)
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 159]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 C.4.  Since draft-ietf-quic-transport-23
 
@@ -8950,17 +9177,17 @@ C.5.  Since draft-ietf-quic-transport-22
    *  Clarified use of CONNECTION_CLOSE in Handshake packets (#2151,
       #2541, #2688)
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 164]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Discourage regressions of largest acknowledged in ACK (#2205,
       #2752)
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 160]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Improved robustness of validation process for ECN counts (#2534,
       #2752)
@@ -9007,16 +9234,16 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
 C.6.  Since draft-ietf-quic-transport-21
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 165]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Connection ID lengths are now one octet, but limited in version 1
       to 20 octets of length (#2736, #2749)
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 161]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 C.7.  Since draft-ietf-quic-transport-20
 
@@ -9062,17 +9289,18 @@ C.7.  Since draft-ietf-quic-transport-20
    *  Document hack for enabling routing of ICMP when doing PMTU probing
       (#1243, #2402)
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 166]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 C.8.  Since draft-ietf-quic-transport-19
 
    *  Refine discussion of 0-RTT transport parameters (#2467, #2464)
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 162]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Fewer transport parameters need to be remembered for 0-RTT (#2624,
       #2467)
@@ -9118,17 +9346,18 @@ C.9.  Since draft-ietf-quic-transport-18
 
 C.10.  Since draft-ietf-quic-transport-17
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 167]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Stream-related errors now use STREAM_STATE_ERROR (#2305)
 
    *  Endpoints discard initial keys as soon as handshake keys are
       available (#1951, #2045)
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 163]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Expanded conditions for ignoring ICMP packet too big messages
       (#2108, #2161)
@@ -9173,18 +9402,18 @@ C.11.  Since draft-ietf-quic-transport-16
 
    *  Renumbered frames (#1945)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 168]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Renumbered transport parameters (#1946)
 
    *  Numeric transport parameters are expressed as varints (#1608,
       #1947, #1955)
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 164]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Reorder the NEW_CONNECTION_ID frame (#1952, #1963)
 
@@ -9229,18 +9458,19 @@ C.12.  Since draft-ietf-quic-transport-15
 
    Substantial editorial reorganization; no technical changes.
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 169]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 C.13.  Since draft-ietf-quic-transport-14
 
    *  Merge ACK and ACK_ECN (#1778, #1801)
 
    *  Explicitly communicate max_ack_delay (#981, #1781)
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 165]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Validate original connection ID after Retry packets (#1710, #1486,
       #1793)
@@ -9283,6 +9513,15 @@ C.14.  Since draft-ietf-quic-transport-13
    *  Corrected format of Retry packet and prevented looping (#1492,
       #1451, #1448, #1498)
 
+
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 170]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Permit 0-RTT after receiving Version Negotiation or Retry (#1507,
       #1514, #1621)
 
@@ -9290,13 +9529,6 @@ C.14.  Since draft-ietf-quic-transport-13
 
    *  Looser verification of ECN counters to account for ACK loss
       (#1555, #1481, #1565)
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 166]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Remove frame type field from APPLICATION_CLOSE (#1508, #1528)
 
@@ -9338,21 +9570,20 @@ C.15.  Since draft-ietf-quic-transport-12
       field in long headers includes the packet number field in addition
       to the packet payload (#1387, #1389)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 171]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Stateless Reset is now symmetric and subject to size constraints
       (#466, #1346)
 
    *  Added frame type extension mechanism (#58, #1473)
 
 C.16.  Since draft-ietf-quic-transport-11
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 167]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Enable server to transition connections to a preferred address
       (#560, #1251)
@@ -9395,20 +9626,20 @@ C.17.  Since draft-ietf-quic-transport-10
    *  Recommend including ACK in Retry packets and allow PADDING (#1067,
       #882)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 172]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Endpoints now become closing after an idle timeout (#1178, #1179)
 
    *  Remove implication that Version Negotiation is sent when a packet
       of the wrong version is received (#1197)
 
 C.18.  Since draft-ietf-quic-transport-09
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 168]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Added PATH_CHALLENGE and PATH_RESPONSE frames to replace PING with
       Data and PONG frame.  Changed ACK frame type from 0x0e to 0x0d.
@@ -9451,20 +9682,20 @@ C.19.  Since draft-ietf-quic-transport-08
    *  Reserved versions don't need to be generated deterministically
       (#831, #931)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 173]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  You don't always need the draining period (#871)
 
    *  Stateless reset clarified as version-specific (#930, #986)
 
    *  initial_max_stream_id_x transport parameters are optional (#970,
       #971)
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 169]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Ack Delay assumes a default value during the handshake (#1007,
       #1009)
@@ -9507,6 +9738,14 @@ C.20.  Since draft-ietf-quic-transport-07
 
    *  Address validation for connection migration (#161, #732, #878)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 174]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Clearly defined retransmission rules for BLOCKED (#452, #65, #924)
 
    *  negotiated_version is sent in server transport parameters (#710,
@@ -9514,13 +9753,6 @@ C.20.  Since draft-ietf-quic-transport-07
 
    *  Increased the range over which packet numbers are randomized
       (#864, #850, #964)
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 170]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
 C.21.  Since draft-ietf-quic-transport-06
 
@@ -9563,20 +9795,19 @@ C.23.  Since draft-ietf-quic-transport-04
    *  Removed GOAWAY; application protocols are responsible for graceful
       shutdown (#696)
 
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 175]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Reduced the number of error codes (#96, #177, #184, #211)
 
    *  Version validation fields can't move or change (#121)
 
    *  Removed versions from the transport parameters in a
       NewSessionTicket message (#547)
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 171]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  Clarify the meaning of "bytes in flight" (#550)
 
@@ -9619,6 +9850,14 @@ C.25.  Since draft-ietf-quic-transport-02
 
    *  No timestamps are forbidden in unprotected packets (#542, #429)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 176]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Cryptographic handshake is now on stream 0 (#456)
 
    *  Remove congestion control exemption for cryptographic handshake
@@ -9626,13 +9865,6 @@ C.25.  Since draft-ietf-quic-transport-02
 
    *  Version 1 of QUIC uses TLS; a new version is needed to use a
       different handshake protocol (#516)
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 172]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  STREAM frames have a reduced number of offset lengths (#543, #430)
 
@@ -9674,6 +9906,14 @@ C.26.  Since draft-ietf-quic-transport-01
 
    *  Define transport parameters as a TLS extension (#49, #122)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 177]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  SCUP and COPT parameters are no longer valid (#116, #117)
 
    *  Transport parameters for 0-RTT are either remembered from before,
@@ -9681,14 +9921,6 @@ C.26.  Since draft-ietf-quic-transport-01
 
    *  The server chooses connection IDs in its final flight (#119, #349,
       #361)
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 173]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  The server echoes the Connection ID and packet number fields when
       sending a Version Negotiation packet (#133, #295, #244)
@@ -9730,6 +9962,14 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    *  Remove stream reservation from state machine (#174, #280)
 
+
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 178]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Only stream 1 does not contribute to connection-level flow control
       (#204)
 
@@ -9738,13 +9978,6 @@ Internet-Draft           QUIC Transport Protocol              April 2020
 
    *  Remove connection-level flow control exclusion for some streams
       (except 1) (#246)
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 174]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    *  RESET_STREAM affects connection-level flow control (#162, #163)
 
@@ -9786,21 +10019,19 @@ C.28.  Since draft-hamilton-quic-transport-protocol-01
 
    *  Added IANA Considerations section
 
+
+
+Iyengar & Thomson       Expires 12 November 2020              [Page 179]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
    *  Moved Contributors and Acknowledgments to appendices
 
 Contributors
 
    The original design and rationale behind this protocol draw
    significantly from work by Jim Roskind [EARLY-DESIGN].
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 175]
-
-Internet-Draft           QUIC Transport Protocol              April 2020
-
 
    The IETF QUIC Working Group received an enormous amount of support
    from many people.  The following people provided substantive
@@ -9846,11 +10077,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires 15 October 2020              [Page 176]
+Iyengar & Thomson       Expires 12 November 2020              [Page 180]
