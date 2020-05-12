@@ -5845,6 +5845,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
      DCID Length (8),
      Destination Connection ID (0..160),
      SCID Length (8),
+     Source Connection ID (0..160),
      Retry Token (..),
      Retry Integrity Tag (128),
    }
@@ -5868,12 +5869,11 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    connection ID that the client included in the Source Connection ID of
    the Initial packet.
 
-
-
-
-
-
-
+   The server includes a connection ID of its choice in the Source
+   Connection ID field.  This value MUST not be equal to the Destination
+   Connection ID field of the packet sent by the client.  A client MUST
+   discard a Retry packet that contains a Source Connection ID field
+   that is identical to the Destination Connection ID field of its
 
 
 
@@ -5882,11 +5882,6 @@ Iyengar & Thomson       Expires 13 November 2020              [Page 105]
 Internet-Draft           QUIC Transport Protocol                May 2020
 
 
-   The server includes a connection ID of its choice in the Source
-   Connection ID field.  This value MUST not be equal to the Destination
-   Connection ID field of the packet sent by the client.  A client MUST
-   discard a Retry packet that contains a Source Connection ID field
-   that is identical to the Destination Connection ID field of its
    Initial packet.  The client MUST use the value from the Source
    Connection ID field of the Retry packet in the Destination Connection
    ID field of subsequent packets that it sends.
@@ -5926,6 +5921,11 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    A Retry packet does not include a packet number and cannot be
    explicitly acknowledged by a client.
+
+
+
+
+
 
 
 
@@ -8579,9 +8579,9 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    [DPLPMTUD] Fairhurst, G., Jones, T., Tuexen, M., Ruengeler, I., and
               T. Voelker, "Packetization Layer Path MTU Discovery for
               Datagram Transports", Work in Progress, Internet-Draft,
-              draft-ietf-tsvwg-datagram-plpmtud-20, 7 May 2020,
+              draft-ietf-tsvwg-datagram-plpmtud-21, 12 May 2020,
               <http://www.ietf.org/internet-drafts/draft-ietf-tsvwg-
-              datagram-plpmtud-20.txt>.
+              datagram-plpmtud-21.txt>.
 
    [IPv4]     Postel, J., "Internet Protocol", STD 5, RFC 791,
               DOI 10.17487/RFC0791, September 1981,
