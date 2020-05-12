@@ -2366,9 +2366,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    duplicate transport parameters as a connection error of type
    TRANSPORT_PARAMETER_ERROR.
 
-   A server MUST include the original_destination_connection_id
-   transport parameter (Section 18.2) if it sent a Retry packet to
-   enable validation of the Retry, as described in Section 17.2.5.
+   Endpoints use transport parameters to authenticate the negotiation of
+   connection IDs during the handshake; see Section 7.3.
 
 7.4.1.  Values of Transport Parameters for 0-RTT
 
@@ -2398,6 +2397,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    the values in the ticket and recover the information when accepting
    0-RTT data.  A server uses the transport parameters in determining
    whether to accept 0-RTT data.
+
 
 
 

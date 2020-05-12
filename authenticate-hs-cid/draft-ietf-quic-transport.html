@@ -3370,9 +3370,8 @@ a connection error of type TRANSPORT_PARAMETER_ERROR.<a href="#section-7.4-6" cl
 <p id="section-7.4-7">An endpoint MUST NOT send a parameter more than once in a given transport
 parameters extension.  An endpoint SHOULD treat receipt of duplicate transport
 parameters as a connection error of type TRANSPORT_PARAMETER_ERROR.<a href="#section-7.4-7" class="pilcrow">¶</a></p>
-<p id="section-7.4-8">A server MUST include the original_destination_connection_id transport parameter
-(<a href="#transport-parameter-definitions" class="xref">Section 18.2</a>) if it sent a Retry packet to enable
-validation of the Retry, as described in <a href="#packet-retry" class="xref">Section 17.2.5</a>.<a href="#section-7.4-8" class="pilcrow">¶</a></p>
+<p id="section-7.4-8">Endpoints use transport parameters to authenticate the negotiation of
+connection IDs during the handshake; see <a href="#cid-auth" class="xref">Section 7.3</a>.<a href="#section-7.4-8" class="pilcrow">¶</a></p>
 <div id="zerortt-parameters">
 <section id="section-7.4.1">
           <h4 id="name-values-of-transport-paramet">
