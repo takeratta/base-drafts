@@ -3305,16 +3305,15 @@ after receiving a Retry packet,<a href="#section-7.3-4.3" class="pilcrow">¶</a>
 packet was received, or<a href="#section-7.3-4.4" class="pilcrow">¶</a>
 </li>
 <li id="section-7.3-4.5">a mismatch between values received from a peer in these transport parameters
-and the value sent in the corresponding Destination Connection ID fields of
-Initial packets.<a href="#section-7.3-4.5" class="pilcrow">¶</a>
+and the value sent in the corresponding Destination or Source Connection ID
+fields of Initial packets.<a href="#section-7.3-4.5" class="pilcrow">¶</a>
 </li>
 </ul>
 <p id="section-7.3-5">If a zero-length connection ID is selected, the corresponding transport
 parameter is included with a zero-length value.<a href="#section-7.3-5" class="pilcrow">¶</a></p>
 <p id="section-7.3-6"><a href="#fig-auth-cid" class="xref">Figure 6</a> shows the connection IDs that are used in a complete
-handshake. The exchange of Initial and Retry packets is shown, plus the later
-exchange of 1-RTT packets that includes the connection ID established during
-the handshake.<a href="#section-7.3-6" class="pilcrow">¶</a></p>
+handshake. The exchange of Initial packets is shown, plus the later exchange of
+1-RTT packets that includes the connection ID established during the handshake.<a href="#section-7.3-6" class="pilcrow">¶</a></p>
 <span id="name-use-of-connection-ids-in-a-"></span><div id="fig-auth-cid">
 <figure id="figure-6">
           <div class="artwork art-text alignLeft" id="section-7.3-7.1">
@@ -3322,8 +3321,6 @@ the handshake.<a href="#section-7.3-6" class="pilcrow">¶</a></p>
 Client                                                  Server
 
 Initial: DCID=S1, SCID=C1 -&gt;
-                                   &lt;- Retry*: DCID=C1, SCID=S2
-Initial*: DCID=S2, SCID=C1 -&gt;
                                   &lt;- Initial: DCID=C1, SCID=S3
                              ...
 1-RTT: DCID=S3 -&gt;
@@ -3334,16 +3331,35 @@ Initial*: DCID=S2, SCID=C1 -&gt;
 <a href="#name-use-of-connection-ids-in-a-" class="selfRef">Use of Connection IDs in a Handshake</a>
           </figcaption></figure>
 </div>
-<p id="section-7.3-8">For the handshake in <a href="#fig-auth-cid" class="xref">Figure 6</a> the client sets the value of the
-initial_source_connection_id transport parameter to <code>C1</code>. If the server sends a
-Retry packet (that is, the packets marked with a '<em>' are sent), it sets
-original_destination_connection_id to , retry_source_connection_id to ,
-and initial_source_connection_id to . If the server does not send a Retry
-packet (that is, packets marked with a '</em><code>S1</code><code>S2</code><code>S3</code>' are not sent), it sets
+<p id="section-7.3-8"><a href="#fig-auth-cid-retry" class="xref">Figure 7</a> shows a similar handshake that includes a Retry packet.<a href="#section-7.3-8" class="pilcrow">¶</a></p>
+<span id="name-use-of-connection-ids-in-a-h"></span><div id="fig-auth-cid-retry">
+<figure id="figure-7">
+          <div class="artwork art-text alignLeft" id="section-7.3-9.1">
+<pre>
+Client                                                  Server
+
+Initial: DCID=S1, SCID=C1 -&gt;
+                                    &lt;- Retry: DCID=C1, SCID=S2
+Initial: DCID=S2, SCID=C1 -&gt;
+                                  &lt;- Initial: DCID=C1, SCID=S3
+                             ...
+1-RTT: DCID=S3 -&gt;
+                                             &lt;- 1-RTT: DCID=C1
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-use-of-connection-ids-in-a-h" class="selfRef">Use of Connection IDs in a Handshake with Retry</a>
+          </figcaption></figure>
+</div>
+<p id="section-7.3-10">For the handshakes in <a href="#fig-auth-cid" class="xref">Figure 6</a> and <a href="#fig-auth-cid-retry" class="xref">Figure 7</a> the client
+sets the value of the initial_source_connection_id transport parameter to <code>C1</code>.
+In <a href="#fig-auth-cid-retry" class="xref">Figure 7</a>, the server sets original_destination_connection_id
+to <code>S1</code>, retry_source_connection_id to <code>S2</code>, and initial_source_connection_id
+to <code>S3</code>. In <a href="#fig-auth-cid" class="xref">Figure 6</a>, the server sets
 original_destination_connection_id to <code>S1</code>, initial_source_connection_id to
 <code>S3</code>, and does not include retry_source_connection_id. Each endpoint validates
 the transport parameters set by their peer, including the client confirming
-that retry_source_connection_id is absent if no Retry packet was processed.<a href="#section-7.3-8" class="pilcrow">¶</a></p>
+that retry_source_connection_id is absent if no Retry packet was processed.<a href="#section-7.3-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="transport-parameters">
@@ -3579,9 +3595,9 @@ the client.  Instead, the server SHOULD immediately close (<a href="#immediate-c
 the connection with an INVALID_TOKEN error.  Note that a server has not
 established any state for the connection at this point and so does not enter the
 closing period.<a href="#section-8.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-8.1.2-5">A flow showing the use of a Retry packet is shown in <a href="#fig-retry" class="xref">Figure 7</a>.<a href="#section-8.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-8.1.2-5">A flow showing the use of a Retry packet is shown in <a href="#fig-retry" class="xref">Figure 8</a>.<a href="#section-8.1.2-5" class="pilcrow">¶</a></p>
 <span id="name-example-handshake-with-retr"></span><div id="fig-retry">
-<figure id="figure-7">
+<figure id="figure-8">
             <div class="artwork art-text alignLeft" id="section-8.1.2-6.1">
 <pre>
 Client                                                  Server
@@ -3597,7 +3613,7 @@ Initial+Token[1]: CRYPTO[CH] -&gt;
                                  &lt;- 1-RTT[0]: STREAM[1, "..."]
 </pre>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-example-handshake-with-retr" class="selfRef">Example Handshake with Retry</a>
             </figcaption></figure>
 </div>
@@ -4483,7 +4499,7 @@ associated connection ID is retired via a RETIRE_CONNECTION_ID frame
 <p id="section-10.4-4">An endpoint that receives packets that it cannot process sends a packet in the
 following layout:<a href="#section-10.4-4" class="pilcrow">¶</a></p>
 <span id="name-stateless-reset-packet"></span><div id="fig-stateless-reset">
-<figure id="figure-8">
+<figure id="figure-9">
           <div class="artwork art-text alignLeft" id="section-10.4-5.1">
 <pre>
 Stateless Reset {
@@ -4493,7 +4509,7 @@ Stateless Reset {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-stateless-reset-packet" class="selfRef">Stateless Reset Packet</a>
           </figcaption></figure>
 </div>
@@ -4883,10 +4899,10 @@ efficient algorithm for duplicate suppression can be found in Section 3.4.3 of
 <a href="#section-12.4" class="section-number selfRef">12.4. </a><a href="#name-frames-and-frame-types" class="section-name selfRef">Frames and Frame Types</a>
         </h3>
 <p id="section-12.4-1">The payload of QUIC packets, after removing packet protection, consists of a
-sequence of complete frames, as shown in <a href="#packet-frames" class="xref">Figure 9</a>.  Version
+sequence of complete frames, as shown in <a href="#packet-frames" class="xref">Figure 10</a>.  Version
 Negotiation, Stateless Reset, and Retry packets do not contain frames.<a href="#section-12.4-1" class="pilcrow">¶</a></p>
 <span id="name-quic-payload"></span><div id="packet-frames">
-<figure id="figure-9">
+<figure id="figure-10">
           <div class="artwork art-text alignLeft" id="section-12.4-2.1">
 <pre>
 Packet Payload {
@@ -4894,7 +4910,7 @@ Packet Payload {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-quic-payload" class="selfRef">QUIC Payload</a>
           </figcaption></figure>
 </div>
@@ -4904,7 +4920,7 @@ within a single QUIC packet and cannot span multiple packets.<a href="#section-1
 <p id="section-12.4-4">Each frame begins with a Frame Type, indicating its type, followed by
 additional type-dependent fields:<a href="#section-12.4-4" class="pilcrow">¶</a></p>
 <span id="name-generic-frame-layout"></span><div id="frame-layout">
-<figure id="figure-10">
+<figure id="figure-11">
           <div class="artwork art-text alignLeft" id="section-12.4-5.1">
 <pre>
 Frame {
@@ -4913,7 +4929,7 @@ Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-generic-frame-layout" class="selfRef">Generic Frame Layout</a>
           </figcaption></figure>
 </div>
@@ -5927,7 +5943,7 @@ Example pseudo-code for packet number decoding can be found in
 <a href="#section-17.2" class="section-number selfRef">17.2. </a><a href="#name-long-header-packets" class="section-name selfRef">Long Header Packets</a>
         </h3>
 <span id="name-long-header-packet-format"></span><div id="fig-long-header">
-<figure id="figure-11">
+<figure id="figure-12">
           <div class="artwork art-text alignLeft" id="section-17.2-1.1">
 <pre>
 Long Header Packet {
@@ -5943,7 +5959,7 @@ Long Header Packet {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
 <a href="#name-long-header-packet-format" class="selfRef">Long Header Packet Format</a>
           </figcaption></figure>
 </div>
@@ -6128,7 +6144,7 @@ Version field having a value of 0.<a href="#section-17.2.1-1" class="pilcrow">¶
 version that is not supported by the server, and is only sent by servers.<a href="#section-17.2.1-2" class="pilcrow">¶</a></p>
 <p id="section-17.2.1-3">The layout of a Version Negotiation packet is:<a href="#section-17.2.1-3" class="pilcrow">¶</a></p>
 <span id="name-version-negotiation-packet-2"></span><div id="version-negotiation-format">
-<figure id="figure-12">
+<figure id="figure-13">
             <div class="artwork art-text alignLeft" id="section-17.2.1-4.1">
 <pre>
 Version Negotiation Packet {
@@ -6143,7 +6159,7 @@ Version Negotiation Packet {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
 <a href="#name-version-negotiation-packet-2" class="selfRef">Version Negotiation Packet</a>
             </figcaption></figure>
 </div>
@@ -6185,7 +6201,7 @@ process.<a href="#section-17.2.1-13" class="pilcrow">¶</a></p>
 first CRYPTO frames sent by the client and server to perform key exchange, and
 carries ACKs in either direction.<a href="#section-17.2.2-1" class="pilcrow">¶</a></p>
 <span id="name-initial-packet-2"></span><div id="initial-format">
-<figure id="figure-13">
+<figure id="figure-14">
             <div class="artwork art-text alignLeft" id="section-17.2.2-2.1">
 <pre>
 Initial Packet {
@@ -6206,7 +6222,7 @@ Initial Packet {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
 <a href="#name-initial-packet-2" class="selfRef">Initial Packet</a>
             </figcaption></figure>
 </div>
@@ -6291,7 +6307,7 @@ server as part of the first flight, prior to handshake completion. As part of
 the TLS handshake, the server can accept or reject this early data.<a href="#section-17.2.3-1" class="pilcrow">¶</a></p>
 <p id="section-17.2.3-2">See Section 2.3 of <span>[<a href="#TLS13" class="xref">TLS13</a>]</span> for a discussion of 0-RTT data and its
 limitations.<a href="#section-17.2.3-2" class="pilcrow">¶</a></p>
-<span id="name-0-rtt-packet"></span><figure id="figure-14">
+<span id="name-0-rtt-packet"></span><figure id="figure-15">
             <div class="artwork art-text alignLeft" id="section-17.2.3-3.1">
 <pre>
 0-RTT Packet {
@@ -6310,7 +6326,7 @@ limitations.<a href="#section-17.2.3-2" class="pilcrow">¶</a></p>
 }
 </pre>
 </div>
-<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
 <a href="#name-0-rtt-packet" class="selfRef">0-RTT Packet</a>
             </figcaption></figure>
 <p id="section-17.2.3-4">Packet numbers for 0-RTT protected packets use the same space as 1-RTT protected
@@ -6349,7 +6365,7 @@ Length and Packet Number fields.  The first byte contains the Reserved and
 Packet Number Length bits.  It is used to carry acknowledgments and
 cryptographic handshake messages from the server and client.<a href="#section-17.2.4-1" class="pilcrow">¶</a></p>
 <span id="name-handshake-protected-packet"></span><div id="handshake-format">
-<figure id="figure-15">
+<figure id="figure-16">
             <div class="artwork art-text alignLeft" id="section-17.2.4-2.1">
 <pre>
 Handshake Packet {
@@ -6368,7 +6384,7 @@ Handshake Packet {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
 <a href="#name-handshake-protected-packet" class="selfRef">Handshake Protected Packet</a>
             </figcaption></figure>
 </div>
@@ -6399,7 +6415,7 @@ protection keys are discarded.<a href="#section-17.2.4-7" class="pilcrow">¶</a>
 an address validation token created by the server. It is used by a server that
 wishes to perform a retry; see <a href="#validate-handshake" class="xref">Section 8.1</a>.<a href="#section-17.2.5-1" class="pilcrow">¶</a></p>
 <span id="name-retry-packet-2"></span><div id="retry-format">
-<figure id="figure-16">
+<figure id="figure-17">
             <div class="artwork art-text alignLeft" id="section-17.2.5-2.1">
 <pre>
 Retry Packet {
@@ -6416,11 +6432,11 @@ Retry Packet {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
+<figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
 <a href="#name-retry-packet-2" class="selfRef">Retry Packet</a>
             </figcaption></figure>
 </div>
-<p id="section-17.2.5-3">A Retry packet (shown in <a href="#retry-format" class="xref">Figure 16</a>) does not contain any protected
+<p id="section-17.2.5-3">A Retry packet (shown in <a href="#retry-format" class="xref">Figure 17</a>) does not contain any protected
 fields. The value in the Unused field is selected randomly by the server. In
 addition to the fields from the long header, it contains these additional
 fields:<a href="#section-17.2.5-3" class="pilcrow">¶</a></p>
@@ -6509,7 +6525,7 @@ the Retry packet in its retry_source_connection_id transport parameter.<a href="
 retry_source_connection_id transport parameter is present and correct;
 otherwise, it MUST validate that the transport parameter is absent. A client
 MUST treat a failed validation as a connection error of type
-TRANSPORT_PARAMETER_ERROR.<a href="#section-17.2.5.3-5" class="pilcrow">¶</a></p>
+PROTOCOL_VIOLATION.<a href="#section-17.2.5.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -6524,7 +6540,7 @@ TRANSPORT_PARAMETER_ERROR.<a href="#section-17.2.5.3-5" class="pilcrow">¶</a></
 <p id="section-17.3-1">This version of QUIC defines a single packet type which uses the
 short packet header.<a href="#section-17.3-1" class="pilcrow">¶</a></p>
 <span id="name-short-header-packet-format"></span><div id="fig-short-header">
-<figure id="figure-17">
+<figure id="figure-18">
           <div class="artwork art-text alignLeft" id="section-17.3-2.1">
 <pre>
 Short Header Packet {
@@ -6540,7 +6556,7 @@ Short Header Packet {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
+<figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
 <a href="#name-short-header-packet-format" class="selfRef">Short Header Packet Format</a>
           </figcaption></figure>
 </div>
@@ -6675,9 +6691,9 @@ connection.<a href="#section-17.3.1-9" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-18-1">The extension_data field of the quic_transport_parameters extension defined in
 <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span> contains the QUIC transport parameters. They are encoded as a
-sequence of transport parameters, as shown in <a href="#transport-parameter-sequence" class="xref">Figure 18</a>:<a href="#section-18-1" class="pilcrow">¶</a></p>
+sequence of transport parameters, as shown in <a href="#transport-parameter-sequence" class="xref">Figure 19</a>:<a href="#section-18-1" class="pilcrow">¶</a></p>
 <span id="name-sequence-of-transport-param"></span><div id="transport-parameter-sequence">
-<figure id="figure-18">
+<figure id="figure-19">
         <div class="artwork art-text alignLeft" id="section-18-2.1">
 <pre>
 Transport Parameters {
@@ -6685,14 +6701,14 @@ Transport Parameters {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
+<figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
 <a href="#name-sequence-of-transport-param" class="selfRef">Sequence of Transport Parameters</a>
         </figcaption></figure>
 </div>
 <p id="section-18-3">Each transport parameter is encoded as an (identifier, length, value) tuple,
-as shown in <a href="#transport-parameter-encoding-fig" class="xref">Figure 19</a>:<a href="#section-18-3" class="pilcrow">¶</a></p>
+as shown in <a href="#transport-parameter-encoding-fig" class="xref">Figure 20</a>:<a href="#section-18-3" class="pilcrow">¶</a></p>
 <span id="name-transport-parameter-encoding"></span><div id="transport-parameter-encoding-fig">
-<figure id="figure-19">
+<figure id="figure-20">
         <div class="artwork art-text alignLeft" id="section-18-4.1">
 <pre>
 Transport Parameter {
@@ -6702,7 +6718,7 @@ Transport Parameter {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
+<figcaption><a href="#figure-20" class="selfRef">Figure 20</a>:
 <a href="#name-transport-parameter-encoding" class="selfRef">Transport Parameter Encoding</a>
         </figcaption></figure>
 </div>
@@ -6871,7 +6887,7 @@ value.<a href="#section-18.2-4.30" class="pilcrow">¶</a>
 <dd id="section-18.2-4.32">
   The server's preferred address is used to effect a change in server address at
 the end of the handshake, as described in <a href="#preferred-address" class="xref">Section 9.6</a>.  The format
-of this transport parameter is shown in <a href="#fig-preferred-address" class="xref">Figure 20</a>.  This
+of this transport parameter is shown in <a href="#fig-preferred-address" class="xref">Figure 21</a>.  This
 transport parameter is only sent by a server. Servers MAY choose to only send
 a preferred address of one address family by sending an all-zero address and
 port (0.0.0.0:0 or ::.0) for the other family. IP addresses are encoded in
@@ -6888,7 +6904,7 @@ migration to the preferred address.<a href="#section-18.2-4.34" class="pilcrow">
 <dd class="break"></dd>
 </dl>
 <span id="name-preferred-address-format"></span><div id="fig-preferred-address">
-<figure id="figure-20">
+<figure id="figure-21">
           <div class="artwork art-text alignLeft" id="section-18.2-5.1">
 <pre>
 Preferred Address {
@@ -6902,7 +6918,7 @@ Preferred Address {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-20" class="selfRef">Figure 20</a>:
+<figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
 <a href="#name-preferred-address-format" class="selfRef">Preferred Address format</a>
           </figcaption></figure>
 </div>
@@ -7018,9 +7034,9 @@ ACK frame is contained.<a href="#section-19.3-3" class="pilcrow">¶</a></p>
 <p id="section-19.3-4">Version Negotiation and Retry packets cannot be acknowledged because they do not
 contain a packet number.  Rather than relying on ACK frames, these packets are
 implicitly acknowledged by the next Initial packet sent by the client.<a href="#section-19.3-4" class="pilcrow">¶</a></p>
-<p id="section-19.3-5">An ACK frame is shown in <a href="#ack-format" class="xref">Figure 21</a>.<a href="#section-19.3-5" class="pilcrow">¶</a></p>
+<p id="section-19.3-5">An ACK frame is shown in <a href="#ack-format" class="xref">Figure 22</a>.<a href="#section-19.3-5" class="pilcrow">¶</a></p>
 <span id="name-ack-frame-format"></span><div id="ack-format">
-<figure id="figure-21">
+<figure id="figure-22">
           <div class="artwork art-text alignLeft" id="section-19.3-6.1">
 <pre>
 ACK Frame {
@@ -7034,7 +7050,7 @@ ACK Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
+<figcaption><a href="#figure-22" class="selfRef">Figure 22</a>:
 <a href="#name-ack-frame-format" class="selfRef">ACK Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7098,9 +7114,9 @@ acknowledged (Gap) and acknowledged (ACK Range); see <a href="#ack-ranges" class
 packet number order. ACK Ranges can be repeated. The number of Gap and ACK
 Range values is determined by the ACK Range Count field; one of each value is
 present for each value in the ACK Range Count field.<a href="#section-19.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-19.3.1-2">ACK Ranges are structured as shown in <a href="#ack-range-format" class="xref">Figure 22</a>.<a href="#section-19.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-19.3.1-2">ACK Ranges are structured as shown in <a href="#ack-range-format" class="xref">Figure 23</a>.<a href="#section-19.3.1-2" class="pilcrow">¶</a></p>
 <span id="name-ack-ranges-2"></span><div id="ack-range-format">
-<figure id="figure-22">
+<figure id="figure-23">
             <div class="artwork art-text alignLeft" id="section-19.3.1-3.1">
 <pre>
 ACK Range {
@@ -7109,7 +7125,7 @@ ACK Range {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-22" class="selfRef">Figure 22</a>:
+<figcaption><a href="#figure-23" class="selfRef">Figure 23</a>:
 <a href="#name-ack-ranges-2" class="selfRef">ACK Ranges</a>
             </figcaption></figure>
 </div>
@@ -7173,9 +7189,9 @@ ECN feedback and report receipt of QUIC packets with associated ECN codepoints
 of ECT(0), ECT(1), or CE in the packet's IP header.  ECN Counts are only present
 when the ACK frame type is 0x03.<a href="#section-19.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-19.3.2-2">ECN Counts are only parsed when the ACK frame type is 0x03.  There are 3 ECN
-counts, as shown in <a href="#ecn-count-format" class="xref">Figure 23</a>.<a href="#section-19.3.2-2" class="pilcrow">¶</a></p>
+counts, as shown in <a href="#ecn-count-format" class="xref">Figure 24</a>.<a href="#section-19.3.2-2" class="pilcrow">¶</a></p>
 <span id="name-ecn-count-format"></span><div id="ecn-count-format">
-<figure id="figure-23">
+<figure id="figure-24">
             <div class="artwork art-text alignLeft" id="section-19.3.2-3.1">
 <pre>
 ECN Counts {
@@ -7185,7 +7201,7 @@ ECN Counts {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-23" class="selfRef">Figure 23</a>:
+<figcaption><a href="#figure-24" class="selfRef">Figure 24</a>:
 <a href="#name-ecn-count-format" class="selfRef">ECN Count Format</a>
             </figcaption></figure>
 </div>
@@ -7227,9 +7243,9 @@ of STREAM frames on the identified stream.  A receiver of RESET_STREAM can
 discard any data that it already received on that stream.<a href="#section-19.4-2" class="pilcrow">¶</a></p>
 <p id="section-19.4-3">An endpoint that receives a RESET_STREAM frame for a send-only stream MUST
 terminate the connection with error STREAM_STATE_ERROR.<a href="#section-19.4-3" class="pilcrow">¶</a></p>
-<p id="section-19.4-4">The RESET_STREAM frame is shown in <a href="#fig-reset-stream" class="xref">Figure 24</a>.<a href="#section-19.4-4" class="pilcrow">¶</a></p>
+<p id="section-19.4-4">The RESET_STREAM frame is shown in <a href="#fig-reset-stream" class="xref">Figure 25</a>.<a href="#section-19.4-4" class="pilcrow">¶</a></p>
 <span id="name-reset_stream-frame-format"></span><div id="fig-reset-stream">
-<figure id="figure-24">
+<figure id="figure-25">
           <div class="artwork art-text alignLeft" id="section-19.4-5.1">
 <pre>
 RESET_STREAM Frame {
@@ -7240,7 +7256,7 @@ RESET_STREAM Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-24" class="selfRef">Figure 24</a>:
+<figcaption><a href="#figure-25" class="selfRef">Figure 25</a>:
 <a href="#name-reset_stream-frame-format" class="selfRef">RESET_STREAM Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7282,9 +7298,9 @@ locally-initiated stream that has not yet been created MUST be treated as a
 connection error of type STREAM_STATE_ERROR.  An endpoint that receives a
 STOP_SENDING frame for a receive-only stream MUST terminate the connection with
 error STREAM_STATE_ERROR.<a href="#section-19.5-2" class="pilcrow">¶</a></p>
-<p id="section-19.5-3">The STOP_SENDING frame is shown in <a href="#fig-stop-sending" class="xref">Figure 25</a>.<a href="#section-19.5-3" class="pilcrow">¶</a></p>
+<p id="section-19.5-3">The STOP_SENDING frame is shown in <a href="#fig-stop-sending" class="xref">Figure 26</a>.<a href="#section-19.5-3" class="pilcrow">¶</a></p>
 <span id="name-stop_sending-frame-format"></span><div id="fig-stop-sending">
-<figure id="figure-25">
+<figure id="figure-26">
           <div class="artwork art-text alignLeft" id="section-19.5-4.1">
 <pre>
 STOP_SENDING Frame {
@@ -7294,7 +7310,7 @@ STOP_SENDING Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-25" class="selfRef">Figure 25</a>:
+<figcaption><a href="#figure-26" class="selfRef">Figure 26</a>:
 <a href="#name-stop_sending-frame-format" class="selfRef">STOP_SENDING Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7325,9 +7341,9 @@ offers the cryptographic protocol an in-order stream of bytes.  CRYPTO frames
 are functionally identical to STREAM frames, except that they do not bear a
 stream identifier; they are not flow controlled; and they do not carry markers
 for optional offset, optional length, and the end of the stream.<a href="#section-19.6-1" class="pilcrow">¶</a></p>
-<p id="section-19.6-2">The CRYPTO frame is shown in <a href="#fig-crypto" class="xref">Figure 26</a>.<a href="#section-19.6-2" class="pilcrow">¶</a></p>
+<p id="section-19.6-2">The CRYPTO frame is shown in <a href="#fig-crypto" class="xref">Figure 27</a>.<a href="#section-19.6-2" class="pilcrow">¶</a></p>
 <span id="name-crypto-frame-format"></span><div id="fig-crypto">
-<figure id="figure-26">
+<figure id="figure-27">
           <div class="artwork art-text alignLeft" id="section-19.6-3.1">
 <pre>
 CRYPTO Frame {
@@ -7338,7 +7354,7 @@ CRYPTO Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-26" class="selfRef">Figure 26</a>:
+<figcaption><a href="#figure-27" class="selfRef">Figure 27</a>:
 <a href="#name-crypto-frame-format" class="selfRef">CRYPTO Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7382,9 +7398,9 @@ FIN bit.<a href="#section-19.6-8" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-19.7-1">A server sends a NEW_TOKEN frame (type=0x07) to provide the client with a token
 to send in the header of an Initial packet for a future connection.<a href="#section-19.7-1" class="pilcrow">¶</a></p>
-<p id="section-19.7-2">The NEW_TOKEN frame is shown in <a href="#fig-new-token" class="xref">Figure 27</a>.<a href="#section-19.7-2" class="pilcrow">¶</a></p>
+<p id="section-19.7-2">The NEW_TOKEN frame is shown in <a href="#fig-new-token" class="xref">Figure 28</a>.<a href="#section-19.7-2" class="pilcrow">¶</a></p>
 <span id="name-new_token-frame-format"></span><div id="fig-new-token">
-<figure id="figure-27">
+<figure id="figure-28">
           <div class="artwork art-text alignLeft" id="section-19.7-3.1">
 <pre>
 NEW_TOKEN Frame {
@@ -7394,7 +7410,7 @@ NEW_TOKEN Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-27" class="selfRef">Figure 27</a>:
+<figcaption><a href="#figure-28" class="selfRef">Figure 28</a>:
 <a href="#name-new_token-frame-format" class="selfRef">NEW_TOKEN Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7450,9 +7466,9 @@ marks the end of the stream.<a href="#section-19.8-2.3" class="pilcrow">¶</a>
 <p id="section-19.8-3">An endpoint MUST terminate the connection with error STREAM_STATE_ERROR if it
 receives a STREAM frame for a locally-initiated stream that has not yet been
 created, or for a send-only stream.<a href="#section-19.8-3" class="pilcrow">¶</a></p>
-<p id="section-19.8-4">The STREAM frames are shown in <a href="#fig-stream" class="xref">Figure 28</a>.<a href="#section-19.8-4" class="pilcrow">¶</a></p>
+<p id="section-19.8-4">The STREAM frames are shown in <a href="#fig-stream" class="xref">Figure 29</a>.<a href="#section-19.8-4" class="pilcrow">¶</a></p>
 <span id="name-stream-frame-format"></span><div id="fig-stream">
-<figure id="figure-28">
+<figure id="figure-29">
           <div class="artwork art-text alignLeft" id="section-19.8-5.1">
 <pre>
 STREAM Frame {
@@ -7464,7 +7480,7 @@ STREAM Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-28" class="selfRef">Figure 28</a>:
+<figcaption><a href="#figure-29" class="selfRef">Figure 29</a>:
 <a href="#name-stream-frame-format" class="selfRef">STREAM Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7513,9 +7529,9 @@ FRAME_ENCODING_ERROR or FLOW_CONTROL_ERROR.<a href="#section-19.8-9" class="pilc
         </h3>
 <p id="section-19.9-1">The MAX_DATA frame (type=0x10) is used in flow control to inform the peer of
 the maximum amount of data that can be sent on the connection as a whole.<a href="#section-19.9-1" class="pilcrow">¶</a></p>
-<p id="section-19.9-2">The MAX_DATA frame is shown in <a href="#fig-max-data" class="xref">Figure 29</a>.<a href="#section-19.9-2" class="pilcrow">¶</a></p>
+<p id="section-19.9-2">The MAX_DATA frame is shown in <a href="#fig-max-data" class="xref">Figure 30</a>.<a href="#section-19.9-2" class="pilcrow">¶</a></p>
 <span id="name-max_data-frame-format"></span><div id="fig-max-data">
-<figure id="figure-29">
+<figure id="figure-30">
           <div class="artwork art-text alignLeft" id="section-19.9-3.1">
 <pre>
 MAX_DATA Frame {
@@ -7524,7 +7540,7 @@ MAX_DATA Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-29" class="selfRef">Figure 29</a>:
+<figcaption><a href="#figure-30" class="selfRef">Figure 30</a>:
 <a href="#name-max_data-frame-format" class="selfRef">MAX_DATA Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7558,9 +7574,9 @@ locally-initiated stream that has not yet been created MUST be treated as a
 connection error of type STREAM_STATE_ERROR.  An endpoint that receives a
 MAX_STREAM_DATA frame for a receive-only stream MUST terminate the connection
 with error STREAM_STATE_ERROR.<a href="#section-19.10-2" class="pilcrow">¶</a></p>
-<p id="section-19.10-3">The MAX_STREAM_DATA frame is shown in <a href="#fig-max-stream-data" class="xref">Figure 30</a>.<a href="#section-19.10-3" class="pilcrow">¶</a></p>
+<p id="section-19.10-3">The MAX_STREAM_DATA frame is shown in <a href="#fig-max-stream-data" class="xref">Figure 31</a>.<a href="#section-19.10-3" class="pilcrow">¶</a></p>
 <span id="name-max_stream_data-frame-forma"></span><div id="fig-max-stream-data">
-<figure id="figure-30">
+<figure id="figure-31">
           <div class="artwork art-text alignLeft" id="section-19.10-4.1">
 <pre>
 MAX_STREAM_DATA Frame {
@@ -7570,7 +7586,7 @@ MAX_STREAM_DATA Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-30" class="selfRef">Figure 30</a>:
+<figcaption><a href="#figure-31" class="selfRef">Figure 31</a>:
 <a href="#name-max_stream_data-frame-forma" class="selfRef">MAX_STREAM_DATA Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7610,9 +7626,9 @@ a change in the initial limits; see <a href="#zerortt-parameters" class="xref">S
 number of streams of a given type it is permitted to open.  A MAX_STREAMS frame
 with a type of 0x12 applies to bidirectional streams, and a MAX_STREAMS frame
 with a type of 0x13 applies to unidirectional streams.<a href="#section-19.11-1" class="pilcrow">¶</a></p>
-<p id="section-19.11-2">The MAX_STREAMS frames are shown in <a href="#fig-max-streams" class="xref">Figure 31</a>;<a href="#section-19.11-2" class="pilcrow">¶</a></p>
+<p id="section-19.11-2">The MAX_STREAMS frames are shown in <a href="#fig-max-streams" class="xref">Figure 32</a>;<a href="#section-19.11-2" class="pilcrow">¶</a></p>
 <span id="name-max_streams-frame-format"></span><div id="fig-max-streams">
-<figure id="figure-31">
+<figure id="figure-32">
           <div class="artwork art-text alignLeft" id="section-19.11-3.1">
 <pre>
 MAX_STREAMS Frame {
@@ -7621,7 +7637,7 @@ MAX_STREAMS Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-31" class="selfRef">Figure 31</a>:
+<figcaption><a href="#figure-32" class="selfRef">Figure 32</a>:
 <a href="#name-max_streams-frame-format" class="selfRef">MAX_STREAMS Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7659,9 +7675,9 @@ includes streams that have been closed as well as those that are open.<a href="#
 data, but is unable to due to connection-level flow control; see
 <a href="#flow-control" class="xref">Section 4</a>.  DATA_BLOCKED frames can be used as input to tuning of flow
 control algorithms; see <a href="#fc-credit" class="xref">Section 4.2</a>.<a href="#section-19.12-1" class="pilcrow">¶</a></p>
-<p id="section-19.12-2">The DATA_BLOCKED frame is shown in <a href="#fig-data-blocked" class="xref">Figure 32</a>.<a href="#section-19.12-2" class="pilcrow">¶</a></p>
+<p id="section-19.12-2">The DATA_BLOCKED frame is shown in <a href="#fig-data-blocked" class="xref">Figure 33</a>.<a href="#section-19.12-2" class="pilcrow">¶</a></p>
 <span id="name-data_blocked-frame-format"></span><div id="fig-data-blocked">
-<figure id="figure-32">
+<figure id="figure-33">
           <div class="artwork art-text alignLeft" id="section-19.12-3.1">
 <pre>
 DATA_BLOCKED Frame {
@@ -7670,7 +7686,7 @@ DATA_BLOCKED Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-32" class="selfRef">Figure 32</a>:
+<figcaption><a href="#figure-33" class="selfRef">Figure 33</a>:
 <a href="#name-data_blocked-frame-format" class="selfRef">DATA_BLOCKED Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7695,9 +7711,9 @@ send data, but is unable to due to stream-level flow control.  This frame is
 analogous to DATA_BLOCKED (<a href="#frame-data-blocked" class="xref">Section 19.12</a>).<a href="#section-19.13-1" class="pilcrow">¶</a></p>
 <p id="section-19.13-2">An endpoint that receives a STREAM_DATA_BLOCKED frame for a send-only stream
 MUST terminate the connection with error STREAM_STATE_ERROR.<a href="#section-19.13-2" class="pilcrow">¶</a></p>
-<p id="section-19.13-3">The STREAM_DATA_BLOCKED frame is shown in <a href="#fig-stream-data-blocked" class="xref">Figure 33</a>.<a href="#section-19.13-3" class="pilcrow">¶</a></p>
+<p id="section-19.13-3">The STREAM_DATA_BLOCKED frame is shown in <a href="#fig-stream-data-blocked" class="xref">Figure 34</a>.<a href="#section-19.13-3" class="pilcrow">¶</a></p>
 <span id="name-stream_data_blocked-frame-f"></span><div id="fig-stream-data-blocked">
-<figure id="figure-33">
+<figure id="figure-34">
           <div class="artwork art-text alignLeft" id="section-19.13-4.1">
 <pre>
 STREAM_DATA_BLOCKED Frame {
@@ -7707,7 +7723,7 @@ STREAM_DATA_BLOCKED Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-33" class="selfRef">Figure 33</a>:
+<figcaption><a href="#figure-34" class="selfRef">Figure 34</a>:
 <a href="#name-stream_data_blocked-frame-f" class="selfRef">STREAM_DATA_BLOCKED Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7739,9 +7755,9 @@ to indicate reaching the bidirectional stream limit, and a STREAMS_BLOCKED frame
 of type 0x17 indicates reaching the unidirectional stream limit.<a href="#section-19.14-1" class="pilcrow">¶</a></p>
 <p id="section-19.14-2">A STREAMS_BLOCKED frame does not open the stream, but informs the peer that a
 new stream was needed and the stream limit prevented the creation of the stream.<a href="#section-19.14-2" class="pilcrow">¶</a></p>
-<p id="section-19.14-3">The STREAMS_BLOCKED frames are shown in <a href="#fig-streams-blocked" class="xref">Figure 34</a>.<a href="#section-19.14-3" class="pilcrow">¶</a></p>
+<p id="section-19.14-3">The STREAMS_BLOCKED frames are shown in <a href="#fig-streams-blocked" class="xref">Figure 35</a>.<a href="#section-19.14-3" class="pilcrow">¶</a></p>
 <span id="name-streams_blocked-frame-forma"></span><div id="fig-streams-blocked">
-<figure id="figure-34">
+<figure id="figure-35">
           <div class="artwork art-text alignLeft" id="section-19.14-4.1">
 <pre>
 STREAMS_BLOCKED Frame {
@@ -7750,7 +7766,7 @@ STREAMS_BLOCKED Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-34" class="selfRef">Figure 34</a>:
+<figcaption><a href="#figure-35" class="selfRef">Figure 35</a>:
 <a href="#name-streams_blocked-frame-forma" class="selfRef">STREAMS_BLOCKED Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7776,9 +7792,9 @@ FRAME_ENCODING_ERROR.<a href="#section-19.14-6.2" class="pilcrow">¶</a>
 <p id="section-19.15-1">An endpoint sends a NEW_CONNECTION_ID frame (type=0x18) to provide its peer with
 alternative connection IDs that can be used to break linkability when migrating
 connections; see <a href="#migration-linkability" class="xref">Section 9.5</a>.<a href="#section-19.15-1" class="pilcrow">¶</a></p>
-<p id="section-19.15-2">The NEW_CONNECTION_ID frame is shown in <a href="#fig-new-connection-id" class="xref">Figure 35</a>.<a href="#section-19.15-2" class="pilcrow">¶</a></p>
+<p id="section-19.15-2">The NEW_CONNECTION_ID frame is shown in <a href="#fig-new-connection-id" class="xref">Figure 36</a>.<a href="#section-19.15-2" class="pilcrow">¶</a></p>
 <span id="name-new_connection_id-frame-for"></span><div id="fig-new-connection-id">
-<figure id="figure-35">
+<figure id="figure-36">
           <div class="artwork art-text alignLeft" id="section-19.15-3.1">
 <pre>
 NEW_CONNECTION_ID Frame {
@@ -7791,7 +7807,7 @@ NEW_CONNECTION_ID Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-35" class="selfRef">Figure 35</a>:
+<figcaption><a href="#figure-36" class="selfRef">Figure 36</a>:
 <a href="#name-new_connection_id-frame-for" class="selfRef">NEW_CONNECTION_ID Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7873,9 +7889,9 @@ future use; see <a href="#connection-id" class="xref">Section 5.1</a>.  New conn
 peer using the NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 19.15</a>).<a href="#section-19.16-1" class="pilcrow">¶</a></p>
 <p id="section-19.16-2">Retiring a connection ID invalidates the stateless reset token associated with
 that connection ID.<a href="#section-19.16-2" class="pilcrow">¶</a></p>
-<p id="section-19.16-3">The RETIRE_CONNECTION_ID frame is shown in <a href="#fig-retire-connection-id" class="xref">Figure 36</a>.<a href="#section-19.16-3" class="pilcrow">¶</a></p>
+<p id="section-19.16-3">The RETIRE_CONNECTION_ID frame is shown in <a href="#fig-retire-connection-id" class="xref">Figure 37</a>.<a href="#section-19.16-3" class="pilcrow">¶</a></p>
 <span id="name-retire_connection_id-frame-"></span><div id="fig-retire-connection-id">
-<figure id="figure-36">
+<figure id="figure-37">
           <div class="artwork art-text alignLeft" id="section-19.16-4.1">
 <pre>
 RETIRE_CONNECTION_ID Frame {
@@ -7884,7 +7900,7 @@ RETIRE_CONNECTION_ID Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-36" class="selfRef">Figure 36</a>:
+<figcaption><a href="#figure-37" class="selfRef">Figure 37</a>:
 <a href="#name-retire_connection_id-frame-" class="selfRef">RETIRE_CONNECTION_ID Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7917,9 +7933,9 @@ type PROTOCOL_VIOLATION.<a href="#section-19.16-9" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-19.17-1">Endpoints can use PATH_CHALLENGE frames (type=0x1a) to check reachability to the
 peer and for path validation during connection migration.<a href="#section-19.17-1" class="pilcrow">¶</a></p>
-<p id="section-19.17-2">The PATH_CHALLENGE frame is shown in <a href="#fig-path-challenge" class="xref">Figure 37</a>.<a href="#section-19.17-2" class="pilcrow">¶</a></p>
+<p id="section-19.17-2">The PATH_CHALLENGE frame is shown in <a href="#fig-path-challenge" class="xref">Figure 38</a>.<a href="#section-19.17-2" class="pilcrow">¶</a></p>
 <span id="name-path_challenge-frame-format"></span><div id="fig-path-challenge">
-<figure id="figure-37">
+<figure id="figure-38">
           <div class="artwork art-text alignLeft" id="section-19.17-3.1">
 <pre>
 PATH_CHALLENGE Frame {
@@ -7928,7 +7944,7 @@ PATH_CHALLENGE Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-37" class="selfRef">Figure 37</a>:
+<figcaption><a href="#figure-38" class="selfRef">Figure 38</a>:
 <a href="#name-path_challenge-frame-format" class="selfRef">PATH_CHALLENGE Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7953,10 +7969,10 @@ correctly.<a href="#section-19.17-6" class="pilcrow">¶</a></p>
 <a href="#section-19.18" class="section-number selfRef">19.18. </a><a href="#name-path_response-frame" class="section-name selfRef">PATH_RESPONSE Frame</a>
         </h3>
 <p id="section-19.18-1">The PATH_RESPONSE frame (type=0x1b) is sent in response to a PATH_CHALLENGE
-frame.  Its format, shown in <a href="#fig-path-response" class="xref">Figure 38</a> is identical to the
+frame.  Its format, shown in <a href="#fig-path-response" class="xref">Figure 39</a> is identical to the
 PATH_CHALLENGE frame (<a href="#frame-path-challenge" class="xref">Section 19.17</a>).<a href="#section-19.18-1" class="pilcrow">¶</a></p>
 <span id="name-path_response-frame-format"></span><div id="fig-path-response">
-<figure id="figure-38">
+<figure id="figure-39">
           <div class="artwork art-text alignLeft" id="section-19.18-2.1">
 <pre>
 PATH_RESPONSE Frame {
@@ -7965,7 +7981,7 @@ PATH_RESPONSE Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-38" class="selfRef">Figure 38</a>:
+<figcaption><a href="#figure-39" class="selfRef">Figure 39</a>:
 <a href="#name-path_response-frame-format" class="selfRef">PATH_RESPONSE Frame Format</a>
           </figcaption></figure>
 </div>
@@ -7986,9 +8002,9 @@ errors (with the NO_ERROR code).  The CONNECTION_CLOSE frame with a type of 0x1d
 is used to signal an error with the application that uses QUIC.<a href="#section-19.19-1" class="pilcrow">¶</a></p>
 <p id="section-19.19-2">If there are open streams that haven't been explicitly closed, they are
 implicitly closed when the connection is closed.<a href="#section-19.19-2" class="pilcrow">¶</a></p>
-<p id="section-19.19-3">The CONNECTION_CLOSE frames are shown in <a href="#fig-connection-close" class="xref">Figure 39</a>.<a href="#section-19.19-3" class="pilcrow">¶</a></p>
+<p id="section-19.19-3">The CONNECTION_CLOSE frames are shown in <a href="#fig-connection-close" class="xref">Figure 40</a>.<a href="#section-19.19-3" class="pilcrow">¶</a></p>
 <span id="name-connection_close-frame-form"></span><div id="fig-connection-close">
-<figure id="figure-39">
+<figure id="figure-40">
           <div class="artwork art-text alignLeft" id="section-19.19-4.1">
 <pre>
 CONNECTION_CLOSE Frame {
@@ -8000,7 +8016,7 @@ CONNECTION_CLOSE Frame {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-39" class="selfRef">Figure 39</a>:
+<figcaption><a href="#figure-40" class="selfRef">Figure 40</a>:
 <a href="#name-connection_close-frame-form" class="selfRef">CONNECTION_CLOSE Frame Format</a>
           </figcaption></figure>
 </div>
@@ -9457,10 +9473,10 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
       <h2 id="name-sample-packet-number-decodi">
 <a href="#section-appendix.a" class="section-number selfRef">Appendix A. </a><a href="#name-sample-packet-number-decodi" class="section-name selfRef">Sample Packet Number Decoding Algorithm</a>
       </h2>
-<p id="section-appendix.a-1">The pseudo-code in <a href="#alg-decode-pn" class="xref">Figure 40</a> shows how an implementation can decode
+<p id="section-appendix.a-1">The pseudo-code in <a href="#alg-decode-pn" class="xref">Figure 41</a> shows how an implementation can decode
 packet numbers after header protection has been removed.<a href="#section-appendix.a-1" class="pilcrow">¶</a></p>
 <span id="name-sample-packet-number-decodin"></span><div id="alg-decode-pn">
-<figure id="figure-40">
+<figure id="figure-41">
         <div class="artwork art-text alignLeft" id="section-appendix.a-2.1">
 <pre>
 DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
@@ -9489,7 +9505,7 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
    return candidate_pn
 </pre>
 </div>
-<figcaption><a href="#figure-40" class="selfRef">Figure 40</a>:
+<figcaption><a href="#figure-41" class="selfRef">Figure 41</a>:
 <a href="#name-sample-packet-number-decodin" class="selfRef">Sample Packet Number Decoding Algorithm</a>
         </figcaption></figure>
 </div>
