@@ -89,7 +89,7 @@ Table of Contents
      5.1.  Acknowledgement-based Detection . . . . . . . . . . . . .  11
        5.1.1.  Packet Threshold  . . . . . . . . . . . . . . . . . .  11
        5.1.2.  Time Threshold  . . . . . . . . . . . . . . . . . . .  12
-     5.2.  Probe Timeout . . . . . . . . . . . . . . . . . . . . . .  12
+     5.2.  Probe Timeout . . . . . . . . . . . . . . . . . . . . . .  13
        5.2.1.  Computing PTO . . . . . . . . . . . . . . . . . . . .  13
        5.2.2.  Handshakes and New Paths  . . . . . . . . . . . . . .  14
        5.2.3.  Speeding Up Handshake Completion  . . . . . . . . . .  15
@@ -619,9 +619,12 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
 
    Some networks may exhibit higher degrees of reordering, causing a
-   sender to detect spurious losses.  Implementers MAY use algorithms
-   developed for TCP, such as TCP-NCR [RFC4653], to improve QUIC's
-   reordering resilience.
+   sender to detect spurious losses.  Algorithms that increase the
+   reordering threshold after spuriously detecting losses, such as TCP-
+   NCR [RFC4653], have proven to be useful in TCP and are expected to at
+   least as useful in QUIC.  Re-ordering could be more common with QUIC
+   than TCP, because network elements cannot observe and fix the order
+   of out-of-order packets.
 
 5.1.2.  Time Threshold
 
@@ -658,13 +661,10 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    increase spurious retransmissions, and larger thresholds increase
    loss detection delay.
 
-5.2.  Probe Timeout
 
-   A Probe Timeout (PTO) triggers sending one or two probe datagrams
-   when ack-eliciting packets are not acknowledged within the expected
-   period of time or the handshake has not been completed.  A PTO
-   enables a connection to recover from loss of tail packets or
-   acknowledgements.
+
+
+
 
 
 
@@ -673,6 +673,14 @@ Iyengar & Swett         Expires 14 November 2020               [Page 12]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+5.2.  Probe Timeout
+
+   A Probe Timeout (PTO) triggers sending one or two probe datagrams
+   when ack-eliciting packets are not acknowledged within the expected
+   period of time or the handshake has not been completed.  A PTO
+   enables a connection to recover from loss of tail packets or
+   acknowledgements.
 
    As with loss detection, the probe timeout is per packet number space.
    The PTO algorithm used in QUIC implements the reliability functions
@@ -714,14 +722,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    resulting in the PTO period being set to twice its current value.
    The PTO period is set based on the latest RTT information after
    receiving an acknowledgement.  The PTO backoff is reset upon
-   receiving an acknowledgement unless it's a client unsure if the the
-   server has validated the client's address.  Not resetting the backoff
-   during peer address validation ensures the client's anti-deadlock
-   timer is not set too aggressively when the server is slow in
-   responding with handshake data.
-
-
-
 
 
 
@@ -729,6 +729,12 @@ Iyengar & Swett         Expires 14 November 2020               [Page 13]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   receiving an acknowledgement unless it's a client unsure if the the
+   server has validated the client's address.  Not resetting the backoff
+   during peer address validation ensures the client's anti-deadlock
+   timer is not set too aggressively when the server is slow in
+   responding with handshake data.
 
    This exponential reduction in the sender's rate is important because
    consecutive PTOs might be caused by loss of packets or
@@ -766,13 +772,7 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    improve its RTT estimate, the new packet that it sends MUST be ack-
    eliciting.
 
-   Initial packets and Handshake packets could be never acknowledged,
-   but they are removed from bytes in flight when the Initial and
-   Handshake keys are discarded, as described below in
-   Section Section 5.4.  When Initial or Handshake keys are discarded,
-   the PTO and loss detection timers MUST be reset, because discarding
-   keys indicates forward progress and the loss detection timer might
-   have been set for a now discarded packet number space.
+
 
 
 
@@ -785,6 +785,14 @@ Iyengar & Swett         Expires 14 November 2020               [Page 14]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   Initial packets and Handshake packets could be never acknowledged,
+   but they are removed from bytes in flight when the Initial and
+   Handshake keys are discarded, as described below in
+   Section Section 5.4.  When Initial or Handshake keys are discarded,
+   the PTO and loss detection timers MUST be reset, because discarding
+   keys indicates forward progress and the loss detection timer might
+   have been set for a now discarded packet number space.
 
 5.2.2.1.  Before Address Validation
 
@@ -826,14 +834,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    the PTO expiry, subject to address validation limits; see Section 8.1
    of [QUIC-TRANSPORT].
 
-   Peers can also use coalesced packets to ensure that each datagram
-   elicits at least one acknowledgement.  For example, clients can
-   coalesce an Initial packet containing PING and PADDING frames with a
-   0-RTT data packet and a server can coalesce an Initial packet
-   containing a PING frame with one or more packets in its first flight.
-
-
-
 
 
 
@@ -841,6 +841,12 @@ Iyengar & Swett         Expires 14 November 2020               [Page 15]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   Peers can also use coalesced packets to ensure that each datagram
+   elicits at least one acknowledgement.  For example, clients can
+   coalesce an Initial packet containing PING and PADDING frames with a
+   0-RTT data packet and a server can coalesce an Initial packet
+   containing a PING frame with one or more packets in its first flight.
 
 5.2.4.  Sending Probe Packets
 
@@ -880,12 +886,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    a PING or other ack-eliciting frame in a single packet, re-arming the
    PTO timer.
 
-   Alternatively, instead of sending an ack-eliciting packet, the sender
-   MAY mark any packets still in flight as lost.  Doing so avoids
-   sending an additional packet, but increases the risk that loss is
-   declared too aggressively, resulting in an unnecessary rate reduction
-   by the congestion controller.
-
 
 
 
@@ -897,6 +897,12 @@ Iyengar & Swett         Expires 14 November 2020               [Page 16]
 
 Internet-Draft             QUIC Loss Detection                  May 2020
 
+
+   Alternatively, instead of sending an ack-eliciting packet, the sender
+   MAY mark any packets still in flight as lost.  Doing so avoids
+   sending an additional packet, but increases the risk that loss is
+   declared too aggressively, resulting in an unnecessary rate reduction
+   by the congestion controller.
 
    Consecutive PTO periods increase exponentially, and as a result,
    connection recovery latency increases exponentially as packets
@@ -939,12 +945,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    period from when the first Initial was sent to when a Retry or a
    Version Negotiation packet is received.  The client MAY use this
    value in place of its default for the initial RTT estimate.
-
-
-
-
-
-
 
 
 

@@ -1666,8 +1666,11 @@ thresholds to minimize recovery latency.<a href="#section-5.1-5" class="pilcrow"
 <span>[<a href="#RFC5681" class="xref">RFC5681</a>]</span> <span>[<a href="#RFC6675" class="xref">RFC6675</a>]</span>.  Implementations SHOULD NOT use a packet threshold
 less than 3, to keep in line with TCP <span>[<a href="#RFC5681" class="xref">RFC5681</a>]</span>.<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-2">Some networks may exhibit higher degrees of reordering, causing a sender to
-detect spurious losses.  Implementers MAY use algorithms developed for TCP, such
-as TCP-NCR <span>[<a href="#RFC4653" class="xref">RFC4653</a>]</span>, to improve QUIC's reordering resilience.<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
+detect spurious losses.  Algorithms that increase the reordering threshold after
+spuriously detecting losses, such as TCP-NCR <span>[<a href="#RFC4653" class="xref">RFC4653</a>]</span>, have proven to be
+useful in TCP and are expected to at least as useful in QUIC.  Re-ordering
+could be more common with QUIC than TCP, because network elements cannot observe
+and fix the order of out-of-order packets.<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="time-threshold">
