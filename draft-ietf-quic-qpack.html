@@ -1389,14 +1389,14 @@ evicted.<a href="#section-2.1.1.1-2" class="pilcrow">¶</a></p>
 <figure id="figure-1">
               <div class="artwork art-text alignLeft art-drawing" id="section-2.1.1.1-3.1">
 <pre>
-   +----------+---------------------------------+--------+
-   | Draining |          Referenceable          | Unused |
-   | Entries  |             Entries             | Space  |
-   +----------+---------------------------------+--------+
-   ^          ^                                 ^
-   |          |                                 |
- Dropping    Draining Index               Insertion Point
-  Point
+   +--------+---------------------------------+----------+
+   | Unused |          Referenceable          | Draining |
+   | Space  |             Entries             | Entries  |
+   +--------+---------------------------------+----------+
+            ^                                 ^          ^
+            |                                 |          |
+      Insertion Point                 Draining Index  Dropping
+                                                       Point
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:

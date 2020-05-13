@@ -351,14 +351,14 @@ Internet-Draft                    QPACK                         May 2020
    index, the number of unacknowledged references to those entries will
    eventually become zero, allowing them to be evicted.
 
-      +----------+---------------------------------+--------+
-      | Draining |          Referenceable          | Unused |
-      | Entries  |             Entries             | Space  |
-      +----------+---------------------------------+--------+
-      ^          ^                                 ^
-      |          |                                 |
-    Dropping    Draining Index               Insertion Point
-     Point
+      +--------+---------------------------------+----------+
+      | Unused |          Referenceable          | Draining |
+      | Space  |             Entries             | Entries  |
+      +--------+---------------------------------+----------+
+               ^                                 ^          ^
+               |                                 |          |
+         Insertion Point                 Draining Index  Dropping
+                                                          Point
 
                   Figure 1: Draining Dynamic Table Entries
 
