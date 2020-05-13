@@ -160,7 +160,7 @@ Internet-Draft                    QPACK                         May 2020
      C.13. Since draft-ietf-quic-qpack-00  . . . . . . . . . . . . .  42
      C.14. Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  43
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  43
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  43
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  44
 
 
 
@@ -2377,30 +2377,30 @@ C.14.  Since draft-ietf-quic-qcram-00
 
 Acknowledgments
 
-   This draft draws heavily on the text of [RFC7541].  The indirect
-   input of those authors is gratefully acknowledged, as well as ideas
-   from:
+   The IETF QUIC Working Group received an enormous amount of support
+   from many people.
+
+   The compression design team did substantial work exploring the
+   problem space and influencing the initial draft.  The contributions
+   of design team members Roberto Peon, Martin Thomson, and Dmitri
+   Tikhonov is gratefully acknowledged.
+
+   The following people also provided substantial contributions to this
+   document:
+
+   *  Bence Beky
+
+   *  Alessandro Ghedini
 
    *  Ryan Hamilton
 
+   *  Robin Marx
+
    *  Patrick McManus
 
-   *  Kazuho Oku
+   *  奥 一穂 (Kazuho Oku)
 
-   *  Biren Roy
-
-   *  Ian Swett
-
-   *  Dmitri Tikhonov
-
-   Buck's contribution was supported by Google during his employment
-   there.
-
-   A substantial portion of Mike's contribution was supported by
-   Microsoft during his employment there.
-
-Authors' Addresses
-
+   *  Lucas Pardue
 
 
 
@@ -2409,6 +2409,21 @@ Krasic, et al.          Expires 14 November 2020               [Page 43]
 
 Internet-Draft                    QPACK                         May 2020
 
+
+   *  Biren Roy
+
+   *  Ian Swett
+
+   This draft draws heavily on the text of [RFC7541].  The indirect
+   input of those authors is also gratefully acknowledged.
+
+   Buck's contribution was supported by Google during his employment
+   there.
+
+   A portion of Mike's contribution was supported by Microsoft during
+   his employment there.
+
+Authors' Addresses
 
    Charles 'Buck' Krasic
    Netflix
@@ -2426,21 +2441,6 @@ Internet-Draft                    QPACK                         May 2020
    Facebook
 
    Email: afrind@fb.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
