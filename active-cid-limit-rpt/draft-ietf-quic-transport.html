@@ -833,7 +833,7 @@ table.left {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Iyengar &amp; Thomson</td>
-<td class="center">Expires 14 November 2020</td>
+<td class="center">Expires 15 November 2020</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -846,12 +846,12 @@ table.left {
 <dd class="internet-draft">draft-ietf-quic-transport-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-05-13" class="published">13 May 2020</time>
+<time datetime="2020-05-14" class="published">14 May 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-11-14">14 November 2020</time></dd>
+<dd class="expires"><time datetime="2020-11-15">15 November 2020</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -904,7 +904,7 @@ code and issues list for this draft can be found at
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2739,19 +2739,19 @@ the current connection at any time, in any packet type.  This includes the
 connection ID issued by the server via the preferred_address transport
 parameter.<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-4">An endpoint SHOULD ensure that its peer has a sufficient number of available and
-unused connection IDs.  Endpoints store received connection IDs for future use
-and advertise the number of connection IDs they are willing to store with the
-active_connection_id_limit transport parameter.  An endpoint MUST NOT provide
-more connection IDs than the peer's limit, with the exception that connection
-IDs MAY be provided if sent in a NEW_CONNECTION_ID frame that also requests the
-retirement of enough connection IDs that the number of active connection IDs
-will stay within the limit.  An endpoint that receives a NEW_CONNECTION_ID
-frame that increases the number of active connection IDs - without a Retire
-Prior To field that requests retirement of enough active connections to keep the
-total number of active connection IDs within the value the endpoint advertised
-in its active_connection_id_limit transport parameter - MUST close the
-connection with an error of type CONNECTION_ID_LIMIT_ERROR.<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-5">An endpoint SHOULD supply a new connection ID when the peer retires a connection
+unused connection IDs.  Endpoints advertise the number of active connection IDs
+they are willing to maintain using the active_connection_id_limit transport
+parameter.  An endpoint MUST NOT provide more connection IDs than the peer's
+limit.  An endpoint MAY send connection IDs that temporarily exceed a peer's
+limit if the NEW_CONNECTION_ID frame also requires the retirement of any excess,
+by including a sufficiently large value in the Retire Prior To field.<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-5">A NEW_CONNECTION_ID frame might cause an endpoint to add some active connection
+IDs and retire others based on the value of the Retire Prior To field.  After
+processing a NEW_CONNECTION_ID frame and adding and retiring active connection
+IDs, if the number of active connection IDs exceeds the value advertised in its
+active_connection_id_limit transport parameter, an endpoint MUST close the
+connection with an error of type CONNECTION_ID_LIMIT_ERROR.<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-6">An endpoint SHOULD supply a new connection ID when the peer retires a connection
 ID.  If an endpoint provided fewer connection IDs than the peer's
 active_connection_id_limit, it MAY supply a new connection ID when it receives a
 packet with a previously unused connection ID.  An endpoint MAY limit the
@@ -2760,11 +2760,11 @@ avoid the risk of running out of connection IDs; see <a href="#reset-token" clas
 endpoint MAY also limit the issuance of connection IDs to reduce the amount of
 per-path state it maintains, such as path validation status, as its peer
 might interact with it over as many paths as there are issued connection
-IDs.<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-6">An endpoint that initiates migration and requires non-zero-length connection IDs
+IDs.<a href="#section-5.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-7">An endpoint that initiates migration and requires non-zero-length connection IDs
 SHOULD ensure that the pool of connection IDs available to its peer allows the
 peer to use a new connection ID on migration, as the peer will close the
-connection if the pool is exhausted.<a href="#section-5.1.1-6" class="pilcrow">¶</a></p>
+connection if the pool is exhausted.<a href="#section-5.1.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="retiring-cids">
@@ -9211,11 +9211,11 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dd class="break"></dd>
 <dt id="QUIC-RECOVERY">[QUIC-RECOVERY]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-05-13">13 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-05-14">14 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-TLS">[QUIC-TLS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-13">13 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-14">14 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1191">[RFC1191]</dt>
 <dd>
@@ -9286,7 +9286,7 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dd class="break"></dd>
 <dt id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-05-13">13 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-05-14">14 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-MANAGEABILITY">[QUIC-MANAGEABILITY]</dt>
 <dd>
