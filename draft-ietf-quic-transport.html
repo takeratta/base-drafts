@@ -6821,6 +6821,16 @@ be at least one unused active connection ID when the client initiates
 migration to the preferred address.<a href="#section-18.2-4.34" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
+<dt id="section-18.2-4.35"></dt>
+<dd id="section-18.2-4.36">The Connection ID and Stateless Reset Token fields of a preferred address are
+identical in syntax and semantics to the corresponding fields of a
+NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 19.15</a>).  A server that chooses
+a zero-length connection ID MUST NOT provide a preferred address.  Similarly,
+a server MUST NOT include a zero-length connection ID in this transport
+parameter.  A client MUST treat violation of these requirements as a
+connection error of type TRANSPORT_PARAMETER_ERROR.<a href="#section-18.2-4.36" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
 </dl>
 <span id="name-preferred-address-format"></span><div id="fig-preferred-address">
 <figure id="figure-19">
