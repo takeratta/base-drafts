@@ -832,7 +832,7 @@ table.left {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Iyengar &amp; Swett</td>
-<td class="center">Expires 14 November 2020</td>
+<td class="center">Expires 15 November 2020</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -845,12 +845,12 @@ table.left {
 <dd class="internet-draft">draft-ietf-quic-recovery-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-05-13" class="published">13 May 2020</time>
+<time datetime="2020-05-14" class="published">14 May 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-11-14">14 November 2020</time></dd>
+<dd class="expires"><time datetime="2020-11-15">15 November 2020</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -902,7 +902,7 @@ code and issues list for this draft can be found at
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2187,29 +2187,24 @@ congestion window, which is recommended to be the minimum of
 <code>10 * max_datagram_size</code> and <code>max(2 * max_datagram_size, 14720))</code>, where
 max_datagram_size is the current maximum size of a datagram for the connection,
 not including UDP or IP overhead.<a href="#section-6.9-4" class="pilcrow">¶</a></p>
-<p id="section-6.9-5">Endpoints can implement pacing as they choose, as long as the rate of bytes
-sent over any interval, <code>t[n] - t[m]</code>, does not exceed a small multiple, <code>N</code>,
-of maximum value of the congestion window, <code>congestion_window</code>, averaged over
-the round trip time estimate, <code>smoothed_rtt</code>. Allowing for bursts produces the
-following relation for the total number of bytes sent over any interval:<a href="#section-6.9-5" class="pilcrow">¶</a></p>
+<p id="section-6.9-5">Endpoints can implement pacing as they choose. A perfectly paced sender spreads
+bytes exactly evenly over time. For a window-based congestion controller, such
+as the one in this document, that rate can be computed by averaging the
+congestion window over the round-trip time. Expressed as a rate in bytes:<a href="#section-6.9-5" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-6.9-6">
 <pre>
-number of bytes sent between t[m] and t[n]
-    &lt;= N * congestion_window * (t[m] - t[n]) / smoothed_rtt
-       + min(10 * max_datagram_size,
-             max(2 * max_datagram_size, 14720))
+rate = N * congestion_window / smoothed_rtt
 </pre><a href="#section-6.9-6" class="pilcrow">¶</a>
 </div>
-<p id="section-6.9-7">The inclusion of the factor, <code>N</code>, with a value of at least 1 increases the rate
-of sending. The value of <code>N</code> might be increased to avoid having scheduling
-delays reduce the send rate below that allowed by the congestion controller.<a href="#section-6.9-7" class="pilcrow">¶</a></p>
-<p id="section-6.9-8">An endpoint that does not burst packets and has even spacing between packets
-might send packets spaced at intervals of:<a href="#section-6.9-8" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-6.9-9">
+<p id="section-6.9-7">Or, expressed as an inter-packet interval:<a href="#section-6.9-7" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.9-8">
 <pre>
 interval = smoothed_rtt * packet_size / congestion_window / N
-</pre><a href="#section-6.9-9" class="pilcrow">¶</a>
+</pre><a href="#section-6.9-8" class="pilcrow">¶</a>
 </div>
+<p id="section-6.9-9">Using a value for N that is small, but greater than 1 (for example, 1.25)
+ensures that short-term variations in round-trip time or scheduler delays don't
+result in not fully utilizing the congestion window.<a href="#section-6.9-9" class="pilcrow">¶</a></p>
 <p id="section-6.9-10">One possible implementation strategy for pacing uses a leaky bucket algorithm,
 where the capacity of the "bucket" is limited to the maximum burst size and the
 rate the "bucket" fills is determined by the above function.<a href="#section-6.9-10" class="pilcrow">¶</a></p>
@@ -2308,11 +2303,11 @@ detect.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
 <dl class="references">
 <dt id="QUIC-TLS">[QUIC-TLS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using TLS to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-13">13 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using TLS to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-14">14 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-transport-latest</span>, <time datetime="2020-05-13">13 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-latest">https://tools.ietf.org/html/draft-ietf-quic-transport-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-transport-latest</span>, <time datetime="2020-05-14">14 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-latest">https://tools.ietf.org/html/draft-ietf-quic-transport-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
 <dd>
