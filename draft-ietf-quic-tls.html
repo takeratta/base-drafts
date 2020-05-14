@@ -1650,7 +1650,7 @@ into the input flow as usual. As with STREAM frames, the offset is used to
 find the proper location in the data sequence.  If the result of this process
 is that new data is available, then it is delivered to TLS in order.<a href="#section-4.1.3-9.1" class="pilcrow">¶</a>
 </li>
-<li id="section-4.1.3-9.2">If the packet is from a previously installed encryption level, it MUST not
+<li id="section-4.1.3-9.2">If the packet is from a previously installed encryption level, it MUST NOT
 contain data which extends past the end of previously received data in that
 flow. Implementations MUST treat any violations of this requirement as a
 connection error of type PROTOCOL_VIOLATION.<a href="#section-4.1.3-9.2" class="pilcrow">¶</a>

@@ -634,7 +634,7 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
       it is delivered to TLS in order.
 
    *  If the packet is from a previously installed encryption level, it
-      MUST not contain data which extends past the end of previously
+      MUST NOT contain data which extends past the end of previously
       received data in that flow.  Implementations MUST treat any
       violations of this requirement as a connection error of type
       PROTOCOL_VIOLATION.
