@@ -2204,7 +2204,7 @@ interval = smoothed_rtt * packet_size / congestion_window / N
 </div>
 <p id="section-6.9-9">Using a value for <code>N</code> that is small, but at least 1 (for example, 1.25) ensures
 that short-term variations in round-trip time or scheduler delays don't result
-in not fully utilizing the congestion window.<a href="#section-6.9-9" class="pilcrow">¶</a></p>
+in under-utilization of the congestion window.<a href="#section-6.9-9" class="pilcrow">¶</a></p>
 <p id="section-6.9-10">One possible implementation strategy for pacing uses a leaky bucket algorithm,
 where the capacity of the "bucket" is limited to the maximum burst size and the
 rate the "bucket" fills is determined by the above function.<a href="#section-6.9-10" class="pilcrow">¶</a></p>

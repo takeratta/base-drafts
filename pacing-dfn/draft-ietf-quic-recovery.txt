@@ -1248,7 +1248,7 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
    Using a value for "N" that is small, but at least 1 (for example,
    1.25) ensures that short-term variations in round-trip time or
-   scheduler delays don't result in not fully utilizing the congestion
+   scheduler delays don't result in under-utilization of the congestion
    window.
 
    One possible implementation strategy for pacing uses a leaky bucket
