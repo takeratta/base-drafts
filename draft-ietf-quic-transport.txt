@@ -6170,8 +6170,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
                   Figure 18: Transport Parameter Encoding
 
-   The Transport Param Length field contains the length of the Transport
-   Parameter Value field.
+   The Transport Parameter Length field contains the length of the
+   Transport Parameter Value field.
 
    QUIC encodes transport parameters into a sequence of bytes, which are
    then included in the cryptographic handshake.
