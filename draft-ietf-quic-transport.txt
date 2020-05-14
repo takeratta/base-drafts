@@ -140,12 +140,12 @@ Internet-Draft           QUIC Transport Protocol                May 2020
        9.3.3.  Off-Path Packet Forwarding  . . . . . . . . . . . . .  55
      9.4.  Loss Detection and Congestion Control . . . . . . . . . .  56
      9.5.  Privacy Implications of Connection Migration  . . . . . .  57
-     9.6.  Server's Preferred Address  . . . . . . . . . . . . . . .  58
+     9.6.  Server's Preferred Address  . . . . . . . . . . . . . . .  59
        9.6.1.  Communicating a Preferred Address . . . . . . . . . .  59
        9.6.2.  Responding to Connection Migration  . . . . . . . . .  59
        9.6.3.  Interaction of Client Migration and Preferred
                Address . . . . . . . . . . . . . . . . . . . . . . .  60
-     9.7.  Use of IPv6 Flow-Label and Migration  . . . . . . . . . .  60
+     9.7.  Use of IPv6 Flow-Label and Migration  . . . . . . . . . .  61
    10. Connection Termination  . . . . . . . . . . . . . . . . . . .  61
      10.1.  Closing and Draining Connection States . . . . . . . . .  61
      10.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . . . .  63
@@ -3206,6 +3206,17 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    packets, such as timing and size, from being used to correlate
    activity.
 
+   An endpoint SHOULD NOT initiate migration with a peer that has
+   requested a zero-length connection ID, because traffic over the new
+   path might be trivially linkable to traffic over the old one.  If the
+   server is able to route packets with a zero-length connection ID to
+   the right connection, it means that the server is using other
+   information to demultiplex packets.  For example, a server might
+   provide a unique address to every client, for instance using HTTP
+   alternative services [ALTSVC].  Information that might allow correct
+   routing of packets across multiple network paths will also allow
+   activity on those paths to be linked by entities other than the peer.
+
    Unintentional changes in path without a change in connection ID are
    possible.  For example, after a period of network inactivity, NAT
    rebinding might cause packets to be sent on a new path when the
@@ -3230,6 +3241,15 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    IDs, a migrating endpoint could include a NEW_CONNECTION_ID frame in
    all packets sent on a new network path.
 
+
+
+
+
+Iyengar & Thomson       Expires 15 November 2020               [Page 58]
+
+Internet-Draft           QUIC Transport Protocol                May 2020
+
+
 9.6.  Server's Preferred Address
 
    QUIC allows servers to accept connections on one IP address and
@@ -3239,16 +3259,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    but would prefer to use a unicast address to ensure connection
    stability.  This section describes the protocol for migrating a
    connection to a preferred server address.
-
-
-
-
-
-
-Iyengar & Thomson       Expires 15 November 2020               [Page 58]
-
-Internet-Draft           QUIC Transport Protocol                May 2020
-
 
    Migrating a connection to a new server address mid-connection is left
    for future work.  If a client receives packets from a new server
@@ -3289,22 +3299,19 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    preferred address.  This helps to guard against spurious migration
    initiated by an attacker.
 
-   Once the server has completed its path validation and has received a
-   non-probing packet with a new largest packet number on its preferred
-   address, the server begins sending non-probing packets to the client
-   exclusively from its preferred IP address.  It SHOULD drop packets
-   for this connection received on the old IP address, but MAY continue
-   to process delayed packets.
-
-
-
-
 
 
 Iyengar & Thomson       Expires 15 November 2020               [Page 59]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   Once the server has completed its path validation and has received a
+   non-probing packet with a new largest packet number on its preferred
+   address, the server begins sending non-probing packets to the client
+   exclusively from its preferred IP address.  It SHOULD drop packets
+   for this connection received on the old IP address, but MAY continue
+   to process delayed packets.
 
    The addresses that a server provides in the preferred_address
    transport parameter are only valid for the connection in which they
@@ -3346,13 +3353,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    ID available for migration, but the client MAY use this connection ID
    on any path.
 
-9.7.  Use of IPv6 Flow-Label and Migration
-
-   Endpoints that send data using IPv6 SHOULD apply an IPv6 flow label
-   in compliance with [RFC6437], unless the local API does not allow
-   setting IPv6 flow labels.
-
-
 
 
 
@@ -3361,6 +3361,12 @@ Iyengar & Thomson       Expires 15 November 2020               [Page 60]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+9.7.  Use of IPv6 Flow-Label and Migration
+
+   Endpoints that send data using IPv6 SHOULD apply an IPv6 flow label
+   in compliance with [RFC6437], unless the local API does not allow
+   setting IPv6 flow labels.
 
    The IPv6 flow label SHOULD be a pseudo-random function of the source
    and destination addresses, source and destination UDP ports, and the
@@ -3404,12 +3410,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    and to identify packets as belonging to the connection.  The
    endpoint's selected connection ID and the QUIC version are sufficient
    information to identify packets for a closing connection; an endpoint
-   can discard all other connection state.  An endpoint MAY retain
-   packet protection keys for incoming packets to allow it to read and
-   process a CONNECTION_CLOSE frame.
-
-
-
 
 
 
@@ -3417,6 +3417,10 @@ Iyengar & Thomson       Expires 15 November 2020               [Page 61]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   can discard all other connection state.  An endpoint MAY retain
+   packet protection keys for incoming packets to allow it to read and
+   process a CONNECTION_CLOSE frame.
 
    The draining state is entered once an endpoint receives a signal that
    its peer is closing or draining.  While otherwise identical to the
@@ -3459,10 +3463,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    packets it sends to this new address until the address is validated;
    see Section 8.2.  A server in the closing state MAY instead choose to
    discard packets received from a new source address.
-
-
-
-
 
 
 
@@ -8669,9 +8669,9 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
 23.2.  Informative References
 
-   [EARLY-DESIGN]
-              Roskind, J., "QUIC: Multiplexed Transport Over UDP", 2
-              December 2013, <https://goo.gl/dMVtFi>.
+   [ALTSVC]   Nottingham, M., McManus, P., and J. Reschke, "HTTP
+              Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
+              April 2016, <https://www.rfc-editor.org/info/rfc7838>.
 
 
 
@@ -8681,6 +8681,10 @@ Iyengar & Thomson       Expires 15 November 2020              [Page 155]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   [EARLY-DESIGN]
+              Roskind, J., "QUIC: Multiplexed Transport Over UDP", 2
+              December 2013, <https://goo.gl/dMVtFi>.
 
    [HTTP2]    Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
               Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
@@ -8725,10 +8729,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
               RFC 4443, DOI 10.17487/RFC4443, March 2006,
               <https://www.rfc-editor.org/info/rfc4443>.
 
-   [RFC4787]  Audet, F., Ed. and C. Jennings, "Network Address
-              Translation (NAT) Behavioral Requirements for Unicast
-              UDP", BCP 127, RFC 4787, DOI 10.17487/RFC4787, January
-              2007, <https://www.rfc-editor.org/info/rfc4787>.
 
 
 
@@ -8737,6 +8737,11 @@ Iyengar & Thomson       Expires 15 November 2020              [Page 156]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   [RFC4787]  Audet, F., Ed. and C. Jennings, "Network Address
+              Translation (NAT) Behavioral Requirements for Unicast
+              UDP", BCP 127, RFC 4787, DOI 10.17487/RFC4787, January
+              2007, <https://www.rfc-editor.org/info/rfc4787>.
 
    [RFC5681]  Allman, M., Paxson, V., and E. Blanton, "TCP Congestion
               Control", RFC 5681, DOI 10.17487/RFC5681, September 2009,
@@ -8775,11 +8780,6 @@ Appendix A.  Sample Packet Number Decoding Algorithm
 
    The pseudo-code in Figure 39 shows how an implementation can decode
    packet numbers after header protection has been removed.
-
-
-
-
-
 
 
 

@@ -4030,24 +4030,33 @@ the same connection across different network paths.  Header protection ensures
 that packet numbers cannot be used to correlate activity.  This does not prevent
 other properties of packets, such as timing and size, from being used to
 correlate activity.<a href="#section-9.5-4" class="pilcrow">¶</a></p>
-<p id="section-9.5-5">Unintentional changes in path without a change in connection ID are possible.
+<p id="section-9.5-5">An endpoint SHOULD NOT initiate migration with a peer that has requested a
+zero-length connection ID, because traffic over the new path might be trivially
+linkable to traffic over the old one. If the server is able to route packets
+with a zero-length connection ID to the right connection, it means that the
+server is using other information to demultiplex packets. For example, a server
+might provide a unique address to every client, for instance using HTTP
+alternative services <span>[<a href="#ALTSVC" class="xref">ALTSVC</a>]</span>.  Information that might allow correct
+routing of packets across multiple network paths will also allow activity on
+those paths to be linked by entities other than the peer.<a href="#section-9.5-5" class="pilcrow">¶</a></p>
+<p id="section-9.5-6">Unintentional changes in path without a change in connection ID are possible.
 For example, after a period of network inactivity, NAT rebinding might cause
-packets to be sent on a new path when the client resumes sending.<a href="#section-9.5-5" class="pilcrow">¶</a></p>
-<p id="section-9.5-6">A client might wish to reduce linkability by employing a new connection ID and
+packets to be sent on a new path when the client resumes sending.<a href="#section-9.5-6" class="pilcrow">¶</a></p>
+<p id="section-9.5-7">A client might wish to reduce linkability by employing a new connection ID and
 source UDP port when sending traffic after a period of inactivity.  Changing the
 UDP port from which it sends packets at the same time might cause the packet to
 appear as a connection migration. This ensures that the mechanisms that support
 migration are exercised even for clients that don't experience NAT rebindings or
 genuine migrations.  Changing port number can cause a peer to reset its
 congestion state (see <a href="#migration-cc" class="xref">Section 9.4</a>), so the port SHOULD only be changed
-infrequently.<a href="#section-9.5-6" class="pilcrow">¶</a></p>
-<p id="section-9.5-7">An endpoint that exhausts available connection IDs cannot probe new paths or
+infrequently.<a href="#section-9.5-7" class="pilcrow">¶</a></p>
+<p id="section-9.5-8">An endpoint that exhausts available connection IDs cannot probe new paths or
 initiate migration, nor can it respond to probes or attempts by its peer to
 migrate.  To ensure that migration is possible and packets sent on different
 paths cannot be correlated, endpoints SHOULD provide new connection IDs before
 peers migrate; see <a href="#issue-cid" class="xref">Section 5.1.1</a>.  If a peer might have exhausted available
 connection IDs, a migrating endpoint could include a NEW_CONNECTION_ID frame in
-all packets sent on a new network path.<a href="#section-9.5-7" class="pilcrow">¶</a></p>
+all packets sent on a new network path.<a href="#section-9.5-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="preferred-address">
@@ -9279,6 +9288,10 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <a href="#section-23.2" class="section-number selfRef">23.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="ALTSVC">[ALTSVC]</dt>
+<dd>
+<span class="refAuthor">Nottingham, M.</span><span class="refAuthor">, McManus, P.</span><span class="refAuthor">, and J. Reschke</span>, <span class="refTitle">"HTTP Alternative Services"</span>, <span class="seriesInfo">RFC 7838</span>, <span class="seriesInfo">DOI 10.17487/RFC7838</span>, <time datetime="2016-04">April 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7838">https://www.rfc-editor.org/info/rfc7838</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="EARLY-DESIGN">[EARLY-DESIGN]</dt>
 <dd>
 <span class="refAuthor">Roskind, J.</span>, <span class="refTitle">"QUIC: Multiplexed Transport Over UDP"</span>, <time datetime="2013-12-02">2 December 2013</time>, <span>&lt;<a href="https://goo.gl/dMVtFi">https://goo.gl/dMVtFi</a>&gt;</span>. </dd>
