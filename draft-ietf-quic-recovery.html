@@ -1014,9 +1014,6 @@ code and issues list for this draft can be found at
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.2.2.4">
                     <p id="section-toc.1-1.5.2.2.2.4.1"><a href="#section-5.2.4" class="xref">5.2.4</a>.  <a href="#name-sending-probe-packets" class="xref">Sending Probe Packets</a><a href="#section-toc.1-1.5.2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.5.2.2.2.5">
-                    <p id="section-toc.1-1.5.2.2.2.5.1"><a href="#section-5.2.5" class="xref">5.2.5</a>.  <a href="#name-loss-detection-2" class="xref">Loss Detection</a><a href="#section-toc.1-1.5.2.2.2.5.1" class="pilcrow">¶</a></p>
-</li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5.2.3">
@@ -1718,13 +1715,17 @@ and larger thresholds increase loss detection delay.<a href="#section-5.1.2-7" c
         </h3>
 <p id="section-5.2-1">A Probe Timeout (PTO) triggers sending one or two probe datagrams when
 ack-eliciting packets are not acknowledged within the expected period of
-time or the handshake has not been completed.  A PTO enables a connection to
-recover from loss of tail packets or acknowledgements.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">As with loss detection, the probe timeout is per packet number space.
+time or the server may not have validated the client's address.  A PTO enables
+a connection to recover from loss of tail packets or acknowledgements.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">A PTO timer expiration event does not indicate packet loss and MUST NOT cause
+prior unacknowledged packets to be marked as lost. When an acknowledgement
+is received that newly acknowledges packets, loss detection proceeds as
+dictated by packet and time threshold mechanisms; see <a href="#ack-loss-detection" class="xref">Section 5.1</a>.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">As with loss detection, the probe timeout is per packet number space.
 The PTO algorithm used in QUIC implements the reliability functions of
 Tail Loss Probe <span>[<a href="#RACK" class="xref">RACK</a>]</span>, RTO <span>[<a href="#RFC5681" class="xref">RFC5681</a>]</span>, and F-RTO algorithms for
 TCP <span>[<a href="#RFC5682" class="xref">RFC5682</a>]</span>. The timeout computation is based on TCP's retransmission
-timeout period <span>[<a href="#RFC6298" class="xref">RFC6298</a>]</span>.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+timeout period <span>[<a href="#RFC6298" class="xref">RFC6298</a>]</span>.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 <div id="computing-pto">
 <section id="section-5.2.1">
           <h4 id="name-computing-pto">
@@ -1896,19 +1897,6 @@ implementations must choose between sending the same payload every time
 or sending different payloads.  Sending the same payload may be simpler
 and ensures the highest priority frames arrive first.  Sending different
 payloads each time reduces the chances of spurious retransmission.<a href="#section-5.2.4-8" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="pto-loss">
-<section id="section-5.2.5">
-          <h4 id="name-loss-detection-2">
-<a href="#section-5.2.5" class="section-number selfRef">5.2.5. </a><a href="#name-loss-detection-2" class="section-name selfRef">Loss Detection</a>
-          </h4>
-<p id="section-5.2.5-1">Delivery or loss of packets in flight is established when an ACK frame is
-received that newly acknowledges one or more packets.<a href="#section-5.2.5-1" class="pilcrow">¶</a></p>
-<p id="section-5.2.5-2">A PTO timer expiration event does not indicate packet loss and MUST NOT cause
-prior unacknowledged packets to be marked as lost. When an acknowledgement
-is received that newly acknowledges packets, loss detection proceeds as
-dictated by packet and time threshold mechanisms; see <a href="#ack-loss-detection" class="xref">Section 5.1</a>.<a href="#section-5.2.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
