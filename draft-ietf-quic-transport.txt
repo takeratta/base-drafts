@@ -1598,26 +1598,26 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    preferred_address transport parameter.
 
    An endpoint SHOULD ensure that its peer has a sufficient number of
-   available and unused connection IDs.  Endpoints store received
-   connection IDs for future use and advertise the number of connection
-   IDs they are willing to store with the active_connection_id_limit
-   transport parameter.  An endpoint MUST NOT provide more connection
-   IDs than the peer's limit.  An endpoint that receives more connection
-   IDs than its advertised active_connection_id_limit MUST close the
-   connection with an error of type CONNECTION_ID_LIMIT_ERROR.
+   available and unused connection IDs.  Endpoints advertise the number
+   of active connection IDs they are willing to maintain using the
+   active_connection_id_limit transport parameter.  An endpoint MUST NOT
+   provide more connection IDs than the peer's limit.  An endpoint MAY
+   send connection IDs that temporarily exceed a peer's limit if the
+   NEW_CONNECTION_ID frame also requires the retirement of any excess,
+   by including a sufficiently large value in the Retire Prior To field.
+
+   A NEW_CONNECTION_ID frame might cause an endpoint to add some active
+   connection IDs and retire others based on the value of the Retire
+   Prior To field.  After processing a NEW_CONNECTION_ID frame and
+   adding and retiring active connection IDs, if the number of active
+   connection IDs exceeds the value advertised in its
+   active_connection_id_limit transport parameter, an endpoint MUST
+   close the connection with an error of type CONNECTION_ID_LIMIT_ERROR.
 
    An endpoint SHOULD supply a new connection ID when the peer retires a
    connection ID.  If an endpoint provided fewer connection IDs than the
    peer's active_connection_id_limit, it MAY supply a new connection ID
    when it receives a packet with a previously unused connection ID.  An
-   endpoint MAY limit the frequency or the total number of connection
-   IDs issued for each connection to avoid the risk of running out of
-   connection IDs; see Section 10.4.2.  An endpoint MAY also limit the
-   issuance of connection IDs to reduce the amount of per-path state it
-   maintains, such as path validation status, as its peer might interact
-   with it over as many paths as there are issued connection IDs.
-
-
 
 
 
@@ -1625,6 +1625,13 @@ Iyengar & Thomson       Expires 18 November 2020               [Page 29]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   endpoint MAY limit the frequency or the total number of connection
+   IDs issued for each connection to avoid the risk of running out of
+   connection IDs; see Section 10.4.2.  An endpoint MAY also limit the
+   issuance of connection IDs to reduce the amount of per-path state it
+   maintains, such as path validation status, as its peer might interact
+   with it over as many paths as there are issued connection IDs.
 
    An endpoint that initiates migration and requires non-zero-length
    connection IDs SHOULD ensure that the pool of connection IDs
@@ -1667,13 +1674,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    connection ID to the set of active connection IDs.  This ordering
    allows an endpoint to replace all active connection IDs without the
    possibility of a peer having no available connection IDs and without
-   exceeding the limit the peer sets in the active_connection_id_limit
-   transport parameter; see Section 18.2.  Failure to cease using the
-   connection IDs when requested can result in connection failures, as
-   the issuing endpoint might be unable to continue using the connection
-   IDs with the active connection.
-
-
 
 
 
@@ -1681,6 +1681,12 @@ Iyengar & Thomson       Expires 18 November 2020               [Page 30]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   exceeding the limit the peer sets in the active_connection_id_limit
+   transport parameter; see Section 18.2.  Failure to cease using the
+   connection IDs when requested can result in connection failures, as
+   the issuing endpoint might be unable to continue using the connection
+   IDs with the active connection.
 
    An endpoint SHOULD limit the number of connection IDs it has retired
    locally and have not yet been acknowledged.  An endpoint SHOULD allow
@@ -1725,18 +1731,17 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    version than that of the connection, or if the removal of packet
    protection is unsuccessful once the expected keys are available.
 
-   Invalid packets without packet protection, such as Initial, Retry, or
-   Version Negotiation, MAY be discarded.  An endpoint MUST generate a
-   connection error if it commits changes to state before discovering an
-   error.
-
-
 
 
 Iyengar & Thomson       Expires 18 November 2020               [Page 31]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   Invalid packets without packet protection, such as Initial, Retry, or
+   Version Negotiation, MAY be discarded.  An endpoint MUST generate a
+   connection error if it commits changes to state before discovering an
+   error.
 
 5.2.1.  Client Packet Handling
 
@@ -1781,11 +1786,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    specification, the server proceeds with the handshake (Section 7).
    This commits the server to the version that the client selected.
 
-   If a server isn't currently accepting any new connections, it SHOULD
-   send an Initial packet containing a CONNECTION_CLOSE frame with error
-   code SERVER_BUSY.
-
-
 
 
 
@@ -1793,6 +1793,10 @@ Iyengar & Thomson       Expires 18 November 2020               [Page 32]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   If a server isn't currently accepting any new connections, it SHOULD
+   send an Initial packet containing a CONNECTION_CLOSE frame with error
+   code SERVER_BUSY.
 
    If the packet is a 0-RTT packet, the server MAY buffer a limited
    number of these packets in anticipation of a late-arriving Initial
@@ -1838,10 +1842,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    Each connection starts with a handshake phase, during which client
    and server establish a shared secret using the cryptographic
    handshake protocol [QUIC-TLS] and negotiate the application protocol.
-   The handshake (Section 7) confirms that both endpoints are willing to
-   communicate (Section 8.1) and establishes parameters for the
-   connection (Section 7.3).
-
 
 
 
@@ -1849,6 +1849,10 @@ Iyengar & Thomson       Expires 18 November 2020               [Page 33]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   The handshake (Section 7) confirms that both endpoints are willing to
+   communicate (Section 8.1) and establishes parameters for the
+   connection (Section 7.3).
 
    An application protocol can also operate in a limited fashion during
    the handshake phase.  0-RTT allows application messages to be sent by
@@ -1893,10 +1897,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    *  listen for incoming connections, which prepares for the exchange
       described in Section 7;
 
-   *  if Early Data is supported, embed application-controlled data in
-      the TLS resumption ticket sent to the client; and
-
-
 
 
 
@@ -1905,6 +1905,9 @@ Iyengar & Thomson       Expires 18 November 2020               [Page 34]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   *  if Early Data is supported, embed application-controlled data in
+      the TLS resumption ticket sent to the client; and
 
    *  if Early Data is supported, retrieve application-controlled data
       from the client's resumption ticket and enable rejecting Early
@@ -1951,9 +1954,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    will accept.  An endpoint MUST NOT send a Version Negotiation packet
    in response to receiving a Version Negotiation packet.
 
-   This system allows a server to process packets with unsupported
-   versions without retaining state.  Though either the Initial packet
-   or the Version Negotiation packet that is sent in response could be
 
 
 
@@ -1962,6 +1962,9 @@ Iyengar & Thomson       Expires 18 November 2020               [Page 35]
 Internet-Draft           QUIC Transport Protocol                May 2020
 
 
+   This system allows a server to process packets with unsupported
+   versions without retaining state.  Though either the Initial packet
+   or the Version Negotiation packet that is sent in response could be
    lost, the client will send new packets until it successfully receives
    a response or it abandons the connection attempt.  As a result, the
    client discards all state for the connection and does not send any
@@ -2007,9 +2010,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    packet that the client sent.  If this check fails, the packet MUST be
    discarded.
 
-   Once the Version Negotiation packet is determined to be valid, the
-   client then selects an acceptable protocol version from the list
-   provided by the server.  The client then attempts to create a new
 
 
 
@@ -2018,6 +2018,9 @@ Iyengar & Thomson       Expires 18 November 2020               [Page 36]
 Internet-Draft           QUIC Transport Protocol                May 2020
 
 
+   Once the Version Negotiation packet is determined to be valid, the
+   client then selects an acceptable protocol version from the list
+   provided by the server.  The client then attempts to create a new
    connection using that version.  The new connection MUST use a new
    random Destination Connection ID different from the one it had
    previously sent.
@@ -2064,15 +2067,14 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       -  keying material is usable for packet protection for both 0-RTT
          and 1-RTT packets, and
 
-      -  1-RTT keys have forward secrecy
-
-
 
 
 Iyengar & Thomson       Expires 18 November 2020               [Page 37]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+      -  1-RTT keys have forward secrecy
 
    *  authenticated values for transport parameters of both endpoints,
       and confidentiality protection for server transport parameters
@@ -2118,8 +2120,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    any number more.  For instance, the server's first flight contains
    Initial packets, Handshake packets, and "0.5-RTT data" in 1-RTT
    packets with a short header.
-
-
 
 
 
