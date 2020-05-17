@@ -2761,7 +2761,7 @@ peer to use a new connection ID on migration, as the peer will close the
 connection if the pool is exhausted.<a href="#section-5.1.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="retiring-cids">
+<div id="retire-cid">
 <section id="section-5.1.2">
           <h4 id="name-consuming-and-retiring-conn">
 <a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-consuming-and-retiring-conn" class="section-name selfRef">Consuming and Retiring Connection IDs</a>
@@ -2776,8 +2776,9 @@ Sending a RETIRE_CONNECTION_ID frame indicates that the connection ID will not
 be used again and requests that the peer replace it with a new connection ID
 using a NEW_CONNECTION_ID frame.<a href="#section-5.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-3">As discussed in <a href="#migration-linkability" class="xref">Section 9.5</a>, endpoints limit the use of a
-connection ID to a single network path where possible. Endpoints SHOULD retire
-connection IDs when no longer actively using the network path on which the
+connection ID to packets sent from a single local address to a single
+destination address.  Endpoints SHOULD retire connection IDs when they are no
+longer actively using either the local or destination address for which the
 connection ID was used.<a href="#section-5.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-4">An endpoint might need to stop accepting previously issued connection IDs in
 certain circumstances.  Such an endpoint can cause its peer to retire connection
@@ -2795,6 +2796,16 @@ active_connection_id_limit transport parameter; see
 <a href="#transport-parameter-definitions" class="xref">Section 18.2</a>. Failure to cease using the connection IDs
 when requested can result in connection failures, as the issuing endpoint might
 be unable to continue using the connection IDs with the active connection.<a href="#section-5.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-5.1.2-6">An endpoint SHOULD limit the number of connection IDs it has retired locally and
+have not yet been acknowledged. An endpoint SHOULD allow for sending and
+tracking a number of RETIRE_CONNECTION_ID frames of at least twice the
+active_connection_id limit. An endpoint MUST NOT forget a connection ID without
+retiring it, though it MAY choose to treat having connection IDs in need of
+retirement that exceed this limit as a connection error of type
+CONNECTION_ID_LIMIT_ERROR.<a href="#section-5.1.2-6" class="pilcrow">¶</a></p>
+<p id="section-5.1.2-7">Endpoints SHOULD NOT issue updates of the Retire Prior To field before receiving
+RETIRE_CONNECTION_ID frames that retire all connection IDs indicated by the
+previous Retire Prior To value.<a href="#section-5.1.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3841,9 +3852,10 @@ rate. Therefore, the endpoint resets its congestion controller, as described in
 verifies ECN capability as described in <a href="#ecn" class="xref">Section 13.4</a>.<a href="#section-9.2-4" class="pilcrow">¶</a></p>
 <p id="section-9.2-5">Receiving acknowledgments for data sent on the new path serves as proof of the
 peer's reachability from the new address.  Note that since acknowledgments may
-be received on any path, return reachability on the new path is not
-established. To establish return reachability on the new path, an endpoint MAY
-concurrently initiate path validation <a href="#migrate-validate" class="xref">Section 8.2</a> on the new path.<a href="#section-9.2-5" class="pilcrow">¶</a></p>
+be received on any path, return reachability on the new path is not established.
+To establish return reachability on the new path, an endpoint MAY concurrently
+initiate path validation <a href="#migrate-validate" class="xref">Section 8.2</a> on the new path or it MAY choose
+to wait for the peer to send the next non-probing frame to its new address.<a href="#section-9.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="migration-response">
@@ -4019,44 +4031,51 @@ effective endpoints need to ensure that connection IDs they provide cannot be
 linked by any other entity.<a href="#section-9.5-1" class="pilcrow">¶</a></p>
 <p id="section-9.5-2">At any time, endpoints MAY change the Destination Connection ID they send to a
 value that has not been used on another path.<a href="#section-9.5-2" class="pilcrow">¶</a></p>
-<p id="section-9.5-3">An endpoint MUST use a new connection ID if it initiates connection migration as
-described in <a href="#initiating-migration" class="xref">Section 9.2</a> or probes a new network path as described
-in <a href="#probing" class="xref">Section 9.1</a>.  An endpoint MUST use a new connection ID in response to a
-change in the address of a peer if the packet with the new peer address uses an
-active connection ID that has not been previously used by the peer.<a href="#section-9.5-3" class="pilcrow">¶</a></p>
-<p id="section-9.5-4">Using different connection IDs for packets sent in both directions on each new
+<p id="section-9.5-3">An endpoint MUST NOT reuse a connection ID when sending from more than one local
+address, for example when initiating connection migration as described in
+<a href="#initiating-migration" class="xref">Section 9.2</a> or when probing a new network path as described in
+<a href="#probing" class="xref">Section 9.1</a>.<a href="#section-9.5-3" class="pilcrow">¶</a></p>
+<p id="section-9.5-4">Similarly, an endpoint MUST NOT reuse a connection ID when sending to more than
+one destination address.  Due to network changes outside the control of its
+peer, an endpoint might receive packets from a new source address with the same
+destination connection ID, in which case it MAY continue to use the current
+connection ID with the new remote address while still sending from the same
+local address.<a href="#section-9.5-4" class="pilcrow">¶</a></p>
+<p id="section-9.5-5">These requirements regarding connection ID reuse apply only to the sending of
+packets, as unintentional changes in path without a change in connection ID are
+possible.  For example, after a period of network inactivity, NAT rebinding
+might cause packets to be sent on a new path when the client resumes sending.
+An endpoint responds to such an event as described in <a href="#migration-response" class="xref">Section 9.3</a>.<a href="#section-9.5-5" class="pilcrow">¶</a></p>
+<p id="section-9.5-6">Using different connection IDs for packets sent in both directions on each new
 network path eliminates the use of the connection ID for linking packets from
 the same connection across different network paths.  Header protection ensures
 that packet numbers cannot be used to correlate activity.  This does not prevent
 other properties of packets, such as timing and size, from being used to
-correlate activity.<a href="#section-9.5-4" class="pilcrow">¶</a></p>
-<p id="section-9.5-5">An endpoint SHOULD NOT initiate migration with a peer that has requested a
+correlate activity.<a href="#section-9.5-6" class="pilcrow">¶</a></p>
+<p id="section-9.5-7">An endpoint SHOULD NOT initiate migration with a peer that has requested a
 zero-length connection ID, because traffic over the new path might be trivially
-linkable to traffic over the old one. If the server is able to route packets
+linkable to traffic over the old one.  If the server is able to route packets
 with a zero-length connection ID to the right connection, it means that the
-server is using other information to demultiplex packets. For example, a server
+server is using other information to demultiplex packets.  For example, a server
 might provide a unique address to every client, for instance using HTTP
 alternative services <span>[<a href="#ALTSVC" class="xref">ALTSVC</a>]</span>.  Information that might allow correct
 routing of packets across multiple network paths will also allow activity on
-those paths to be linked by entities other than the peer.<a href="#section-9.5-5" class="pilcrow">¶</a></p>
-<p id="section-9.5-6">Unintentional changes in path without a change in connection ID are possible.
-For example, after a period of network inactivity, NAT rebinding might cause
-packets to be sent on a new path when the client resumes sending.<a href="#section-9.5-6" class="pilcrow">¶</a></p>
-<p id="section-9.5-7">A client might wish to reduce linkability by employing a new connection ID and
+those paths to be linked by entities other than the peer.<a href="#section-9.5-7" class="pilcrow">¶</a></p>
+<p id="section-9.5-8">A client might wish to reduce linkability by employing a new connection ID and
 source UDP port when sending traffic after a period of inactivity.  Changing the
 UDP port from which it sends packets at the same time might cause the packet to
 appear as a connection migration. This ensures that the mechanisms that support
 migration are exercised even for clients that don't experience NAT rebindings or
 genuine migrations.  Changing port number can cause a peer to reset its
 congestion state (see <a href="#migration-cc" class="xref">Section 9.4</a>), so the port SHOULD only be changed
-infrequently.<a href="#section-9.5-7" class="pilcrow">¶</a></p>
-<p id="section-9.5-8">An endpoint that exhausts available connection IDs cannot probe new paths or
+infrequently.<a href="#section-9.5-8" class="pilcrow">¶</a></p>
+<p id="section-9.5-9">An endpoint that exhausts available connection IDs cannot probe new paths or
 initiate migration, nor can it respond to probes or attempts by its peer to
 migrate.  To ensure that migration is possible and packets sent on different
 paths cannot be correlated, endpoints SHOULD provide new connection IDs before
 peers migrate; see <a href="#issue-cid" class="xref">Section 5.1.1</a>.  If a peer might have exhausted available
 connection IDs, a migrating endpoint could include a NEW_CONNECTION_ID frame in
-all packets sent on a new network path.<a href="#section-9.5-8" class="pilcrow">¶</a></p>
+all packets sent on a new network path.<a href="#section-9.5-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="preferred-address">
@@ -4083,10 +4102,11 @@ packets.<a href="#section-9.6-2" class="pilcrow">¶</a></p>
 transport parameter in the TLS handshake.<a href="#section-9.6.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.6.1-2">Servers MAY communicate a preferred address of each address family (IPv4 and
 IPv6) to allow clients to pick the one most suited to their network attachment.<a href="#section-9.6.1-2" class="pilcrow">¶</a></p>
-<p id="section-9.6.1-3">Once the handshake is finished, the client SHOULD select one of the two
+<p id="section-9.6.1-3">Once the handshake is confirmed, the client SHOULD select one of the two
 server's preferred addresses and initiate path validation (see
-<a href="#migrate-validate" class="xref">Section 8.2</a>) of that address using the connection ID provided in the
-preferred_address transport parameter.<a href="#section-9.6.1-3" class="pilcrow">¶</a></p>
+<a href="#migrate-validate" class="xref">Section 8.2</a>) of that address using any previously unused active
+connection ID, taken from either the preferred_address transport parameter or
+a NEW_CONNECTION_ID frame.<a href="#section-9.6.1-3" class="pilcrow">¶</a></p>
 <p id="section-9.6.1-4">If path validation succeeds, the client SHOULD immediately begin sending all
 future packets to the new server address using the new connection ID and
 discontinue use of the old server address.  If path validation fails, the client
@@ -7738,8 +7758,8 @@ NEW_CONNECTION_ID Frame {
 <dd class="break"></dd>
 <dt id="section-19.15-5.3">Retire Prior To:</dt>
 <dd id="section-19.15-5.4">
-  A variable-length integer indicating which connection IDs should be retired.
-See <a href="#retiring-cids" class="xref">Section 5.1.2</a>.<a href="#section-19.15-5.4" class="pilcrow">¶</a>
+  A variable-length integer indicating which connection IDs should be retired;
+see <a href="#retire-cid" class="xref">Section 5.1.2</a>.<a href="#section-19.15-5.4" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 <dt id="section-19.15-5.5">Length:</dt>
@@ -7778,7 +7798,7 @@ sequence number, or if a sequence number is used for different connection
 IDs, the endpoint MAY treat that receipt as a connection error of type
 PROTOCOL_VIOLATION.<a href="#section-19.15-8" class="pilcrow">¶</a></p>
 <p id="section-19.15-9">The Retire Prior To field counts connection IDs established during connection
-setup and the preferred_address transport parameter; see <a href="#retiring-cids" class="xref">Section 5.1.2</a>. The
+setup and the preferred_address transport parameter; see <a href="#retire-cid" class="xref">Section 5.1.2</a>. The
 Retire Prior To field MUST be less than or equal to the Sequence Number field.
 Receiving a value greater than the Sequence Number MUST be treated as a
 connection error of type FRAME_ENCODING_ERROR.<a href="#section-19.15-9" class="pilcrow">¶</a></p>
@@ -7825,8 +7845,7 @@ RETIRE_CONNECTION_ID Frame {
 <dl class="dlParallel" id="section-19.16-6">
           <dt id="section-19.16-6.1">Sequence Number:</dt>
 <dd id="section-19.16-6.2">
-  The sequence number of the connection ID being retired.  See
-<a href="#retiring-cids" class="xref">Section 5.1.2</a>.<a href="#section-19.16-6.2" class="pilcrow">¶</a>
+  The sequence number of the connection ID being retired; see <a href="#retire-cid" class="xref">Section 5.1.2</a>.<a href="#section-19.16-6.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 </dl>
