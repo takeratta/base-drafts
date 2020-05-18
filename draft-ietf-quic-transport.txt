@@ -4707,7 +4707,11 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
 
    Section 13.2.3 and Section 13.2.4 describe an exemplary approach for
-   determining what packets to acknowledge in each ACK frame.
+   determining what packets to acknowledge in each ACK frame.  Though
+   the goal of these algorithms is to generate an acknowledgment for
+   every packet that is processed, it is still possible for
+   acknowledgments to be lost.  A sender cannot expect to receive an
+   acknowledgment for every packet that the receiver processes.
 
 13.2.3.  Receiver Tracking of ACK Frames
 
@@ -4750,10 +4754,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    largest packet number that has been successfully processed as that is
    used to recover packet numbers from subsequent packets; see
    Section 17.1.
-
-
-
-
 
 
 
