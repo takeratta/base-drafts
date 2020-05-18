@@ -1765,8 +1765,7 @@ A.7.  Setting the Loss Detection Timer
          (time == 0 || times[Handshake] < time)):
        time, space = times[Handshake], Handshake
      # Skip ApplicationData until handshake completion.
-     if (pn_space == ApplicationData &&
-         !IsHandshakeComplete()):
+     if (!IsHandshakeComplete()):
        return time, space
      # Include ack_delay in ApplicationData.
      if (times[ApplicationData] != 0 &&
@@ -1786,6 +1785,7 @@ A.7.  Setting the Loss Detection Timer
           has received HANDSHAKE_DONE
 
    SetLossDetectionTimer():
+     earliest_loss_time, _ = GetEarliestTimeAndSpace(loss_time, 0)
 
 
 
@@ -1794,7 +1794,6 @@ Iyengar & Swett         Expires 19 November 2020               [Page 32]
 Internet-Draft             QUIC Loss Detection                  May 2020
 
 
-     earliest_loss_time, _ = GetEarliestTimeAndSpace(loss_time, 0)
      if (earliest_loss_time != 0):
        // Time threshold loss detection.
        loss_detection_timer.update(earliest_loss_time)
@@ -1837,6 +1836,7 @@ A.8.  On Timeout
    the action to be performed.
 
    Pseudocode for OnLossDetectionTimeout follows:
+
 
 
 
