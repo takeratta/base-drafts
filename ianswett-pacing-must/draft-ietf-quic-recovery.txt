@@ -1217,8 +1217,8 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    congestion controller.  Sending multiple packets into the network
    without any delay between them creates a packet burst that might
    cause short-term congestion and losses.  Implementations MUST either
-   use pacing or limit such bursts to the initial congestion window; see
-   Section 6.2.
+   use pacing or another method to limit such bursts to the initial
+   congestion window; see Section 6.2.
 
    An implementation should take care to architect its congestion
    controller to work well with a pacer.  For instance, a pacer might
