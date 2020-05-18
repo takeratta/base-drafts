@@ -832,7 +832,7 @@ table.left {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Iyengar &amp; Swett</td>
-<td class="center">Expires 18 November 2020</td>
+<td class="center">Expires 19 November 2020</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -845,12 +845,12 @@ table.left {
 <dd class="internet-draft">draft-ietf-quic-recovery-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-05-17" class="published">17 May 2020</time>
+<time datetime="2020-05-18" class="published">18 May 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-11-18">18 November 2020</time></dd>
+<dd class="expires"><time datetime="2020-11-19">19 November 2020</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -902,7 +902,7 @@ code and issues list for this draft can be found at
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2196,8 +2196,11 @@ interval = smoothed_rtt * packet_size / congestion_window / N
 </pre><a href="#section-6.9-7" class="pilcrow">¶</a>
 </div>
 <p id="section-6.9-8">Using a value for <code>N</code> that is small, but at least 1 (for example, 1.25) ensures
-that variations in round-trip time don't result
-in under-utilization of the congestion window.<a href="#section-6.9-8" class="pilcrow">¶</a></p>
+that variations in round-trip time don't result in under-utilization of the
+congestion window.  Values of 'N' larger than 1 ultimately result in sending
+packets as acknowledgments are received rather than when timers fire, provided
+the congestion window is fully utilized and acknowledgments arrive at regular
+intervals.<a href="#section-6.9-8" class="pilcrow">¶</a></p>
 <p id="section-6.9-9">Practical considerations, such as packetization, scheduling delays, and
 computational efficiency, can cause a sender to deviate from this rate over time
 periods that are much shorter than a round-trip time.  Sending multiple packets
@@ -2303,11 +2306,11 @@ detect.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
 <dl class="references">
 <dt id="QUIC-TLS">[QUIC-TLS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using TLS to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-17">17 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using TLS to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-18">18 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-transport-latest</span>, <time datetime="2020-05-17">17 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-latest">https://tools.ietf.org/html/draft-ietf-quic-transport-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-transport-latest</span>, <time datetime="2020-05-18">18 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-latest">https://tools.ietf.org/html/draft-ietf-quic-transport-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
 <dd>
