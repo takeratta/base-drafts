@@ -1643,10 +1643,10 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
 A.6.  On Receiving a Datagram
 
-   Receiving a datagram might allow the server to send additional data
-   if the server was previously blocked by the anti-amplification
-   limits; see Section 5.2.2.1.  This is necessary even if none of the
-   packets in the datagram are successfully processed.
+   Receiving a datagram might allow the server to send if the server was
+   previously blocked by the anti-amplification limits.  This is
+   necessary even if none of the packets in the datagram are
+   successfully processed.
 
    Pseudocode for OnDatagramReceived follows:
 

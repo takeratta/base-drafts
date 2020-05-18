@@ -2621,10 +2621,10 @@ to OnPacketSent are described in detail above in <a href="#sent-packets-fields" 
         <h2 id="name-on-receiving-a-datagram">
 <a href="#section-a.6" class="section-number selfRef">A.6. </a><a href="#name-on-receiving-a-datagram" class="section-name selfRef">On Receiving a Datagram</a>
         </h2>
-<p id="section-a.6-1">Receiving a datagram might allow the server to send additional data if the
-server was previously blocked by the anti-amplification limits; see
-<a href="#before-address-validation" class="xref">Section 5.2.2.1</a>. This is necessary even if none of the packets in
-the datagram are successfully processed.<a href="#section-a.6-1" class="pilcrow">¶</a></p>
+<p id="section-a.6-1">Receiving a datagram might allow the server to send if the
+server was previously blocked by the anti-amplification limits.
+This is necessary even if none of the packets in the datagram
+are successfully processed.<a href="#section-a.6-1" class="pilcrow">¶</a></p>
 <p id="section-a.6-2">Pseudocode for OnDatagramReceived follows:<a href="#section-a.6-2" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-a.6-3">
 <pre>
