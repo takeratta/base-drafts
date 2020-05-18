@@ -115,23 +115,23 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
 
      6.10. Under-utilizing the Congestion Window . . . . . . . . . .  23
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
-     7.1.  Congestion Signals  . . . . . . . . . . . . . . . . . . .  23
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  24
+     7.1.  Congestion Signals  . . . . . . . . . . . . . . . . . . .  24
      7.2.  Traffic Analysis  . . . . . . . . . . . . . . . . . . . .  24
      7.3.  Misreporting ECN Markings . . . . . . . . . . . . . . . .  24
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  24
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  25
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  25
    Appendix A.  Loss Recovery Pseudocode . . . . . . . . . . . . . .  27
      A.1.  Tracking Sent Packets . . . . . . . . . . . . . . . . . .  27
        A.1.1.  Sent Packet Fields  . . . . . . . . . . . . . . . . .  27
-     A.2.  Constants of Interest . . . . . . . . . . . . . . . . . .  27
+     A.2.  Constants of Interest . . . . . . . . . . . . . . . . . .  28
      A.3.  Variables of interest . . . . . . . . . . . . . . . . . .  28
      A.4.  Initialization  . . . . . . . . . . . . . . . . . . . . .  29
-     A.5.  On Sending a Packet . . . . . . . . . . . . . . . . . . .  29
+     A.5.  On Sending a Packet . . . . . . . . . . . . . . . . . . .  30
      A.6.  On Receiving an Acknowledgment  . . . . . . . . . . . . .  30
-     A.7.  Setting the Loss Detection Timer  . . . . . . . . . . . .  31
+     A.7.  Setting the Loss Detection Timer  . . . . . . . . . . . .  32
      A.8.  On Timeout  . . . . . . . . . . . . . . . . . . . . . . .  33
      A.9.  Detecting Lost Packets  . . . . . . . . . . . . . . . . .  34
    Appendix B.  Congestion Control Pseudocode  . . . . . . . . . . .  35
@@ -1238,18 +1238,37 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    recovery.  Packets containing only ACK frames SHOULD therefore not be
    paced, to avoid delaying their delivery to the peer.
 
+   Endpoints can implement pacing as they choose.  A perfectly paced
+   sender spreads packets exactly evenly over time.  For a window-based
+   congestion controller, such as the one in this document, that rate
+   can be computed by averaging the congestion window over the round-
+   trip time.  Expressed as a rate in bytes:
+
+   rate = N * congestion_window / smoothed_rtt
+
+   Or, expressed as an inter-packet interval:
+
+   interval = smoothed_rtt * packet_size / congestion_window / N
+
+   Using a value for "N" that is small, but at least 1 (for example,
+   1.25) ensures that variations in round-trip time don't result in
+   under-utilization of the congestion window.  Values of 'N' larger
+   than 1 ultimately result in sending packets as acknowledgments are
+   received rather than when timers fire, provided the congestion window
+   is fully utilized and acknowledgments arrive at regular intervals.
+
+   Practical considerations, such as packetization, scheduling delays,
+   and computational efficiency, can cause a sender to deviate from this
+   rate over time periods that are much shorter than a round-trip time.
    Sending multiple packets into the network without any delay between
    them creates a packet burst that might cause short-term congestion
    and losses.  Implementations MUST either use pacing or limit such
-   bursts to the initial congestion window, which is recommended to be
-   the minimum of "10 * max_datagram_size" and "max(2 *
-   max_datagram_size, 14720))", where max_datagram_size is the current
-   maximum size of a datagram for the connection, not including UDP or
-   IP overhead.
+   bursts to the initial congestion window; see Section 6.2.
 
-   As an example of a well-known and publicly available implementation
-   of a flow pacer, implementers are referred to the Fair Queue packet
-   scheduler (fq qdisc) in Linux (3.11 onwards).
+   One possible implementation strategy for pacing uses a leaky bucket
+   algorithm, where the capacity of the "bucket" is limited to the
+   maximum burst size and the rate the "bucket" fills is determined by
+   the above function.
 
 6.10.  Under-utilizing the Congestion Window
 
@@ -1262,6 +1281,14 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    A sender MAY use the pipeACK method described in Section 4.3 of
    [RFC7661] to determine if the congestion window is sufficiently
    utilized.
+
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 23]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
 
    A sender that paces packets (see Section 6.9) might delay sending
    packets and not fully utilize the congestion window due to this
@@ -1281,14 +1308,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    path attackers can spoof or alter these signals.  An attacker can
    cause endpoints to reduce their sending rate by dropping packets, or
    alter send rate by changing ECN codepoints.
-
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 23]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
 7.2.  Traffic Analysis
 
@@ -1315,6 +1334,18 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    connection flow control limits and so no advantage is gained by doing
    so.
 
+
+
+
+
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 24]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
    Endpoints choose the congestion controller that they use.  Though
    congestion controllers generally treat reports of ECN-CE markings as
    equivalent to loss [RFC8311], the exact response for each controller
@@ -1333,18 +1364,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
               QUIC", Work in Progress, Internet-Draft, draft-ietf-quic-
               tls-latest, 18 May 2020,
               <https://tools.ietf.org/html/draft-ietf-quic-tls-latest>.
-
-
-
-
-
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 24]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
@@ -1372,6 +1391,17 @@ Internet-Draft             QUIC Loss Detection                  May 2020
               Refining TCP Congestion Control", ACM SIGCOMM , August
               1996.
 
+
+
+
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 25]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
    [RACK]     Cheng, Y., Cardwell, N., Dukkipati, N., and P. Jha, "RACK:
               a time-based fast loss detection algorithm for TCP", Work
               in Progress, Internet-Draft, draft-ietf-tcpm-rack-08, 9
@@ -1391,16 +1421,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    [RFC5681]  Allman, M., Paxson, V., and E. Blanton, "TCP Congestion
               Control", RFC 5681, DOI 10.17487/RFC5681, September 2009,
               <https://www.rfc-editor.org/info/rfc5681>.
-
-
-
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 25]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
    [RFC5682]  Sarolahti, P., Kojo, M., Yamamoto, K., and M. Hata,
               "Forward RTO-Recovery (F-RTO): An Algorithm for Detecting
@@ -1430,6 +1450,14 @@ Internet-Draft             QUIC Loss Detection                  May 2020
               RFC 6675, DOI 10.17487/RFC6675, August 2012,
               <https://www.rfc-editor.org/info/rfc6675>.
 
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 26]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
    [RFC6928]  Chu, J., Dukkipati, N., Cheng, Y., and M. Mathis,
               "Increasing TCP's Initial Window", RFC 6928,
               DOI 10.17487/RFC6928, April 2013,
@@ -1449,14 +1477,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
               R. Scheffenegger, "CUBIC for Fast Long-Distance Networks",
               RFC 8312, DOI 10.17487/RFC8312, February 2018,
               <https://www.rfc-editor.org/info/rfc8312>.
-
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 26]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
 Appendix A.  Loss Recovery Pseudocode
 
@@ -1483,6 +1503,17 @@ A.1.1.  Sent Packet Fields
 
    packet_number:  The packet number of the sent packet.
 
+
+
+
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 27]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
    ack_eliciting:  A boolean that indicates whether a packet is ack-
       eliciting.  If true, it is expected that an acknowledgement will
       be received, though the peer could delay sending the ACK frame
@@ -1504,15 +1535,6 @@ A.2.  Constants of Interest
    kPacketThreshold:  Maximum reordering in packets before packet
       threshold loss detection considers a packet lost.  The value
       recommended in Section 5.1.1 is 3.
-
-
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 27]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
    kTimeThreshold:  Maximum reordering in time before time threshold
       loss detection considers a packet lost.  Specified as an RTT
@@ -1541,6 +1563,13 @@ A.3.  Variables of interest
    latest_rtt:  The most recent RTT measurement made when receiving an
       ack for a previously unacked packet.
 
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 28]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
    smoothed_rtt:  The smoothed RTT of the connection, computed as
       described in Section 4.3.
 
@@ -1563,13 +1592,6 @@ A.3.  Variables of interest
    time_of_last_sent_ack_eliciting_packet[kPacketNumberSpace]:  The time
       the most recent ack-eliciting packet was sent.
 
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 28]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
-
    largest_acked_packet[kPacketNumberSpace]:  The largest packet number
       acknowledged in the packet number space so far.
 
@@ -1585,6 +1607,24 @@ A.4.  Initialization
 
    At the beginning of the connection, initialize the loss detection
    variables as follows:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 29]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
 
       loss_detection_timer.reset()
       pto_count = 0
@@ -1605,26 +1645,6 @@ A.5.  On Sending a Packet
    Appendix A.1.1.
 
    Pseudocode for OnPacketSent follows:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 29]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
     OnPacketSent(packet_number, pn_space, ack_eliciting,
                  in_flight, sent_bytes):
@@ -1655,6 +1675,13 @@ A.6.  On Receiving an Acknowledgment
        largest_acked_packet[pn_space] =
            max(largest_acked_packet[pn_space], ack.largest_acked)
 
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 30]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
      // DetectNewlyAckedPackets finds packets that are newly
      // acknowledged and removes them from sent_packets.
      newly_acked_packets =
@@ -1674,13 +1701,6 @@ A.6.  On Receiving an Acknowledgment
        if (pn_space == ApplicationData):
          ack_delay = ack.ack_delay
        UpdateRtt(ack_delay)
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 30]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
      // Process ECN information if present.
      if (ACK frame contains ECN information):
@@ -1710,6 +1730,14 @@ Internet-Draft             QUIC Loss Detection                  May 2020
      // Limit ack_delay by max_ack_delay
      ack_delay = min(ack_delay, max_ack_delay)
      // Adjust for ack delay if plausible.
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 31]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
      adjusted_rtt = latest_rtt
      if (latest_rtt > min_rtt + ack_delay):
        adjusted_rtt = latest_rtt - ack_delay
@@ -1730,13 +1758,6 @@ A.7.  Setting the Loss Detection Timer
    immediately.
 
    Pseudocode for SetLossDetectionTimer follows:
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 31]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
 
    GetEarliestTimeAndSpace(times):
      time = times[Initial]
@@ -1765,6 +1786,14 @@ Internet-Draft             QUIC Loss Detection                  May 2020
      earliest_loss_time, _ = GetEarliestTimeAndSpace(loss_time)
      if (earliest_loss_time != 0):
        // Time threshold loss detection.
+
+
+
+Iyengar & Swett         Expires 19 November 2020               [Page 32]
+
+Internet-Draft             QUIC Loss Detection                  May 2020
+
+
        loss_detection_timer.update(earliest_loss_time)
        return
 
@@ -1786,14 +1815,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
        time_of_last_sent_ack_eliciting_packet)
      // Don't arm PTO for ApplicationData until handshake complete.
      if (pn_space == ApplicationData &&
-
-
-
-Iyengar & Swett         Expires 19 November 2020               [Page 32]
-
-Internet-Draft             QUIC Loss Detection                  May 2020
-
-
          handshake is not confirmed):
        loss_detection_timer.cancel()
        return
@@ -1814,27 +1835,6 @@ A.8.  On Timeout
    the action to be performed.
 
    Pseudocode for OnLossDetectionTimeout follows:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
