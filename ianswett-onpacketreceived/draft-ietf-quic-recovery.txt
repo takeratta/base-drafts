@@ -1643,9 +1643,10 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
 A.6.  On Receiving a Datagram
 
-   When a datagram is received, it may allow the server to send if the
-   server was previously amplification limited, even if none of the
-   packets in it can be processed.
+   Receiving a datagram might allow the server to send additional data
+   if the server was previously blocked by the anti-amplification
+   limits; see Section 5.2.2.1.  This is necessary even if none of the
+   packets in the datagram are successfully processed.
 
    Pseudocode for OnDatagramReceived follows:
 
@@ -1673,7 +1674,6 @@ A.7.  On Receiving an Acknowledgment
      // acknowledged and removes them from sent_packets.
      newly_acked_packets =
          DetectAndRemoveAckedPackets(ack, pn_space)
-     // Nothing to do if there are no newly acked packets.
 
 
 
@@ -1682,6 +1682,7 @@ Iyengar & Swett         Expires 19 November 2020               [Page 30]
 Internet-Draft             QUIC Loss Detection                  May 2020
 
 
+     // Nothing to do if there are no newly acked packets.
      if (newly_acked_packets.empty()):
        return
 
@@ -1729,7 +1730,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
      if (latest_rtt > min_rtt + ack_delay):
        adjusted_rtt = latest_rtt - ack_delay
 
-     rttvar = 3/4 * rttvar + 1/4 * abs(smoothed_rtt - adjusted_rtt)
 
 
 
@@ -1738,6 +1738,7 @@ Iyengar & Swett         Expires 19 November 2020               [Page 31]
 Internet-Draft             QUIC Loss Detection                  May 2020
 
 
+     rttvar = 3/4 * rttvar + 1/4 * abs(smoothed_rtt - adjusted_rtt)
      smoothed_rtt = 7/8 * smoothed_rtt + 1/8 * adjusted_rtt
 
 A.8.  Setting the Loss Detection Timer
@@ -1785,7 +1786,6 @@ A.8.  Setting the Loss Detection Timer
        return
 
      if (server is at anti-amplification limit):
-       // The server's timer is not set if nothing can be sent.
 
 
 
@@ -1794,6 +1794,7 @@ Iyengar & Swett         Expires 19 November 2020               [Page 32]
 Internet-Draft             QUIC Loss Detection                  May 2020
 
 
+       // The server's timer is not set if nothing can be sent.
        loss_detection_timer.cancel()
        return
 
@@ -1830,7 +1831,6 @@ A.9.  On Timeout
    the action to be performed.
 
    Pseudocode for OnLossDetectionTimeout follows:
-
 
 
 
