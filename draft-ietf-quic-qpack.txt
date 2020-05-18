@@ -1688,7 +1688,7 @@ Internet-Draft                    QPACK                         May 2020
    appropriate value for the QPACK_BLOCKED_STREAMS parameter.  An
    encoder can limit the amount of state memory by only using as many
    blocked streams as it wishes to support; no signaling to the decoder
-   is requred.
+   is required.
 
    The amount of temporary memory consumed by an encoder or decoder can
    be limited by processing header fields sequentially.  A decoder
@@ -2383,7 +2383,7 @@ Acknowledgments
    The compression design team did substantial work exploring the
    problem space and influencing the initial draft.  The contributions
    of design team members Roberto Peon, Martin Thomson, and Dmitri
-   Tikhonov is gratefully acknowledged.
+   Tikhonov are gratefully acknowledged.
 
    The following people also provided substantial contributions to this
    document:
