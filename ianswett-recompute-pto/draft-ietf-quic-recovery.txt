@@ -738,11 +738,12 @@ Internet-Draft             QUIC Loss Detection                  May 2020
 
    When a PTO timer expires, the PTO backoff MUST be increased,
    resulting in the PTO period being set to twice its current value.
-   The PTO backoff is reset upon receiving an acknowledgement unless
-   it's a client unsure if the server has validated the client's
-   address.  Not resetting the backoff during peer address validation
-   ensures the client's anti-deadlock timer is not set too aggressively
-   when the server is slow in responding with handshake data.
+   The PTO backoff is reset upon receiving an acknowledgement, except
+   when a client receives an acknowledgment from a server prior to the
+   server validating the client address.  A client keeps increasing the
+   PTO backoff until the server's address validation completes to ensure
+   the client's anti-deadlock timer is not set too aggressively when the
+   server is slow in responding with handshake data.
 
    This exponential reduction in the sender's rate is important because
    consecutive PTOs might be caused by loss of packets or
@@ -773,7 +774,6 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    receiving a PATH_RESPONSE to set the initial RTT (see kInitialRtt in
    Appendix A.2) for a new path, but the delay SHOULD NOT be considered
    an RTT sample.
-
 
 
 
