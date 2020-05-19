@@ -2131,17 +2131,12 @@ following properties:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
 <li id="section-4.4-6.3">does not include a request body or trailer section<a href="#section-4.4-6.3" class="pilcrow">¶</a>
 </li>
 </ul>
-<p id="section-4.4-7">Clients SHOULD send a CANCEL_PUSH frame upon receipt of a PUSH_PROMISE frame
-carrying a request which is not cacheable, is not known to be safe, or that
-indicates the presence of a request body.  If the pushed response arrives on a
-push stream, this MAY be treated as a stream error of type
-H3_STREAM_CREATION_ERROR.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
-<p id="section-4.4-8">The server MUST include a value in the ":authority" pseudo-header field for
-which the server is authoritative; see <a href="#connection-reuse" class="xref">Section 3.4</a>.  A client SHOULD
-send a CANCEL_PUSH frame upon receipt of a PUSH_PROMISE frame carrying a request
-for which it does not consider the server authoritative.  If the pushed response
-arrives on a push stream, this MAY be treated as a stream error of type
-H3_STREAM_CREATION_ERROR.<a href="#section-4.4-8" class="pilcrow">¶</a></p>
+<p id="section-4.4-7">The server MUST include a value in the ":authority" pseudo-header field for
+which the server is authoritative; see <a href="#connection-reuse" class="xref">Section 3.4</a>.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
+<p id="section-4.4-8">Clients SHOULD send a CANCEL_PUSH frame upon receipt of a PUSH_PROMISE frame
+carrying a request which is not cacheable, is not known to be safe, that
+indicates the presence of a request body, or for which it does not consider the
+server authoritative.<a href="#section-4.4-8" class="pilcrow">¶</a></p>
 <p id="section-4.4-9">Each pushed response is associated with one or more client requests.  The push
 is associated with the request stream on which the PUSH_PROMISE frame was
 received.  The same server push can be associated with additional client
@@ -2740,7 +2735,9 @@ corresponding promise to be fulfilled.<a href="#section-7.2.3-3" class="pilcrow"
 <p id="section-7.2.3-4">Sending CANCEL_PUSH has no direct effect on the state of existing push streams.
 A server SHOULD NOT send a CANCEL_PUSH when it has already created a
 corresponding push stream, and a client SHOULD NOT send a CANCEL_PUSH when it
-has already received a corresponding push stream.<a href="#section-7.2.3-4" class="pilcrow">¶</a></p>
+has already received a corresponding push stream.  If a push stream arrives
+after a client has sent CANCEL_PUSH, this MAY be treated as a stream error of
+type H3_STREAM_CREATION_ERROR.<a href="#section-7.2.3-4" class="pilcrow">¶</a></p>
 <p id="section-7.2.3-5">A CANCEL_PUSH frame is sent on the control stream.  Receiving a CANCEL_PUSH
 frame on a stream other than the control stream MUST be treated as a connection
 error of type H3_FRAME_UNEXPECTED.<a href="#section-7.2.3-5" class="pilcrow">¶</a></p>
