@@ -145,23 +145,23 @@ Internet-Draft                    QPACK                         May 2020
    Appendix A.  Static Table . . . . . . . . . . . . . . . . . . . .  34
    Appendix B.  Sample One Pass Encoding Algorithm . . . . . . . . .  39
    Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  40
-     C.1.  Since draft-ietf-quic-qpack-13  . . . . . . . . . . . . .  41
-     C.2.  Since draft-ietf-quic-qpack-12  . . . . . . . . . . . . .  41
-     C.3.  Since draft-ietf-quic-qpack-11  . . . . . . . . . . . . .  41
-     C.4.  Since draft-ietf-quic-qpack-10  . . . . . . . . . . . . .  41
-     C.5.  Since draft-ietf-quic-qpack-09  . . . . . . . . . . . . .  41
-     C.6.  Since draft-ietf-quic-qpack-08  . . . . . . . . . . . . .  41
-     C.7.  Since draft-ietf-quic-qpack-06  . . . . . . . . . . . . .  41
-     C.8.  Since draft-ietf-quic-qpack-05  . . . . . . . . . . . . .  41
-     C.9.  Since draft-ietf-quic-qpack-04  . . . . . . . . . . . . .  42
-     C.10. Since draft-ietf-quic-qpack-03  . . . . . . . . . . . . .  42
-     C.11. Since draft-ietf-quic-qpack-02  . . . . . . . . . . . . .  42
-     C.12. Since draft-ietf-quic-qpack-01  . . . . . . . . . . . . .  42
-     C.13. Since draft-ietf-quic-qpack-00  . . . . . . . . . . . . .  42
-     C.14. Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  43
+     C.1.  Since draft-ietf-quic-qpack-14  . . . . . . . . . . . . .  41
+     C.2.  Since draft-ietf-quic-qpack-13  . . . . . . . . . . . . .  41
+     C.3.  Since draft-ietf-quic-qpack-12  . . . . . . . . . . . . .  41
+     C.4.  Since draft-ietf-quic-qpack-11  . . . . . . . . . . . . .  41
+     C.5.  Since draft-ietf-quic-qpack-10  . . . . . . . . . . . . .  41
+     C.6.  Since draft-ietf-quic-qpack-09  . . . . . . . . . . . . .  41
+     C.7.  Since draft-ietf-quic-qpack-08  . . . . . . . . . . . . .  41
+     C.8.  Since draft-ietf-quic-qpack-06  . . . . . . . . . . . . .  41
+     C.9.  Since draft-ietf-quic-qpack-05  . . . . . . . . . . . . .  41
+     C.10. Since draft-ietf-quic-qpack-04  . . . . . . . . . . . . .  42
+     C.11. Since draft-ietf-quic-qpack-03  . . . . . . . . . . . . .  42
+     C.12. Since draft-ietf-quic-qpack-02  . . . . . . . . . . . . .  42
+     C.13. Since draft-ietf-quic-qpack-01  . . . . . . . . . . . . .  42
+     C.14. Since draft-ietf-quic-qpack-00  . . . . . . . . . . . . .  42
+     C.15. Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  43
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  43
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  44
-
 
 
 
@@ -2245,23 +2245,27 @@ Internet-Draft                    QPACK                         May 2020
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
-C.1.  Since draft-ietf-quic-qpack-13
+C.1.  Since draft-ietf-quic-qpack-14
+
+   Added security considerations
+
+C.2.  Since draft-ietf-quic-qpack-13
 
    No changes
 
-C.2.  Since draft-ietf-quic-qpack-12
+C.3.  Since draft-ietf-quic-qpack-12
 
    Editorial changes only
 
-C.3.  Since draft-ietf-quic-qpack-11
+C.4.  Since draft-ietf-quic-qpack-11
 
    Editorial changes only
 
-C.4.  Since draft-ietf-quic-qpack-10
+C.5.  Since draft-ietf-quic-qpack-10
 
    Editorial changes only
 
-C.5.  Since draft-ietf-quic-qpack-09
+C.6.  Since draft-ietf-quic-qpack-09
 
    *  Decoders MUST emit Header Acknowledgements (#2939)
 
@@ -2269,26 +2273,22 @@ C.5.  Since draft-ietf-quic-qpack-09
 
    *  Added explicit defaults for new SETTINGS (#2974)
 
-C.6.  Since draft-ietf-quic-qpack-08
+C.7.  Since draft-ietf-quic-qpack-08
 
    *  Endpoints are permitted to create encoder and decoder streams even
       if they can't use them (#2100, #2529)
 
    *  Maximum values for settings removed (#2766, #2767)
 
-C.7.  Since draft-ietf-quic-qpack-06
+C.8.  Since draft-ietf-quic-qpack-06
 
    *  Clarify initial dynamic table capacity maximums (#2276, #2330,
       #2330)
 
-C.8.  Since draft-ietf-quic-qpack-05
+C.9.  Since draft-ietf-quic-qpack-05
 
    *  Introduced the terms dynamic table capacity and maximum dynamic
       table capacity.
-
-   *  Renamed SETTINGS_HEADER_TABLE_SIZE to
-      SETTINGS_QPACK_MAX_TABLE_CAPACITY.
-
 
 
 
@@ -2298,18 +2298,21 @@ Krasic, et al.          Expires 20 November 2020               [Page 41]
 Internet-Draft                    QPACK                         May 2020
 
 
-C.9.  Since draft-ietf-quic-qpack-04
+   *  Renamed SETTINGS_HEADER_TABLE_SIZE to
+      SETTINGS_QPACK_MAX_TABLE_CAPACITY.
+
+C.10.  Since draft-ietf-quic-qpack-04
 
    *  Changed calculation of Delta Base Index to avoid an illegal value
       (#2002, #2005)
 
-C.10.  Since draft-ietf-quic-qpack-03
+C.11.  Since draft-ietf-quic-qpack-03
 
    *  Change HTTP settings defaults (#2038)
 
    *  Substantial editorial reorganization
 
-C.11.  Since draft-ietf-quic-qpack-02
+C.12.  Since draft-ietf-quic-qpack-02
 
    *  Largest Reference encoded modulo MaxEntries (#1763)
 
@@ -2331,21 +2334,18 @@ C.11.  Since draft-ietf-quic-qpack-02
    *  Initial table size is the maximum permitted when table is first
       usable (#1642)
 
-C.12.  Since draft-ietf-quic-qpack-01
+C.13.  Since draft-ietf-quic-qpack-01
 
    *  Only header blocks that reference the dynamic table are
       acknowledged (#1603, #1605)
 
-C.13.  Since draft-ietf-quic-qpack-00
+C.14.  Since draft-ietf-quic-qpack-00
 
    *  Renumbered instructions for consistency (#1471, #1472)
 
    *  Decoder is allowed to validate largest reference (#1404, #1469)
 
-   *  Header block acknowledgments also acknowledge the associated
-      largest reference (#1370, #1400)
 
-   *  Added an acknowledgment for unread streams (#1371, #1400)
 
 
 
@@ -2354,12 +2354,17 @@ Krasic, et al.          Expires 20 November 2020               [Page 42]
 Internet-Draft                    QPACK                         May 2020
 
 
+   *  Header block acknowledgments also acknowledge the associated
+      largest reference (#1370, #1400)
+
+   *  Added an acknowledgment for unread streams (#1371, #1400)
+
    *  Removed framing from encoder stream (#1361,#1467)
 
    *  Control streams use typed unidirectional streams rather than fixed
       stream IDs (#910,#1359)
 
-C.14.  Since draft-ietf-quic-qcram-00
+C.15.  Since draft-ietf-quic-qcram-00
 
    *  Separate instruction sets for table updates and header blocks
       (#1235, #1142, #1141)
@@ -2398,17 +2403,16 @@ Acknowledgments
 
    *  Patrick McManus
 
-   *  奥 一穂 (Kazuho Oku)
-
-   *  Lucas Pardue
-
-
 
 
 Krasic, et al.          Expires 20 November 2020               [Page 43]
 
 Internet-Draft                    QPACK                         May 2020
 
+
+   *  奥 一穂 (Kazuho Oku)
+
+   *  Lucas Pardue
 
    *  Biren Roy
 
@@ -2441,10 +2445,6 @@ Authors' Addresses
    Facebook
 
    Email: afrind@fb.com
-
-
-
-
 
 
 
