@@ -742,8 +742,8 @@ Internet-Draft             QUIC Loss Detection                  May 2020
    when a client receives an acknowledgment from a server prior to the
    server validating the client address.  A client keeps increasing the
    PTO backoff until the server's address validation completes to ensure
-   the client's anti-deadlock timer is not set too aggressively when the
-   server is slow in responding with handshake data.
+   the client's PTO timer is not set too aggressively when the server is
+   slow in responding with handshake data.
 
    This exponential reduction in the sender's rate is important because
    consecutive PTOs might be caused by loss of packets or
