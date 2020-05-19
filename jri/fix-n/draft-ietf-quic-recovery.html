@@ -2191,9 +2191,10 @@ rate = N * congestion_window / smoothed_rtt
 interval = smoothed_rtt * packet_size / congestion_window / N
 </pre><a href="#section-6.9-7" class="pilcrow">¶</a>
 </div>
-<p id="section-6.9-8">Using a value for <code>N</code> that is small, but at least 1 (for example, 1.25) ensures
-that variations in round-trip time don't result in under-utilization of the
-congestion window.<a href="#section-6.9-8" class="pilcrow">¶</a></p>
+<p id="section-6.9-8">Using a value for N that is low, but at least 1 (for example, 1.25) ensures that
+variations in round-trip time don't result in under-utilization of the
+congestion window. Note that a higher N results in the inter-packet interval
+becoming smaller, and a large enough N defeats purpose of pacing.<a href="#section-6.9-8" class="pilcrow">¶</a></p>
 <p id="section-6.9-9">Practical considerations, such as packetization, scheduling delays, and
 computational efficiency, can cause a sender to deviate from this rate over time
 periods that are much shorter than a round-trip time.  Sending multiple packets
