@@ -6516,7 +6516,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       included in the Source Connection ID field of the first Initial
       packet it sends for the connection; see Section 7.3.
 
-   retry_source_connection_id (0x10):  The value that the the server
+   retry_source_connection_id (0x10):  The value that the server
       included in the Source Connection ID field of a Retry packet; see
       Section 7.3.  This transport parameter is only sent by a server.
 
