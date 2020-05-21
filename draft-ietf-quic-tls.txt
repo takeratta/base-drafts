@@ -910,7 +910,7 @@ Internet-Draft          Using TLS to Secure QUIC                May 2020
    connection.  TLS requires that some information be retained; see
    Section 4.6.1 of [TLS13].  QUIC itself does not depend on any state
    being retained when resuming a connection, unless 0-RTT is also used;
-   see Section 4.6 and Section 7.4.1 of [QUIC-TRANSPORT].  Application
+   see Section 4.6 and Section 7.3.1 of [QUIC-TRANSPORT].  Application
    protocols could depend on state that is retained between resumed
    connections.
 
