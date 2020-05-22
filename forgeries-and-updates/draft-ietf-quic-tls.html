@@ -2820,8 +2820,9 @@ packet that cannot be authenticated, allowing multiple forgery attempts.<a href=
 <p id="section-6.6-3">Endpoints MUST count the number of received packets that fail authentication for
 each set of keys.  If the number of packets that fail authentication with the
 same key exceeds a limit that is specific to the AEAD in use, the endpoint MUST
-immediately close the connection.  Endpoints MUST initiate a key update before
-reaching this limit.  Applying a limit reduces the probability that an attacker
+stop using those keys.  Endpoints MUST initiate a key update before reaching
+this limit.  If a key update is not possible, the endpoints MUST immediately
+close the connection.  Applying a limit reduces the probability that an attacker
 is able to successfully forge a packet; see <span>[<a href="#AEBounds" class="xref">AEBounds</a>]</span> and <span>[<a href="#ROBUST" class="xref">ROBUST</a>]</span>.<a href="#section-6.6-3" class="pilcrow">¶</a></p>
 <dl class="dlParallel" id="section-6.6-4">
           <dt id="section-6.6-4.1">Note:</dt>
