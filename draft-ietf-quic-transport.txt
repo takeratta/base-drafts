@@ -273,7 +273,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
      C.1.  Since draft-ietf-quic-transport-27  . . . . . . . . . . . 162
      C.2.  Since draft-ietf-quic-transport-26  . . . . . . . . . . . 163
      C.3.  Since draft-ietf-quic-transport-25  . . . . . . . . . . . 163
-     C.4.  Since draft-ietf-quic-transport-24  . . . . . . . . . . . 163
+     C.4.  Since draft-ietf-quic-transport-24  . . . . . . . . . . . 164
 
 
 
@@ -9104,6 +9104,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    *  Added authentication of handshake connection IDs (#3439, #3499)
 
+   *  Opening a stream in the wrong direction is an error (#3527)
+
 C.2.  Since draft-ietf-quic-transport-26
 
    *  Change format of transport parameters to use varints (#3294,
@@ -9119,8 +9121,6 @@ C.3.  Since draft-ietf-quic-transport-25
 
    *  Define the timer for address validation (#2910, #3339)
 
-C.4.  Since draft-ietf-quic-transport-24
-
 
 
 
@@ -9129,6 +9129,8 @@ Iyengar & Thomson       Expires 25 November 2020              [Page 163]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+C.4.  Since draft-ietf-quic-transport-24
 
    *  Added HANDSHAKE_DONE to signal handshake confirmation (#2863,
       #3142, #3145)
@@ -9176,8 +9178,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    *  Define the use of provisional registration for all registries
       (#3109, #3020, #3102, #3170)
-
-
 
 
 
