@@ -2916,8 +2916,8 @@ Internet-Draft                   HTTP/3                         May 2020
 
    [CACHING]  Fielding, R., Nottingham, M., and J. Reschke, "HTTP
               Caching", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-cache-07, 7 March 2020, <http://www.ietf.org/
-              internet-drafts/draft-ietf-httpbis-cache-07.txt>.
+              httpbis-cache-08, 26 May 2020, <http://www.ietf.org/
+              internet-drafts/draft-ietf-httpbis-cache-08.txt>.
 
    [HTTP-REPLAY]
               Thomson, M., Nottingham, M., and W. Tarreau, "Using Early
@@ -2997,8 +2997,8 @@ Internet-Draft                   HTTP/3                         May 2020
    [SEMANTICS]
               Fielding, R., Nottingham, M., and J. Reschke, "HTTP
               Semantics", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-semantics-07, 7 March 2020, <http://www.ietf.org/
-              internet-drafts/draft-ietf-httpbis-semantics-07.txt>.
+              httpbis-semantics-08, 26 May 2020, <http://www.ietf.org/
+              internet-drafts/draft-ietf-httpbis-semantics-08.txt>.
 
 12.2.  Informative References
 
@@ -3013,8 +3013,8 @@ Internet-Draft                   HTTP/3                         May 2020
 
    [HTTP11]   Fielding, R., Nottingham, M., and J. Reschke, "HTTP/1.1
               Messaging", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-messaging-07, 7 March 2020, <http://www.ietf.org/
-              internet-drafts/draft-ietf-httpbis-messaging-07.txt>.
+              httpbis-messaging-08, 26 May 2020, <http://www.ietf.org/
+              internet-drafts/draft-ietf-httpbis-messaging-08.txt>.
 
 
 
