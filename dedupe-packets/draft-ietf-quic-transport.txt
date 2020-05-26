@@ -4358,8 +4358,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    number below which all packets are immediately dropped.  In setting a
    minimum packet number endpoints might need to account for large
    variations in round trip time that could significantly delay packets,
-   especially if a peer migrates to or probes a different network path;
-   see Section 9.
+   especially when a peer probes a different network path; see
+   Section 9.
 
 
 
