@@ -1794,9 +1794,9 @@ Iyengar & Thomson       Expires 28 November 2020               [Page 32]
 Internet-Draft           QUIC Transport Protocol                May 2020
 
 
-   If a server isn't currently accepting any new connections, it SHOULD
-   send an Initial packet containing a CONNECTION_CLOSE frame with error
-   code SERVER_BUSY.
+   If a server refuses to accept a new connection, it SHOULD send an
+   Initial packet containing a CONNECTION_CLOSE frame with error code
+   CONNECTION_REFUSED.
 
    If the packet is a 0-RTT packet, the server MAY buffer a limited
    number of these packets in anticipation of a late-arriving Initial
@@ -7606,8 +7606,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    INTERNAL_ERROR (0x1):  The endpoint encountered an internal error and
       cannot continue with the connection.
 
-   SERVER_BUSY (0x2):  The server is currently busy and does not accept
-      any new connections.
+   CONNECTION_REFUSED (0x2):  The server refused to accept a new
+      connection.
 
 
 
@@ -8690,8 +8690,8 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    | 0x1  | INTERNAL_ERROR            | Implementation | Section 20    |
    |      |                           | error          |               |
    +------+---------------------------+----------------+---------------+
-   | 0x2  | SERVER_BUSY               |Server currently| Section 20    |
-   |      |                           | busy           |               |
+   | 0x2  | CONNECTION_REFUSED_ERROR  |Server refuses a| Section 20    |
+   |      |                           | connection     |               |
    +------+---------------------------+----------------+---------------+
    | 0x3  | FLOW_CONTROL_ERROR        | Flow control   | Section 20    |
    |      |                           | error          |               |

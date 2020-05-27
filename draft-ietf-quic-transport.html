@@ -2896,9 +2896,8 @@ connection, the server continues below.<a href="#section-5.2.2-3" class="pilcrow
 <p id="section-5.2.2-4">If the packet is an Initial packet fully conforming with the specification, the
 server proceeds with the handshake (<a href="#handshake" class="xref">Section 7</a>). This commits the server to
 the version that the client selected.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-5">If a server isn't currently accepting any new connections, it SHOULD send an
-Initial packet containing a CONNECTION_CLOSE frame with error code
-SERVER_BUSY.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-5">If a server refuses to accept a new connection, it SHOULD send an Initial packet
+containing a CONNECTION_CLOSE frame with error code CONNECTION_REFUSED.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-6">If the packet is a 0-RTT packet, the server MAY buffer a limited number of these
 packets in anticipation of a late-arriving Initial packet. Clients are not able
 to send Handshake packets prior to receiving a server response, so servers
@@ -8194,9 +8193,9 @@ being closed abruptly in the absence of any error.<a href="#section-20-3.2" clas
 connection.<a href="#section-20-3.4" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-20-3.5">SERVER_BUSY (0x2):</dt>
+<dt id="section-20-3.5">CONNECTION_REFUSED (0x2):</dt>
 <dd id="section-20-3.6">
-  The server is currently busy and does not accept any new connections.<a href="#section-20-3.6" class="pilcrow">¶</a>
+  The server refused to accept a new connection.<a href="#section-20-3.6" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 <dt id="section-20-3.7">FLOW_CONTROL_ERROR (0x3):</dt>
@@ -9282,8 +9281,8 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">0x2</td>
-              <td class="text-left" rowspan="1" colspan="1">SERVER_BUSY</td>
-              <td class="text-left" rowspan="1" colspan="1">Server currently busy</td>
+              <td class="text-left" rowspan="1" colspan="1">CONNECTION_REFUSED_ERROR</td>
+              <td class="text-left" rowspan="1" colspan="1">Server refuses a connection</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <a href="#error-codes" class="xref">Section 20</a>
 </td>
