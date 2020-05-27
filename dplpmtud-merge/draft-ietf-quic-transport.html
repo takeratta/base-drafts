@@ -5887,14 +5887,25 @@ PMTUD/DPLPMTUD probe packets to route any resulting ICMP messages
 (<a href="#icmp-pmtud" class="xref">Section 14.1.1</a>) back to the correct endpoint.  However, only long header
 packets (<a href="#long-header" class="xref">Section 17.2</a>) contain source connection IDs, and long header packets
 are not decrypted or acknowledged by the peer once the handshake is complete.<a href="#section-14.3-1" class="pilcrow">¶</a></p>
-<p id="section-14.3-2">One way to construct a PMTU probe is to coalesce (see
-<a href="#packet-coalesce" class="xref">Section 12.2</a>) a Handshake packet (<a href="#packet-handshake" class="xref">Section 17.2.4</a>) with a short
-header packet in a single UDP datagram.  If the UDP datagram reaches the
-endpoint, the Handshake packet will be ignored, but the short header packet will
-be acknowledged.  If the UDP datagram causes an ICMP message to be sent, the
-first part of the datagram will be quoted in that message.  If the source
-connection ID is within the quoted portion of the UDP datagram, that could be
-used for routing.<a href="#section-14.3-2" class="pilcrow">¶</a></p>
+<p id="section-14.3-2">One way to construct a PMTU probe is to coalesce (see <a href="#packet-coalesce" class="xref">Section 12.2</a>) a
+packet with a long header, such as a Handshake or 0-RTT packet
+(<a href="#long-header" class="xref">Section 17.2</a>), with a short header packet in a single UDP datagram.  If the
+UDP datagram reaches the endpoint, the packet with the long header will be
+ignored, but the short header packet will be acknowledged.  If the UDP datagram
+causes an ICMP message to be sent, the first part of the datagram will be quoted
+in that message.  If the source connection ID is within the quoted portion of
+the UDP datagram, that could be used for routing.<a href="#section-14.3-2" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-14.3-3">
+          <dt id="section-14.3-3.1">Note:</dt>
+<dd id="section-14.3-3.2">
+  The purpose of using a packet with a long header is only to ensure that the
+quoted packet contained in the ICMP message contains a Source Connection ID
+field that can be use for routing.  This packet does not need to be a valid
+packet and it can be sent even if there is no current use for packets of that
+type.<a href="#section-14.3-3.2" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+</dl>
 </section>
 </div>
 </section>
