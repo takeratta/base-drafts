@@ -1285,7 +1285,10 @@ code and issues list for this draft can be found at
                 <p id="section-toc.1-1.14.2.1.1"><a href="#section-14.1" class="xref">14.1</a>.  <a href="#name-path-maximum-transmission-u" class="xref">Path Maximum Transmission Unit (PMTU)</a><a href="#section-toc.1-1.14.2.1.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.1.2.1">
-                    <p id="section-toc.1-1.14.2.1.2.1.1"><a href="#section-14.1.1" class="xref">14.1.1</a>.  <a href="#name-handling-of-icmp-messages-b" class="xref">Handling of ICMP Messages by PMTUD</a><a href="#section-toc.1-1.14.2.1.2.1.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.14.2.1.2.1.1"><a href="#section-14.1.1" class="xref">14.1.1</a>.  <a href="#name-pmtud-probes-with-handshake" class="xref">PMTUD Probes with Handshake packets</a><a href="#section-toc.1-1.14.2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.14.2.1.2.2">
+                    <p id="section-toc.1-1.14.2.1.2.2.1"><a href="#section-14.1.2" class="xref">14.1.2</a>.  <a href="#name-handling-of-icmp-messages-b" class="xref">Handling of ICMP Messages by PMTUD</a><a href="#section-toc.1-1.14.2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -5719,33 +5722,39 @@ later time in the connection.<a href="#section-13.4.2.3-3" class="pilcrow">¶</a
 <a href="#section-14" class="section-number selfRef">14. </a><a href="#name-packet-size" class="section-name selfRef">Packet Size</a>
       </h2>
 <p id="section-14-1">The QUIC packet size includes the QUIC header and protected payload, but not the
-UDP or IP header.<a href="#section-14-1" class="pilcrow">¶</a></p>
+UDP or IP headers.<a href="#section-14-1" class="pilcrow">¶</a></p>
 <p id="section-14-2">QUIC depends upon a minimum packet size of at least 1280 bytes.  This is the
 IPv6 minimum size <span>[<a href="#RFC8200" class="xref">RFC8200</a>]</span> and is also supported by most modern IPv4
 networks.  Assuming the minimum IP header size, this results in a QUIC maximum
 packet size of 1232 bytes for IPv6 and 1252 bytes for IPv4.<a href="#section-14-2" class="pilcrow">¶</a></p>
-<p id="section-14-3">A client MUST expand the payload of all UDP datagrams carrying Initial packets
-to at least 1200 bytes, by adding PADDING frames to the Initial packet or by
+<p id="section-14-3">The QUIC maximum packet size is the largest size of QUIC packet that can be sent
+across a network path using a single packet. Any maximum packet size larger than
+1200 bytes is discovered using PMTUD/DPLPMTUD.<a href="#section-14-3" class="pilcrow">¶</a></p>
+<p id="section-14-4">A client MUST expand the payload of all UDP datagrams carrying Initial packets
+to at least the smallest allowed maximum packet size (1200 bytes)
+by adding PADDING frames to the Initial packet or by
 coalescing the Initial packet; see <a href="#packet-coalesce" class="xref">Section 12.2</a>.  Sending a UDP datagram
 of this size ensures that the network path from the client to the server
-supports a reasonable Path Maximum Transmission Unit (PMTU).  Padding datagrams
-also helps reduce the amplitude of amplification attacks caused by server
-responses toward an unverified client address; see <a href="#address-validation" class="xref">Section 8</a>.<a href="#section-14-3" class="pilcrow">¶</a></p>
-<p id="section-14-4">Enforcement of the max_udp_payload_size transport parameter
+supports a reasonable Path Maximum Transmission Unit (PMTU).  This also
+helps reduce the amplitude of amplification attacks caused by server responses
+toward an unverified client address; see <a href="#address-validation" class="xref">Section 8</a>.<a href="#section-14-4" class="pilcrow">¶</a></p>
+<p id="section-14-5">Enforcement of the max_udp_payload_size transport parameter
 (<a href="#transport-parameter-definitions" class="xref">Section 18.2</a>) might act as an additional limit on the
 maximum packet size. A sender can avoid exceeding this limit, once the value is
 known.  However, prior to learning the value of the transport parameter,
-endpoints risk datagrams being lost if they send packets larger than 1200 bytes.<a href="#section-14-4" class="pilcrow">¶</a></p>
-<p id="section-14-5">Datagrams containing Initial packets MAY exceed 1200 bytes if the client
-believes that the network path and peer both support the size that it chooses.<a href="#section-14-5" class="pilcrow">¶</a></p>
-<p id="section-14-6">UDP datagrams MUST NOT be fragmented at the IP layer.  In IPv4
-<span>[<a href="#IPv4" class="xref">IPv4</a>]</span>, the DF bit MUST be set to prevent fragmentation on the path.<a href="#section-14-6" class="pilcrow">¶</a></p>
-<p id="section-14-7">A server MUST discard an Initial packet that is carried in a UDP datagram with
-a payload that is less than 1200 bytes. A server MAY also immediately close the
-connection by sending a CONNECTION_CLOSE frame with an error code of
-PROTOCOL_VIOLATION; see <a href="#immediate-close-hs" class="xref">Section 10.3.1</a>.<a href="#section-14-7" class="pilcrow">¶</a></p>
-<p id="section-14-8">The server MUST also limit the number of bytes it sends before validating the
-address of the client; see <a href="#address-validation" class="xref">Section 8</a>.<a href="#section-14-8" class="pilcrow">¶</a></p>
+endpoints risk datagrams being lost if they send packets larger than the
+smallest allowed maximum packet size of 1200 bytes.<a href="#section-14-5" class="pilcrow">¶</a></p>
+<p id="section-14-6">Datagrams containing Initial packets MAY exceed 1200 bytes if the client
+believes that the network path and peer both support the size that it chooses.<a href="#section-14-6" class="pilcrow">¶</a></p>
+<p id="section-14-7">UDP datagrams MUST NOT be fragmented at the IP layer.  In IPv4
+<span>[<a href="#IPv4" class="xref">IPv4</a>]</span>, the DF bit MUST be set to prevent fragmentation on the path.<a href="#section-14-7" class="pilcrow">¶</a></p>
+<p id="section-14-8">A server MUST discard an Initial packet that is carried in a UDP datagram with a
+payload that is less than the smallest allowed maximum packet size  of 1200
+bytes.  A server MAY also immediately close the connection by sending a
+CONNECTION_CLOSE frame with an error code of PROTOCOL_VIOLATION; see
+<a href="#immediate-close-hs" class="xref">Section 10.3.1</a>.<a href="#section-14-8" class="pilcrow">¶</a></p>
+<p id="section-14-9">The server MUST also limit the number of bytes it sends before validating the
+address of the client; see <a href="#address-validation" class="xref">Section 8</a>.<a href="#section-14-9" class="pilcrow">¶</a></p>
 <div id="path-maximum-transmission-unit-pmtu">
 <section id="section-14.1">
         <h3 id="name-path-maximum-transmission-u">
@@ -5777,36 +5786,51 @@ maintain a maximum packet size for each combination of local and remote IP
 addresses.<a href="#section-14.1-5" class="pilcrow">¶</a></p>
 <p id="section-14.1-6">A QUIC implementation MAY be more conservative in computing the maximum packet
 size to allow for unknown tunnel overheads or IP header options/extensions.<a href="#section-14.1-6" class="pilcrow">¶</a></p>
-<div id="icmp-pmtud">
+<div id="pmtud-probes-with-handshake-packets">
 <section id="section-14.1.1">
-          <h4 id="name-handling-of-icmp-messages-b">
-<a href="#section-14.1.1" class="section-number selfRef">14.1.1. </a><a href="#name-handling-of-icmp-messages-b" class="section-name selfRef">Handling of ICMP Messages by PMTUD</a>
+          <h4 id="name-pmtud-probes-with-handshake">
+<a href="#section-14.1.1" class="section-number selfRef">14.1.1. </a><a href="#name-pmtud-probes-with-handshake" class="section-name selfRef">PMTUD Probes with Handshake packets</a>
           </h4>
-<p id="section-14.1.1-1">PMTUD <span>[<a href="#RFC1191" class="xref">RFC1191</a>]</span> <span>[<a href="#RFC8201" class="xref">RFC8201</a>]</span> relies on reception of ICMP messages (e.g., IPv6
+<p id="section-14.1.1-1">One way to construct a PMTU probe is to coalesce (see
+<a href="#packet-coalesce" class="xref">Section 12.2</a>) a Handshake packet (<a href="#packet-handshake" class="xref">Section 17.2.4</a>) with a short
+header packet in a single UDP datagram. If the UDP datagram reaches the
+endpoint, the Handshake packet will be ignored, but the short header packet will
+be acknowledged.  If the UDP datagram causes an ICMP message to be sent, the
+first part of the datagram will be quoted in that message.  If the source
+connection ID is within the quoted portion of the UDP datagram, that could be
+used for routing.<a href="#section-14.1.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="icmp-pmtud">
+<section id="section-14.1.2">
+          <h4 id="name-handling-of-icmp-messages-b">
+<a href="#section-14.1.2" class="section-number selfRef">14.1.2. </a><a href="#name-handling-of-icmp-messages-b" class="section-name selfRef">Handling of ICMP Messages by PMTUD</a>
+          </h4>
+<p id="section-14.1.2-1">PMTUD <span>[<a href="#RFC1191" class="xref">RFC1191</a>]</span> <span>[<a href="#RFC8201" class="xref">RFC8201</a>]</span> relies on reception of ICMP messages (e.g., IPv6
 Packet Too Big messages) that indicate when a packet is dropped because it is
 larger than the local router MTU. DPLPMTUD can also optionally use these
 messages.  This use of ICMP messages is potentially vulnerable to off-path
 attacks that successfully guess the addresses used on the path and reduce the
-PMTU to a bandwidth-inefficient value.<a href="#section-14.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-14.1.1-2">An endpoint MUST ignore an ICMP message that claims the PMTU has decreased below
-the minimum QUIC packet size.<a href="#section-14.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-14.1.1-3">The requirements for generating ICMP (<span>[<a href="#RFC1812" class="xref">RFC1812</a>]</span>, <span>[<a href="#RFC4443" class="xref">RFC4443</a>]</span>) state that the
+PMTU to a bandwidth-inefficient value.<a href="#section-14.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-14.1.2-2">An endpoint MUST ignore an ICMP message that claims the PMTU has decreased below
+the minimum QUIC packet size.<a href="#section-14.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-14.1.2-3">The requirements for generating ICMP (<span>[<a href="#RFC1812" class="xref">RFC1812</a>]</span>, <span>[<a href="#RFC4443" class="xref">RFC4443</a>]</span>) state that the
 quoted packet should contain as much of the original packet as possible without
 exceeding the minimum MTU for the IP version.  The size of the quoted packet can
 actually be smaller, or the information unintelligible, as described in Section
-1.1 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.<a href="#section-14.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-14.1.1-4">QUIC endpoints using PMTUD SHOULD validate ICMP messages to protect from
+1.1 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.<a href="#section-14.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-14.1.2-4">QUIC endpoints using PMTUD SHOULD validate ICMP messages to protect from
 off-path injection as specified in <span>[<a href="#RFC8201" class="xref">RFC8201</a>]</span> and Section 5.2 of <span>[<a href="#RFC8085" class="xref">RFC8085</a>]</span>.
 This validation SHOULD use the quoted packet supplied in the payload of an ICMP
 message to associate the message with a corresponding transport connection (see
 Section 4.6.1 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>).  ICMP message validation MUST include matching
 IP addresses and UDP ports <span>[<a href="#RFC8085" class="xref">RFC8085</a>]</span> and, when possible, connection IDs to an
 active QUIC session.  The endpoint SHOULD ignore all ICMP messages that fail
-validation.<a href="#section-14.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-14.1.1-5">An endpoint MUST NOT increase PMTU based on ICMP messages; see Section 3, clause
+validation.<a href="#section-14.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-14.1.2-5">An endpoint MUST NOT increase PMTU based on ICMP messages; see Section 3, clause
 6 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.  Any reduction in the QUIC maximum packet size in response
 to ICMP messages MAY be provisional until QUIC's loss detection algorithm
-determines that the quoted packet has actually been lost.<a href="#section-14.1.1-5" class="pilcrow">¶</a></p>
+determines that the quoted packet has actually been lost.<a href="#section-14.1.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5870,7 +5894,7 @@ before using the PTB information, as defined in Section 4.6 of <span>[<a href="#
 In addition to UDP Port validation, QUIC validates an ICMP message by using
 other PL information (e.g., validation of connection identifiers (CIDs) in the
 quoted packet of any received ICMP message).<a href="#section-14.2.4-1" class="pilcrow">¶</a></p>
-<p id="section-14.2.4-2">The considerations for processing ICMP messages described in <a href="#icmp-pmtud" class="xref">Section 14.1.1</a> also
+<p id="section-14.2.4-2">The considerations for processing ICMP messages described in <a href="#icmp-pmtud" class="xref">Section 14.1.2</a> also
 apply if these messages are used by DPLPMTUD.<a href="#section-14.2.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -5884,7 +5908,7 @@ apply if these messages are used by DPLPMTUD.<a href="#section-14.2.4-2" class="
 <p id="section-14.3-1">Endpoints that rely on the destination connection ID for routing incoming QUIC
 packets are likely to require that the connection ID be included in
 PMTUD/DPLPMTUD probe packets to route any resulting ICMP messages
-(<a href="#icmp-pmtud" class="xref">Section 14.1.1</a>) back to the correct endpoint.  However, only long header
+(<a href="#icmp-pmtud" class="xref">Section 14.1.2</a>) back to the correct endpoint.  However, only long header
 packets (<a href="#long-header" class="xref">Section 17.2</a>) contain source connection IDs, and long header packets
 are not decrypted or acknowledged by the peer once the handshake is complete.<a href="#section-14.3-1" class="pilcrow">¶</a></p>
 <p id="section-14.3-2">One way to construct a PMTU probe is to coalesce (see <a href="#packet-coalesce" class="xref">Section 12.2</a>) a
@@ -8379,7 +8403,7 @@ against denial of service.  Once the cryptographic handshake is complete, QUIC
 endpoints discard most packets that are not authenticated, greatly limiting the
 ability of an attacker to interfere with existing connections.<a href="#section-21.1-1" class="pilcrow">¶</a></p>
 <p id="section-21.1-2">Once a connection is established QUIC endpoints might accept some
-unauthenticated ICMP packets (see <a href="#icmp-pmtud" class="xref">Section 14.1.1</a>), but the use of these packets
+unauthenticated ICMP packets (see <a href="#icmp-pmtud" class="xref">Section 14.1.2</a>), but the use of these packets
 is extremely limited.  The only other type of packet that an endpoint might
 accept is a stateless reset (<a href="#stateless-reset" class="xref">Section 10.4</a>) which relies on the token
 being kept secret until it is used.<a href="#section-21.1-2" class="pilcrow">¶</a></p>
