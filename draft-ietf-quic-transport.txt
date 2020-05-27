@@ -409,6 +409,10 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    This document defines QUIC version 1, which conforms to the protocol
    invariants in [QUIC-INVARIANTS].
 
+   To refer to QUIC version 1, cite this document.  References to the
+   limited set of version-independent properties of QUIC can cite
+   [QUIC-INVARIANTS].
+
 1.2.  Terms and Definitions
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -436,11 +440,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
       delayed, if earlier packets are lost or delayed, or if the sender
       intentionally skips a packet number.
 
-   Endpoint:  An entity that can participate in a QUIC connection by
-      generating, receiving, and processing QUIC packets.  There are
-      only two types of endpoint in QUIC: client and server.
 
-   Client:  The endpoint initiating a QUIC connection.
 
 
 
@@ -449,6 +449,12 @@ Iyengar & Thomson       Expires 28 November 2020                [Page 8]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   Endpoint:  An entity that can participate in a QUIC connection by
+      generating, receiving, and processing QUIC packets.  There are
+      only two types of endpoint in QUIC: client and server.
+
+   Client:  The endpoint initiating a QUIC connection.
 
    Server:  The endpoint accepting incoming QUIC connections.
 
@@ -493,18 +499,17 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    x (?) = C:  Indicates that x has a fixed value of C
 
-   x (?) = C..D:  Indicates that x has a value in the range from C to D,
-      inclusive
-
-   [x (E)]:  Indicates that x is optional (and has length of E)
-
-
 
 
 Iyengar & Thomson       Expires 28 November 2020                [Page 9]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   x (?) = C..D:  Indicates that x has a value in the range from C to D,
+      inclusive
+
+   [x (E)]:  Indicates that x is optional (and has length of E)
 
    x (E) ...:  Indicates that x is repeated zero or more times (and that
       each instance is length E)
@@ -547,11 +552,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    provide any means of ensuring ordering between bytes on different
    streams.
 
-   QUIC allows for an arbitrary number of streams to operate
-   concurrently and for an arbitrary amount of data to be sent on any
-   stream, subject to flow control constraints and stream limits; see
-   Section 4.
-
 
 
 
@@ -561,6 +561,11 @@ Iyengar & Thomson       Expires 28 November 2020               [Page 10]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   QUIC allows for an arbitrary number of streams to operate
+   concurrently and for an arbitrary amount of data to be sent on any
+   stream, subject to flow control constraints and stream limits; see
+   Section 4.
 
 2.1.  Stream Types and Identifiers
 
@@ -606,17 +611,15 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    streams of that type with lower-numbered stream IDs also being
    opened.
 
-   The first bidirectional stream opened by the client has a stream ID
-   of 0.
-
-
-
 
 
 Iyengar & Thomson       Expires 28 November 2020               [Page 11]
 
 Internet-Draft           QUIC Transport Protocol                May 2020
 
+
+   The first bidirectional stream opened by the client has a stream ID
+   of 0.
 
 2.2.  Sending and Receiving Data
 
@@ -663,9 +666,6 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    indicate the relative priority of streams.  When deciding which
    streams to dedicate resources to, the implementation SHOULD use the
    information provided by the application.
-
-
-
 
 
 
