@@ -5144,7 +5144,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    The QUIC maximum packet size is the largest size of QUIC packet that
    can be sent across a network path using a single packet.  Any maximum
-   packet size larger than 1200 bytes is discovered using PMTUD/
+   packet size larger than 1200 bytes can be discovered using PMTUD/
    DPLPMTUD.
 
 
@@ -5294,9 +5294,9 @@ Internet-Draft           QUIC Transport Protocol                May 2020
    If a QUIC endpoint determines that the PLPMTU between any pair of
    local and remote IP addresses has fallen below the size needed to
    support the minimum QUIC packet size (BASE_PLPMTU), it MUST
-   immediately cease sending QUIC packets, except for DPLPMTUD probe
-   packets, on the affected path.  An endpoint MAY terminate the
-   connection if an alternative path cannot be found.
+   immediately cease sending QUIC packets on the affected path.  An
+   endpoint MAY terminate the connection if an alternative path cannot
+   be found.
 
 14.2.1.  DPLPMTUD and Initial Connectivity
 
@@ -5307,11 +5307,11 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 14.2.2.  Sending QUIC DPLPMTUD Probe Packets
 
    DPLPMTU probe packets are ack-eliciting packets.  Probe packets that
-   use the PADDING frame therefore implement "Probing using padding
-   data", as defined in Section 4.1 of [DPLPMTUD].  Endpoints could
-   limit the content of probe packets to PING and PADDING frames as
-   packets that are larger than the current maximum packet size are more
-   likely to be dropped by the network.
+   use the PADDING frame implement "Probing using padding data", as
+   defined in Section 4.1 of [DPLPMTUD].  Endpoints could limit the
+   content of probe packets to PING and PADDING frames as packets that
+   are larger than the current maximum packet size are more likely to be
+   dropped by the network.
 
 
 
@@ -5329,7 +5329,7 @@ Internet-Draft           QUIC Transport Protocol                May 2020
 
    QUIC provides an acknowledged PL, therefore a sender does not
    implement the DPLPMTUD CONFIRMATION_TIMER while in the
-   SEARCH_COMPLETE state.
+   SEARCH_COMPLETE state; see Section 5.2 of [DPLPMTUD].
 
 14.2.4.  Handling of ICMP Messages by DPLPMTUD
 
