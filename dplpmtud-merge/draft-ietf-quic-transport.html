@@ -12,7 +12,7 @@
 documents describe QUIC's loss detection and congestion control and the use of
 TLS for key negotiation. 
     " name="description">
-<meta content="xml2rfc 2.44.0" name="generator">
+<meta content="xml2rfc 2.45.0" name="generator">
 <meta content="draft-ietf-quic-transport-latest" name="ietf.draft">
 <link href="draft-ietf-quic-transport.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -475,14 +475,10 @@ hr.addr {
 }
 @media (min-width: 500px) {
   #authors-addresses > section {
-    display: relative;
-    padding: 32px 0 0;
     column-count: 2;
     column-gap: 20px;
   }
-  #name-authors-addresses {
-    position: absolute;
-    top: 0px;
+  #authors-addresses > section > h2 {
     column-span: all;
   }
   /* hack for break-inside: avoid-column */
@@ -492,21 +488,8 @@ hr.addr {
   }
 }
 
-/* temporary notes */
-.rfcEditorRemove::before {
-  position: absolute;
-  top: 0.2em;
-  right: 0.2em;
-  padding: 0.2em;
-  content: "The RFC Editor will remove this note";
-  color: #b76427;
-  background-color: rgba(249, 232, 105, 0.3);
-}
-.rfcEditorRemove {
-  position: relative;
-  padding-top: 1.8em;
-  background-color: rgba(249, 232, 105, 0.3);
-  border-radius: 3px;
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -829,11 +812,11 @@ table.left {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">QUIC Transport Protocol</td>
-<td class="right">May 2020</td>
+<td class="right">June 2020</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Iyengar &amp; Thomson</td>
-<td class="center">Expires 29 November 2020</td>
+<td class="center">Expires 3 December 2020</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -846,12 +829,12 @@ table.left {
 <dd class="internet-draft">draft-ietf-quic-transport-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-05-28" class="published">28 May 2020</time>
+<time datetime="2020-06-01" class="published">1 June 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-11-29">29 November 2020</time></dd>
+<dd class="expires"><time datetime="2020-12-03">3 December 2020</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -904,7 +887,7 @@ code and issues list for this draft can be found at
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 November 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 December 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1296,18 +1279,18 @@ code and issues list for this draft can be found at
                     <p id="section-toc.1-1.14.2.2.2.1.1"><a href="#section-14.2.1" class="xref">14.2.1</a>.  <a href="#name-dplpmtud-and-initial-connec" class="xref">DPLPMTUD and Initial Connectivity</a><a href="#section-toc.1-1.14.2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.2.2.2">
-                    <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#section-14.2.2" class="xref">14.2.2</a>.  <a href="#name-sending-quic-dplpmtud-probe" class="xref">Sending QUIC DPLPMTUD Probe Packets</a><a href="#section-toc.1-1.14.2.2.2.2.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#section-14.2.2" class="xref">14.2.2</a>.  <a href="#name-validating-the-quic-path-wi" class="xref">Validating the QUIC Path with DPLPMTUD</a><a href="#section-toc.1-1.14.2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.2.2.3">
-                    <p id="section-toc.1-1.14.2.2.2.3.1"><a href="#section-14.2.3" class="xref">14.2.3</a>.  <a href="#name-validating-the-quic-path-wi" class="xref">Validating the QUIC Path with DPLPMTUD</a><a href="#section-toc.1-1.14.2.2.2.3.1" class="pilcrow">¶</a></p>
-</li>
-<li class="toc ulEmpty" id="section-toc.1-1.14.2.2.2.4">
-                    <p id="section-toc.1-1.14.2.2.2.4.1"><a href="#section-14.2.4" class="xref">14.2.4</a>.  <a href="#name-handling-of-icmp-messages-by" class="xref">Handling of ICMP Messages by DPLPMTUD</a><a href="#section-toc.1-1.14.2.2.2.4.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.14.2.2.2.3.1"><a href="#section-14.2.3" class="xref">14.2.3</a>.  <a href="#name-handling-of-icmp-messages-by" class="xref">Handling of ICMP Messages by DPLPMTUD</a><a href="#section-toc.1-1.14.2.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.3">
-                <p id="section-toc.1-1.14.2.3.1"><a href="#section-14.3" class="xref">14.3</a>.  <a href="#name-pmtud-dplpmtud-probes-conta" class="xref">PMTUD/DPLPMTUD Probes Containing Source Connection ID</a><a href="#section-toc.1-1.14.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.14.2.3.1"><a href="#section-14.3" class="xref">14.3</a>.  <a href="#name-sending-quic-pmtu-probe-pac" class="xref">Sending QUIC PMTU Probe Packets</a><a href="#section-toc.1-1.14.2.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.14.2.4">
+                <p id="section-toc.1-1.14.2.4.1"><a href="#section-14.4" class="xref">14.4</a>.  <a href="#name-pmtu-probes-containing-sour" class="xref">PMTU Probes Containing Source Connection ID</a><a href="#section-toc.1-1.14.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -4869,7 +4852,7 @@ removed.<a href="#section-12.2-1" class="pilcrow">¶</a></p>
 <p id="section-12.2-2">Using the Length field, a sender can coalesce multiple QUIC packets into one UDP
 datagram.  This can reduce the number of UDP datagrams needed to complete the
 cryptographic handshake and start sending data.  This can also be used to
-construct PMTU probes; see <a href="#pmtu-probes-src-cid" class="xref">Section 14.3</a>.  Receivers MUST be able to
+construct PMTU probes; see <a href="#pmtu-probes-src-cid" class="xref">Section 14.4</a>.  Receivers MUST be able to
 process coalesced packets.<a href="#section-12.2-2" class="pilcrow">¶</a></p>
 <p id="section-12.2-3">Coalescing packets in order of increasing encryption levels (Initial, 0-RTT,
 Handshake, 1-RTT; see Section 4.1.4 of <span>[<a href="#QUIC-TLS" class="xref">QUIC-TLS</a>]</span>) makes it more likely the
@@ -5767,16 +5750,17 @@ referred to as the endpoint's maximum packet size.<a href="#section-14.1-1" clas
 (<span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>) or implement Path MTU Discovery
 (PMTUD) <span>[<a href="#RFC1191" class="xref">RFC1191</a>]</span> <span>[<a href="#RFC8201" class="xref">RFC8201</a>]</span> to determine whether the path to a destination
 will support a desired message size without fragmentation.  In the absence of
-these mechanisms, QUIC endpoints SHOULD NOT send IP packets
-larger than the minimum QUIC packet size.<a href="#section-14.1-2" class="pilcrow">¶</a></p>
-<p id="section-14.1-3">All QUIC packets other than PMTUD/DPLPMTUD probe packets SHOULD be sized to fit
-within the maximum packet size to avoid the packet being fragmented or dropped
-<span>[<a href="#RFC8085" class="xref">RFC8085</a>]</span>.<a href="#section-14.1-3" class="pilcrow">¶</a></p>
+these mechanisms, QUIC endpoints SHOULD NOT send IP packets larger than the
+minimum QUIC packet size.<a href="#section-14.1-2" class="pilcrow">¶</a></p>
+<p id="section-14.1-3">Both PMTUD and DPLPMTUD send IP packets that are larger than the current maximum
+packet size.  Aside from these PMTU probe packets, all QUIC packets SHOULD be
+sized to fit within the maximum packet size to avoid the packet being fragmented
+or dropped <span>[<a href="#RFC8085" class="xref">RFC8085</a>]</span>.<a href="#section-14.1-3" class="pilcrow">¶</a></p>
 <p id="section-14.1-4">If a QUIC endpoint determines that the PMTU between any pair of local and remote
 IP addresses has fallen below the smallest allowed maximum packet size of 1200
-bytes, it MUST immediately cease sending QUIC packets, except for PMTUD or
-DPLPMTUD probe packets, on the affected path.  An endpoint MAY terminate the
-connection if an alternative path cannot be found.<a href="#section-14.1-4" class="pilcrow">¶</a></p>
+bytes, it MUST immediately cease sending QUIC packets, except for PMTU probe
+packets, on the affected path.  An endpoint MAY terminate the connection if an
+alternative path cannot be found.<a href="#section-14.1-4" class="pilcrow">¶</a></p>
 <p id="section-14.1-5">Each pair of local and remote addresses could have a different PMTU.  QUIC
 implementations that implement any kind of PMTU discovery therefore SHOULD
 maintain a maximum packet size for each combination of local and remote IP
@@ -5825,13 +5809,15 @@ determines that the quoted packet has actually been lost.<a href="#section-14.1.
 <p id="section-14.2-1">When implementing the algorithm in Section 5 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>, the initial value
 of BASE_PMTU SHOULD be consistent with the minimum QUIC packet size. The
 MIN_PLPMTU is the same as the BASE_PMTU.<a href="#section-14.2-1" class="pilcrow">¶</a></p>
-<p id="section-14.2-2">QUIC endpoints implementing DPLPMTUD maintain a maximum packet size (DPLPMTUD
-MPS) for each combination of local and remote IP addresses.<a href="#section-14.2-2" class="pilcrow">¶</a></p>
-<p id="section-14.2-3">If a QUIC endpoint determines that the PLPMTU between any pair of local and
+<p id="section-14.2-2">PMTU probe packets for DPLPMTUD that use the PADDING frame implement "Probing
+using padding data", as defined in Section 4.1 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.<a href="#section-14.2-2" class="pilcrow">¶</a></p>
+<p id="section-14.2-3">QUIC endpoints implementing DPLPMTUD maintain a maximum packet size (DPLPMTUD
+MPS) for each combination of local and remote IP addresses.<a href="#section-14.2-3" class="pilcrow">¶</a></p>
+<p id="section-14.2-4">If a QUIC endpoint determines that the PLPMTU between any pair of local and
 remote IP addresses has fallen below the size needed to support the minimum QUIC
 packet size (BASE_PLPMTU), it MUST immediately cease sending QUIC packets on the
 affected path. An endpoint MAY terminate the connection if an alternative path
-cannot be found.<a href="#section-14.2-3" class="pilcrow">¶</a></p>
+cannot be found.<a href="#section-14.2-4" class="pilcrow">¶</a></p>
 <div id="dplpmtud-and-initial-connectivity">
 <section id="section-14.2.1">
           <h4 id="name-dplpmtud-and-initial-connec">
@@ -5842,74 +5828,74 @@ packetization layer (PL). A sender can therefore enter the DPLPMTUD BASE state
 when the QUIC connection handshake has been completed.<a href="#section-14.2.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sending-quic-dplpmtud-probe-packets">
-<section id="section-14.2.2">
-          <h4 id="name-sending-quic-dplpmtud-probe">
-<a href="#section-14.2.2" class="section-number selfRef">14.2.2. </a><a href="#name-sending-quic-dplpmtud-probe" class="section-name selfRef">Sending QUIC DPLPMTUD Probe Packets</a>
-          </h4>
-<p id="section-14.2.2-1">DPLPMTU probe packets are ack-eliciting packets.  Probe packets that use the
-PADDING frame implement "Probing using padding data", as defined in
-Section 4.1 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.  Endpoints could limit the content of probe
-packets to PING and PADDING frames as packets that are larger than the current
-maximum packet size are more likely to be dropped by the network.<a href="#section-14.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-14.2.2-2">DPLPMTU probe packets consume congestion window, which could delay subsequent
-transmission by an application.<a href="#section-14.2.2-2" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="validating-the-quic-path-with-dplpmtud">
-<section id="section-14.2.3">
+<section id="section-14.2.2">
           <h4 id="name-validating-the-quic-path-wi">
-<a href="#section-14.2.3" class="section-number selfRef">14.2.3. </a><a href="#name-validating-the-quic-path-wi" class="section-name selfRef">Validating the QUIC Path with DPLPMTUD</a>
+<a href="#section-14.2.2" class="section-number selfRef">14.2.2. </a><a href="#name-validating-the-quic-path-wi" class="section-name selfRef">Validating the QUIC Path with DPLPMTUD</a>
           </h4>
-<p id="section-14.2.3-1">QUIC provides an acknowledged PL, therefore a sender does not implement the
+<p id="section-14.2.2-1">QUIC provides an acknowledged PL, therefore a sender does not implement the
 DPLPMTUD CONFIRMATION_TIMER while in the SEARCH_COMPLETE state; see Section
-5.2 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.<a href="#section-14.2.3-1" class="pilcrow">¶</a></p>
+5.2 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.<a href="#section-14.2.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="handling-of-icmp-messages-by-dplpmtud">
-<section id="section-14.2.4">
+<section id="section-14.2.3">
           <h4 id="name-handling-of-icmp-messages-by">
-<a href="#section-14.2.4" class="section-number selfRef">14.2.4. </a><a href="#name-handling-of-icmp-messages-by" class="section-name selfRef">Handling of ICMP Messages by DPLPMTUD</a>
+<a href="#section-14.2.3" class="section-number selfRef">14.2.3. </a><a href="#name-handling-of-icmp-messages-by" class="section-name selfRef">Handling of ICMP Messages by DPLPMTUD</a>
           </h4>
-<p id="section-14.2.4-1">An endpoint using DPLPMTUD requires the validation of any received PTB message
-before using the PTB information, as defined in Section 4.6 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.
-In addition to UDP Port validation, QUIC validates an ICMP message by using
-other PL information (e.g., validation of connection IDs in the quoted packet of
-any received ICMP message).<a href="#section-14.2.4-1" class="pilcrow">¶</a></p>
-<p id="section-14.2.4-2">The considerations for processing ICMP messages described in <a href="#icmp-pmtud" class="xref">Section 14.1.1</a> also
-apply if these messages are used by DPLPMTUD.<a href="#section-14.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-14.2.3-1">An endpoint using DPLPMTUD requires the validation of any received ICMP Packet
+Too Big (PTB) message before using the PTB information, as defined in Section
+4.6 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.  In addition to UDP Port validation, QUIC validates an
+ICMP message by using other PL information (e.g., validation of connection IDs
+in the quoted packet of any received ICMP message).<a href="#section-14.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-14.2.3-2">The considerations for processing ICMP messages described in <a href="#icmp-pmtud" class="xref">Section 14.1.1</a> also
+apply if these messages are used by DPLPMTUD.<a href="#section-14.2.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
+</section>
+</div>
+<div id="sending-quic-pmtu-probe-packets">
+<section id="section-14.3">
+        <h3 id="name-sending-quic-pmtu-probe-pac">
+<a href="#section-14.3" class="section-number selfRef">14.3. </a><a href="#name-sending-quic-pmtu-probe-pac" class="section-name selfRef">Sending QUIC PMTU Probe Packets</a>
+        </h3>
+<p id="section-14.3-1">PMTU probe packets are ack-eliciting packets.<a href="#section-14.3-1" class="pilcrow">¶</a></p>
+<p id="section-14.3-2">Endpoints could limit the content of probe packets to PING and PADDING frames as
+packets that are larger than the current maximum packet size are more likely to
+be dropped by the network.   Loss of a QUIC packet that is carried in a PMTU
+probe packet is therefore not a reliable indication of congestion and SHOULD NOT
+trigger a congestion control reaction; see Section 3, Bullet 7 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]</span>.
+However, PMTU probe packets consume congestion window, which could delay
+subsequent transmission by an application.<a href="#section-14.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="pmtu-probes-src-cid">
-<section id="section-14.3">
-        <h3 id="name-pmtud-dplpmtud-probes-conta">
-<a href="#section-14.3" class="section-number selfRef">14.3. </a><a href="#name-pmtud-dplpmtud-probes-conta" class="section-name selfRef">PMTUD/DPLPMTUD Probes Containing Source Connection ID</a>
+<section id="section-14.4">
+        <h3 id="name-pmtu-probes-containing-sour">
+<a href="#section-14.4" class="section-number selfRef">14.4. </a><a href="#name-pmtu-probes-containing-sour" class="section-name selfRef">PMTU Probes Containing Source Connection ID</a>
         </h3>
-<p id="section-14.3-1">Endpoints that rely on the destination connection ID for routing incoming QUIC
+<p id="section-14.4-1">Endpoints that rely on the destination connection ID for routing incoming QUIC
 packets are likely to require that the connection ID be included in
-PMTUD/DPLPMTUD probe packets to route any resulting ICMP messages
-(<a href="#icmp-pmtud" class="xref">Section 14.1.1</a>) back to the correct endpoint.  However, only long header
-packets (<a href="#long-header" class="xref">Section 17.2</a>) contain the Source Connection ID field, and long
-header packets are not decrypted or acknowledged by the peer once the handshake
-is complete.<a href="#section-14.3-1" class="pilcrow">¶</a></p>
-<p id="section-14.3-2">One way to construct a PMTUD or DPLPMTUD probe is to coalesce (see
+PMTU probe packets to route any resulting ICMP messages (<a href="#icmp-pmtud" class="xref">Section 14.1.1</a>) back to
+the correct endpoint.  However, only long header packets (<a href="#long-header" class="xref">Section 17.2</a>)
+contain the Source Connection ID field, and long header packets are not
+decrypted or acknowledged by the peer once the handshake is complete.<a href="#section-14.4-1" class="pilcrow">¶</a></p>
+<p id="section-14.4-2">One way to construct a PMTU probe packet is to coalesce (see
 <a href="#packet-coalesce" class="xref">Section 12.2</a>) a packet with a long header, such as a Handshake or 0-RTT
 packet (<a href="#long-header" class="xref">Section 17.2</a>), with a short header packet in a single UDP datagram.
-If the UDP datagram reaches the endpoint, the packet with the long header will
-be ignored, but the short header packet will be acknowledged.  If the UDP
-datagram causes an ICMP message to be sent, the first part of the datagram will
-be quoted in that message.  If the Source Connection ID field is within the
-quoted portion of the UDP datagram, that could be used for routing or validation
-of the ICMP message.<a href="#section-14.3-2" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-14.3-3">
-          <dt id="section-14.3-3.1">Note:</dt>
-<dd id="section-14.3-3.2">
+If the resulting PMTU probe packet reaches the endpoint, the packet with the
+long header will be ignored, but the short header packet will be acknowledged.
+If the UDP datagram causes an ICMP message to be sent, the first part of the
+datagram will be quoted in that message.  If the Source Connection ID field is
+within the quoted portion of the UDP datagram, that could be used for routing or
+validation of the ICMP message.<a href="#section-14.4-2" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-14.4-3">
+          <dt id="section-14.4-3.1">Note:</dt>
+<dd id="section-14.4-3.2">
   The purpose of using a packet with a long header is only to ensure that the
 quoted packet contained in the ICMP message contains a Source Connection ID
 field.  This packet does not need to be a valid packet and it can be sent even
-if there is no current use for packets of that type.<a href="#section-14.3-3.2" class="pilcrow">¶</a>
+if there is no current use for packets of that type.<a href="#section-14.4-3.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 </dl>
@@ -9474,11 +9460,11 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dd class="break"></dd>
 <dt id="QUIC-RECOVERY">[QUIC-RECOVERY]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-05-28">28 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-06-01">1 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-TLS">[QUIC-TLS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-05-28">28 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-06-01">1 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1191">[RFC1191]</dt>
 <dd>
@@ -9553,7 +9539,7 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dd class="break"></dd>
 <dt id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-05-28">28 May 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-06-01">1 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-MANAGEABILITY">[QUIC-MANAGEABILITY]</dt>
 <dd>
