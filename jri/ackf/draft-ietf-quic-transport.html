@@ -5319,8 +5319,9 @@ frames.<a href="#section-13.2.1-7" class="pilcrow">¶</a></p>
 ack-eliciting packets. This determination involves a tradeoff.<a href="#section-13.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-13.2.2-2">Endpoints rely on timely acknowledgment to detect loss; see Section 5 of
 <span>[<a href="#QUIC-RECOVERY" class="xref">QUIC-RECOVERY</a>]</span>. Window-based congestion controllers, such as the one in
-Section 6 of <span>[<a href="#QUIC-RECOVERY" class="xref">QUIC-RECOVERY</a>]</span>, rely on acknowledgments to manage their sending
-rate. In both cases, delaying acknowledgments can adversely affect performance.<a href="#section-13.2.2-2" class="pilcrow">¶</a></p>
+Section 6 of <span>[<a href="#QUIC-RECOVERY" class="xref">QUIC-RECOVERY</a>]</span>, rely on acknowledgments to manage their
+congestion window. In both cases, delaying acknowledgments can adversely affect
+performance.<a href="#section-13.2.2-2" class="pilcrow">¶</a></p>
 <p id="section-13.2.2-3">On the other hand, reducing the frequency of packets that carrying only
 acknowledgements reduces packet processing cost at both endpoints. It can also
 improve connection throughput on severely asymmetric links; see Section 3 of
