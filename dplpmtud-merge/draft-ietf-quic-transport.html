@@ -816,7 +816,7 @@ table.left {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Iyengar &amp; Thomson</td>
-<td class="center">Expires 3 December 2020</td>
+<td class="center">Expires 4 December 2020</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -829,12 +829,12 @@ table.left {
 <dd class="internet-draft">draft-ietf-quic-transport-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-06-01" class="published">1 June 2020</time>
+<time datetime="2020-06-02" class="published">2 June 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-12-03">3 December 2020</time></dd>
+<dd class="expires"><time datetime="2020-12-04">4 December 2020</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -887,7 +887,7 @@ code and issues list for this draft can be found at
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 December 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 December 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -5714,26 +5714,26 @@ across a network path using a single packet. Any maximum packet size larger than
 1200 bytes can be discovered using Path Maximum Transmission Unit Discovery
 (PMTUD; see <a href="#pmtud" class="xref">Section 14.1.1</a>) or Datagram Packetization Layer PMTU Discovery (DPLPMTUD;
 see <a href="#dplpmtud" class="xref">Section 14.2</a>).<a href="#section-14-3" class="pilcrow">¶</a></p>
-<p id="section-14-4">A client MUST expand the payload of all UDP datagrams carrying Initial packets
+<p id="section-14-4">Enforcement of the max_udp_payload_size transport parameter
+(<a href="#transport-parameter-definitions" class="xref">Section 18.2</a>) might act as an additional limit on the
+maximum packet size. A sender can avoid exceeding this limit, once the value is
+known.  However, prior to learning the value of the transport parameter,
+endpoints risk datagrams being lost if they send packets larger than the
+smallest allowed maximum packet size of 1200 bytes.<a href="#section-14-4" class="pilcrow">¶</a></p>
+<p id="section-14-5">A client MUST expand the payload of all UDP datagrams carrying Initial packets
 to at least the smallest allowed maximum packet size (1200 bytes) by adding
 PADDING frames to the Initial packet or by coalescing the Initial packet; see
 <a href="#packet-coalesce" class="xref">Section 12.2</a>.  Sending a UDP datagram of this size ensures that the
 network path from the client to the server supports a reasonable Path Maximum
 Transmission Unit (PMTU).  This also helps reduce the amplitude of amplification
 attacks caused by server responses toward an unverified client address; see
-<a href="#address-validation" class="xref">Section 8</a>.<a href="#section-14-4" class="pilcrow">¶</a></p>
-<p id="section-14-5">Enforcement of the max_udp_payload_size transport parameter
-(<a href="#transport-parameter-definitions" class="xref">Section 18.2</a>) might act as an additional limit on the
-maximum packet size. A sender can avoid exceeding this limit, once the value is
-known.  However, prior to learning the value of the transport parameter,
-endpoints risk datagrams being lost if they send packets larger than the
-smallest allowed maximum packet size of 1200 bytes.<a href="#section-14-5" class="pilcrow">¶</a></p>
+<a href="#address-validation" class="xref">Section 8</a>.<a href="#section-14-5" class="pilcrow">¶</a></p>
 <p id="section-14-6">Datagrams containing Initial packets MAY exceed 1200 bytes if the client
 believes that the network path and peer both support the size that it chooses.<a href="#section-14-6" class="pilcrow">¶</a></p>
 <p id="section-14-7">UDP datagrams MUST NOT be fragmented at the IP layer.  In IPv4
 <span>[<a href="#IPv4" class="xref">IPv4</a>]</span>, the DF bit MUST be set to prevent fragmentation on the path.<a href="#section-14-7" class="pilcrow">¶</a></p>
 <p id="section-14-8">A server MUST discard an Initial packet that is carried in a UDP datagram with a
-payload that is less than the smallest allowed maximum packet size  of 1200
+payload that is less than the smallest allowed maximum packet size of 1200
 bytes.  A server MAY also immediately close the connection by sending a
 CONNECTION_CLOSE frame with an error code of PROTOCOL_VIOLATION; see
 <a href="#immediate-close-hs" class="xref">Section 10.3.1</a>.<a href="#section-14-8" class="pilcrow">¶</a></p>
@@ -5753,7 +5753,7 @@ referred to as the endpoint's maximum packet size.<a href="#section-14.1-1" clas
 <p id="section-14.1-2">An endpoint SHOULD use DPLPMTUD (<a href="#dplpmtud" class="xref">Section 14.2</a>) or PMTUD (<a href="#pmtud" class="xref">Section 14.1.1</a>) to determine
 whether the path to a destination will support a desired message size without
 fragmentation.  In the absence of these mechanisms, QUIC endpoints SHOULD NOT
-send IP packets larger than the minimum QUIC packet size.<a href="#section-14.1-2" class="pilcrow">¶</a></p>
+send IP packets larger than the smallest allowed maximum packet size.<a href="#section-14.1-2" class="pilcrow">¶</a></p>
 <p id="section-14.1-3">Both DPLPMTUD and PMTUD send IP packets that are larger than the current maximum
 packet size.  We refer to these as PMTU probes.  All QUIC packets that are not
 sent in a PMTU probe SHOULD be sized to fit within the maximum packet size to
@@ -5761,8 +5761,8 @@ avoid the packet being fragmented or dropped <span>[<a href="#RFC8085" class="xr
 <p id="section-14.1-4">If a QUIC endpoint determines that the PMTU between any pair of local and remote
 IP addresses has fallen below the smallest allowed maximum packet size of 1200
 bytes, it MUST immediately cease sending QUIC packets, except for those in PMTU
-probes, on the affected path.  An endpoint MAY terminate the connection if an
-alternative path cannot be found.<a href="#section-14.1-4" class="pilcrow">¶</a></p>
+probes or those containing CONNECTION_CLOSE frames, on the affected path.  An
+endpoint MAY terminate the connection if an alternative path cannot be found.<a href="#section-14.1-4" class="pilcrow">¶</a></p>
 <p id="section-14.1-5">Each pair of local and remote addresses could have a different PMTU.  QUIC
 implementations that implement any kind of PMTU discovery therefore SHOULD
 maintain a maximum packet size for each combination of local and remote IP
@@ -5818,11 +5818,6 @@ defined in Section 4.1 of <span>[<a href="#DPLPMTUD" class="xref">DPLPMTUD</a>]<
 MIN_PLPMTU is the same as the BASE_PMTU.<a href="#section-14.2-2" class="pilcrow">¶</a></p>
 <p id="section-14.2-3">QUIC endpoints implementing DPLPMTUD maintain a maximum packet size (DPLPMTUD
 MPS) for each combination of local and remote IP addresses.<a href="#section-14.2-3" class="pilcrow">¶</a></p>
-<p id="section-14.2-4">If a QUIC endpoint determines that the PLPMTU between any pair of local and
-remote IP addresses has fallen below the size needed to support the minimum QUIC
-packet size (BASE_PLPMTU), it MUST immediately cease sending QUIC packets on the
-affected path. An endpoint MAY terminate the connection if an alternative path
-cannot be found.<a href="#section-14.2-4" class="pilcrow">¶</a></p>
 <div id="dplpmtud-and-initial-connectivity">
 <section id="section-14.2.1">
           <h4 id="name-dplpmtud-and-initial-connec">
@@ -9464,11 +9459,11 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dd class="break"></dd>
 <dt id="QUIC-RECOVERY">[QUIC-RECOVERY]</dt>
 <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-06-01">1 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span><span class="refAuthor"> and I. Swett, Ed.</span>, <span class="refTitle">"QUIC Loss Detection and Congestion Control"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-recovery-latest</span>, <time datetime="2020-06-02">2 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery-latest">https://tools.ietf.org/html/draft-ietf-quic-recovery-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-TLS">[QUIC-TLS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-06-01">1 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M., Ed.</span><span class="refAuthor"> and S. Turner, Ed.</span>, <span class="refTitle">"Using Transport Layer Security (TLS) to Secure QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-tls-latest</span>, <time datetime="2020-06-02">2 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-tls-latest">https://tools.ietf.org/html/draft-ietf-quic-tls-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1191">[RFC1191]</dt>
 <dd>
@@ -9543,7 +9538,7 @@ specification reference is provided.<a href="#section-22.4-4.4" class="pilcrow">
 <dd class="break"></dd>
 <dt id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</dt>
 <dd>
-<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-06-01">1 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
+<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Version-Independent Properties of QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-invariants-latest</span>, <time datetime="2020-06-02">2 June 2020</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants-latest">https://tools.ietf.org/html/draft-ietf-quic-invariants-latest</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-MANAGEABILITY">[QUIC-MANAGEABILITY]</dt>
 <dd>
